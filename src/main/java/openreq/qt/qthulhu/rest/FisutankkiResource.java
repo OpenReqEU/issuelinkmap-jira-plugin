@@ -1,12 +1,16 @@
 package openreq.qt.qthulhu.rest;
 
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.exception.CreateException;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.jql.parser.JqlParseException;
 import com.atlassian.jira.util.json.JSONException;
 import com.atlassian.jira.util.json.JSONObject;
 import openreq.qt.qthulhu.rest.json.Dependency;
+
+import openreq.qt.qthulhu.rest.json.Requirement;
 import openreq.qt.qthulhu.rest.json.MillaResponse;
+import openreq.qt.qthulhu.service.JiraService;
 import openreq.qt.qthulhu.service.MillaService;
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +36,10 @@ public class FisutankkiResource {
     @Inject
     private MillaService millaService;
 
+    @Inject
+    private JiraService jiraService;
+
+    
     @GET
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,6 +47,9 @@ public class FisutankkiResource {
     public Response getTransitiveClosure(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount")
             Integer layerCount) throws JqlParseException, SearchException, IOException, JSONException {
 
+        Gson gson = new Gson();
+        ObjectMapper mapper = new ObjectMapper();
+        
         if (layerCount == null) {
             layerCount = 5;
         }
@@ -61,26 +72,25 @@ public class FisutankkiResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Error connecting to Milla\"}").build();
         }
 
-        Gson gson = new Gson();
-        JsonObject responseJSON = gson.fromJson(response, JsonElement.class).getAsJsonObject();
+        MillaResponse closure;
+
+        try {
+            // Parse the response JSON string to MillaResponse
+            closure = mapper.readValue(response, MillaResponse.class);
+        } catch (IOException e) {
+            JSONObject error = new JSONObject();
+            error.put("error", e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
+        }
+        List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
+        closure.setRequirements(filtered);
+
+        JsonObject responseJSON = gson.fromJson(mapper.writeValueAsString(issue), JsonObject.class);
 
         JsonObject nodeEdgeSet = NodeEdgeSetBuilder.buildNodeEdgeSet(responseJSON, issue, false);
         String nodeEdgeString = nodeEdgeSet.toString();
 
-        MillaResponse closure = null;
-
-        try {
-            // Parse the response JSON string to MillaResponse
-            ObjectMapper mapper = new ObjectMapper();
-//            closure = mapper.readValue(nodeEdgeString, MillaResponse.class);
-            closure = mapper.readValue(response, MillaResponse.class);
-        } catch (IOException e) {
-            JSONObject error = new JSONObject();
-            error.put("error", nodeEdgeString);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
-        }
         return Response.ok(nodeEdgeString).build();
-//        return Response.ok(closure).build();
     }
 
     @GET
@@ -119,6 +129,9 @@ public class FisutankkiResource {
             error.put("error", response);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
         }
+
+        List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
+        closure.setRequirements(filtered);
 
         return Response.ok(closure).build();
     }
