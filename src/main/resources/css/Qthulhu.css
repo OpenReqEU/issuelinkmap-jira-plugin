@@ -1,0 +1,485 @@
+/*Style for example network*/
+
+#mynetwork {
+    width: 100%;
+    height: 75%;
+    border: 0px solid lightgray;
+}
+
+/*Custom Colours*/
+
+.red {
+    background: #ce0000;
+    color: #000000;
+}
+
+.jirared {
+    background: #660000;
+    color: #000000;
+}
+
+.jirablue {
+    background: #0052cc;
+    color: #000000;
+}
+
+.green {
+    background: #14882c;
+    color: #000000;
+}
+
+.blue {
+    background: #4a6685;
+    color: #000000;
+}
+
+.yellow {
+    background: #ffd351;
+    color: #000000;
+}
+
+/*Custom Shapes*/
+
+.box {
+    /*border-radius: 5px;*/
+    border-color: #172B4D;
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    width: 25px;
+    height: 10px;
+    display: inline-block;
+}
+
+.ellipse {
+    border-radius: 50px;
+    border-color: #172B4D;
+    border-style: solid;
+    border-width: 1px;
+    width: 35px;
+    height: 15px;
+    display: inline-block;
+}
+
+/*Top Navigation bar*/
+
+.topnav {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: #53586b;
+    border: none;
+    /*border-bottom-color: #2e3d54;*/
+    /*height: 40px;*/
+}
+
+.topnav a {
+    float: left;
+    box-sizing: border-box;
+    alignment: center;
+    display: block;
+    color: #deebff;
+    text-align: center;
+    padding: 10px 10px;
+    /*margin-top: 3px;*/
+    /*margin-left: 2px;*/
+    text-decoration: none;
+    font-size: 14px;
+    /*border-radius: 4px;*/
+    /*font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;*/
+    /*font-weight: 400;*/
+    /*line-height: 1.42857143;*/
+    /*letter-spacing: 0;*/
+    white-space: nowrap;
+    line-height: 20px;
+    height: 40px;
+}
+
+.topnav a:hover {
+    background-color: #9d9faa;
+    color: #fafafa;
+    text-decoration: none;
+}
+
+.topnav .search-container {
+    float: right;
+    box-sizing: border-box;
+    alignment: center;
+    margin-top: 3px;
+    /*margin-bottom: 3px;*/
+}
+
+.topnav input[type=text] {
+    padding: 6px;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    background-color: #2f3c57;
+    color: #deebff;
+    box-sizing: border-box;
+    alignment: center;
+    /*margin-top: 3px;*/
+}
+
+.topnav input[type=number] {
+    padding: 6px;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    background-color: #2f3c57;
+    color: #deebff;
+    box-sizing: border-box;
+    alignment: center;
+    /*margin-top: 3px;*/
+}
+
+.topnav .search-container button {
+    float: right;
+    /*padding: 6px 8px;*/
+    alignment: center;
+    background: #53586b;
+    color: #deebff;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    /*border-radius: 4px;*/
+    box-sizing: border-box;
+    margin-top: 3px;
+}
+
+.topnav .search-container button:hover {
+    background: #53586b;
+    color: #deebff;
+}
+
+/*Buttons*/
+
+.button {
+    background-color: #0052cc;
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    /*text-align: center;*/
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    /*border-radius: 4px;*/
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+/*called depth in UI*/
+.layer {
+    font-size: 14px;
+    padding: 6px 20px;
+}
+
+.button:disabled {
+    background-color: #cecfd5;
+    color: #53586b;
+}
+
+.button:disabled:hover {
+    background-color: #cecfd5;
+    color: #53586b;
+}
+
+.jira {
+    background-color: #0052cc;
+    /*padding: 15px 30px;*/
+    margin: auto;
+}
+
+.back {
+    background-color: #0052cc;
+    padding: 15px 30px;
+    font-size: 25px;
+}
+
+.reject {
+    background-color: #ffffff;
+    border: 2px solid #660000;
+    padding: 4px 15px;
+    font-size: 25px;
+    color: #172b4d;
+}
+
+.accept {
+    background-color: #ffffff;
+    border: 2px solid #0052cc;
+    padding: 4px 15px;
+    font-size: 25px;
+    color: #172b4d;
+}
+
+.rejected {
+    background-color: #660000;
+    border: 2px solid #660000;
+    padding: 4px 15px;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.accepted {
+    background-color: #0052cc;
+    border: 2px solid #0052cc;
+    padding: 4px 15px;
+    font-size: 25px;
+    color: #ffffff;
+}
+
+.active, .button-effect:hover {
+    background-color: #0065FF;
+    transition: background-color .1s ease-out;
+    color: white;
+}
+/*nav pill customization*/
+
+.nav-tabs a {
+    color: #0052cc;
+    border-radius: 0;
+}
+
+.tab-pane {
+    border: none;
+    background-color: white;
+    color: #272727;
+    margin: 10px;
+    border-radius: 0;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-link.hover, .nav-tabs .show > .nav-link {
+    color: #fff;
+    background-color: #0052cc;
+    border: none;
+    border-radius: 0;
+}
+
+.nav-tabs a:hover {
+    background-color: #0052cc;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+}
+
+.nav-item .tooltiptext {
+    visibility: hidden;
+    width: 80%;
+    background-color: #272727;
+    color: #fff;
+    text-align: center;
+    border-radius: 0;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 104%;
+    left: 10%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.nav-item .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #272727 transparent transparent transparent;
+}
+
+.nav-item:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+/*Spinning circle to indicate that the site is loading*/
+
+.loader {
+    border: 11px solid #17a81a;
+    border-top: 11px solid #9d9faa;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/*Collapsible button for release of consistency checker*/
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+    background-color: #0052cc;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.accordion.active, .accordion:hover {
+    background-color: #0065FF;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+    border: solid 1px lightgray;
+}
+
+.accordion:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #ffffff;
+    float: right;
+    margin-left: 5px;
+}
+
+.accordion.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+
+/*Navigation buttons for vis, if they are enabled*/
+
+div.vis-network div.vis-navigation div.vis-button.vis-up,
+div.vis-network div.vis-navigation div.vis-button.vis-down,
+div.vis-network div.vis-navigation div.vis-button.vis-left,
+div.vis-network div.vis-navigation div.vis-button.vis-right,
+div.vis-network div.vis-navigation div.vis-button.vis-zoomIn,
+div.vis-network div.vis-navigation div.vis-button.vis-zoomOut,
+div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
+    background-image: none !important;
+}
+
+div.vis-network div.vis-navigation div.vis-button:hover {
+    box-shadow: none !important;
+}
+
+.vis-button:after {
+    font-size: 2em;
+    color: #0052cc;
+}
+
+.vis-button:hover:after {
+    font-size: 2em;
+    color: #0065FF;
+}
+
+.vis-button.vis-up:after {
+    content: "\25B2";
+}
+
+.vis-button.vis-down:after {
+    content: "\25BC";
+}
+
+.vis-button.vis-left:after {
+    content: "\25C0";
+}
+
+.vis-button.vis-right:after {
+    content: "\25B6";
+}
+
+.vis-button.vis-zoomIn:after {
+    content: "\002B";
+    font-size: 2em
+}
+
+.vis-button.vis-zoomOut:after {
+    content: "\002D";
+    font-size: 2em
+}
+
+.vis-button.vis-zoomExtends:after {
+    content: "\2610";
+    color: #0065FF;
+    font-weight: bold;
+}
+
+div.vis-network div.vis-navigation div.vis-button.vis-up {
+    bottom: 50px;
+    right: 55px;
+}
+
+div.vis-network div.vis-navigation div.vis-button.vis-down {
+    bottom: 10px;
+    right: 55px;
+}
+
+div.vis-network div.vis-navigation div.vis-button.vis-left {
+    bottom: 10px;
+    right: 15px;
+}
+
+div.vis-network div.vis-navigation div.vis-button.vis-right {
+    bottom: 10px;
+    right: 95px;
+}
+
+div.vis-network div.vis-navigation div.vis-button.vis-zoomIn {
+    top: 50px;
+    left: 17px;
+}
+
+div.vis-network div.vis-navigation div.vis-button.vis-zoomOut {
+    top: 90px;
+    left: 20px;
+}
+
+div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
+    top: 10px;
+    left: 15px;
+}
+
+/*Select Design*/
+.custom-select {
+    position: relative;
+    display: block;
+    max-width: 400px;
+    min-width: 180px;
+    margin: 0 auto;
+    border: 1px solid #0052cc;
+    background-color: white;
+}
+
+select {
+    border: none;
+    outline: none;
+    background: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /*border-radius: 0;*/
+    margin: 0;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    color: #172B4D;
+}
+
+/*Tables*/
+
+th, td {
+    border-bottom: 1px solid lightgray;
+}
