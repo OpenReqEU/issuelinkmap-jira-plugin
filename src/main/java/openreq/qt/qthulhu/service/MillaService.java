@@ -20,8 +20,8 @@ public class MillaService implements MillaApi
     private final MillaResponseHandler responseHandler;
 
     private final RequestFactory requestFactory;
-    
-    
+
+
     @Inject
     public MillaService(@ComponentImport RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
@@ -32,13 +32,14 @@ public class MillaService implements MillaApi
     // method to handle out-going rest-call to OpenReq infra in localhost
     @Override
     public String getResponseFromMilla(String urlTail, String body, boolean isPost) {
+        //String millaAddress = "https://bugreports-test.qt.io/rest/fisutankki/1";
         String millaAddress = "http://localhost:9203";
         String completeAddress = millaAddress + urlTail;
 
         System.out.println("milla addr: " + completeAddress);
 
-        Request request = null; 
-        
+        Request request = null;
+
         if (isPost) {
             request = requestFactory.createRequest(Request.MethodType.POST, completeAddress);
             request.setRequestBody(body);
@@ -47,7 +48,7 @@ public class MillaService implements MillaApi
         }
 
         String response = null;
-        
+
         try {
             request.setSoTimeout(10000000);
             response = (String)request.executeAndReturn(this.responseHandler);
@@ -58,6 +59,6 @@ public class MillaService implements MillaApi
         }
         System.out.println("milla return " + response);
         return response;
-        
+
     }
 }

@@ -15,7 +15,7 @@ import com.atlassian.sal.api.net.ReturningResponseHandler;
  * @param <RET>
  */
 public class MillaResponseHandler<RET> implements ReturningResponseHandler<Response, RET> {
-    
+
     private final Class<RET> entity;
 
     public MillaResponseHandler(Class<RET> entity) {
@@ -26,5 +26,5 @@ public class MillaResponseHandler<RET> implements ReturningResponseHandler<Respo
     public RET handle(Response response) throws ResponseException {
         return response.getEntity(entity);
     }
-    
+
 }
