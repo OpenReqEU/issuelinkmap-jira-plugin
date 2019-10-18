@@ -85,7 +85,6 @@ public class FisutankkiResource {
         List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
         closure.setRequirements(filtered);
 
-        System.out.println("gson from json");
 //      this line is from tomi but caused an error
 //      JsonObject responseJSON = gson.fromJson(mapper.writeValueAsString(issue), JsonObject.class);
         JsonObject responseJSON = gson.fromJson(response, JsonElement.class).getAsJsonObject();
