@@ -10,7 +10,7 @@
         <url>http://www.openreq.eu/</url>
     </organization>
     <name>issuelinkmap-jira-plugin</name>
-    <description>This is the openreq.qt.test:issuelinkmap-jira-plugin for Atlassian JIRA.</description>
+    <description>This is the openreq.qt.test:issuelinkmap-jira-plugin plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencies>
         <dependency>

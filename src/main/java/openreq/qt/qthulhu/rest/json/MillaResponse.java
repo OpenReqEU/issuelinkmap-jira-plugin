@@ -19,20 +19,20 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * @author ttlaurin
  */
 
-@XmlRootElement 
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class MillaResponse {
-    
+
     private List<Project> projects;
 
     private List<Requirement> requirements;
-    
+
     private List<Dependency> dependencies;
 
     private Map<Integer, List<String>> layers;
-    
+
     public List<Project> getProjects() {
         return projects;
     }
@@ -64,7 +64,7 @@ public class MillaResponse {
     public void setLayers(Map<Integer, List<String>> layers) {
         this.layers = layers;
     }
-    
-    
-    
+
+
+
 }

@@ -39,7 +39,7 @@ public class FisutankkiResource {
     @Inject
     private JiraService jiraService;
 
-    
+
     @GET
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,7 +49,7 @@ public class FisutankkiResource {
 
         Gson gson = new Gson();
         ObjectMapper mapper = new ObjectMapper();
-        
+
         if (layerCount == null) {
             layerCount = 5;
         }
@@ -85,7 +85,13 @@ public class FisutankkiResource {
         List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
         closure.setRequirements(filtered);
 
-        JsonObject responseJSON = gson.fromJson(mapper.writeValueAsString(issue), JsonObject.class);
+        System.out.println("gson from json");
+//        this line caused an error
+        JsonObject responseJSON = gson.fromJson(response, JsonElement.class).getAsJsonObject();
+        System.out.println("responseJSON (response): " + responseJSON);
+        JsonObject responseJSON2 = gson.fromJson(mapper.writeValueAsString(closure), JsonObject.class);
+//        JsonObject responseJSON = gson.fromJson(response, JsonElement.class).getAsJsonObject();
+        System.out.println("responseJSON (mapper.writeValueAsString): " + responseJSON2);
 
         JsonObject nodeEdgeSet = NodeEdgeSetBuilder.buildNodeEdgeSet(responseJSON, issue, false);
         String nodeEdgeString = nodeEdgeSet.toString();

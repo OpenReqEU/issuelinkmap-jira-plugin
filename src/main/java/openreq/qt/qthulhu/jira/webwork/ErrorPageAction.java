@@ -3,7 +3,6 @@ package openreq.qt.qthulhu.jira.webwork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Named;
 import com.atlassian.webresource.api.assembler.PageBuilderService;

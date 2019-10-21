@@ -7,6 +7,7 @@ package openreq.qt.qthulhu.data;
 public class ProjectIDs
 {
     //TODO: 90% sure this should be ENUM
+    //TODO: Add private projects (or find a better way to get all ids, maybe use API) or a hashmap?
 
     /**
      * QBS 10620

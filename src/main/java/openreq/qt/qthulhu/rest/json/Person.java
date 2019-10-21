@@ -9,11 +9,11 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @XmlType
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Person {
-	
+
 	private String username;
-	
+
 	private String email;
-	
+
 	public String getUsername() {
 		return username;
 	}
