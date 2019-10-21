@@ -21,12 +21,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 
 import openreq.qt.qthulhu.data.NodeEdgeSetBuilder;
 
@@ -84,10 +83,8 @@ public class FisutankkiResource {
         }
         List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
         closure.setRequirements(filtered);
-
-//      this line is from tomi but caused an error
-//      JsonObject responseJSON = gson.fromJson(mapper.writeValueAsString(issue), JsonObject.class);
-        JsonObject responseJSON = gson.fromJson(response, JsonElement.class).getAsJsonObject();
+        
+        JsonObject responseJSON = gson.toJsonTree(closure).getAsJsonObject();
 
         JsonObject nodeEdgeSet = NodeEdgeSetBuilder.buildNodeEdgeSet(responseJSON, issue, false);
         String nodeEdgeString = nodeEdgeSet.toString();
@@ -121,7 +118,7 @@ public class FisutankkiResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Error connecting to Milla\"}").build();
         }
 
-        MillaResponse closure = null;
+        MillaResponse closure;
 
         try {
             ObjectMapper mapper = new ObjectMapper();

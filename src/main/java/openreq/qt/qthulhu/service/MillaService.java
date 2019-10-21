@@ -36,7 +36,7 @@ public class MillaService implements MillaApi
         String millaAddress = "http://localhost:9203";
         String completeAddress = millaAddress + urlTail;
 
-        System.out.println("milla addr: " + completeAddress);
+        //System.out.println("milla addr: " + completeAddress);
 
         Request request = null;
 
@@ -57,7 +57,7 @@ public class MillaService implements MillaApi
             System.out.println("ERROR: " + ex);
             Logger.getLogger(MillaService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("milla return " + response);
+        //System.out.println("milla return " + response);
         return response;
 
     }
