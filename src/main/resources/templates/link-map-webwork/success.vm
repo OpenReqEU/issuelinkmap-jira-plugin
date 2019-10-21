@@ -22,6 +22,7 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
 ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 
     <a target="_blank" href="https://github.com/OpenReqEU/qthulhu/issues">Report a Bug</a>
+    <p style="float: center;">Version 1.0.1</p>
 </div>
 
 
