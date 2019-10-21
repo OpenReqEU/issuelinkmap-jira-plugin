@@ -53,8 +53,8 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
 ##<%--This is the navigation bar located at the top, it contains a link to the project website and a search box--%>
 <div class="topnav">
     <a target="_blank" href="https://openreq.eu/" style="padding: 0"><img alt="or_logo"
-                                                       src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/or_icon.png"
-                                                       width="40px" height="40px"/></a>
+                                                                          src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/or_icon.png"
+                                                                          width="40px" height="40px"/></a>
 ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 ##    <%--<a target="_blank" href="https://forum.qt.io/">Qt Forum</a>--%>
 ##    <%--<a target="_blank" href="https://forms.gle/GQQhym7obLEss3bCA">Feedback</a>--%>
@@ -99,7 +99,7 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
         <div class="col-8">
             <div class="row">
                 <div class="col-8">
-##                    <%--Depth buttons--%>
+                ##                    <%--Depth buttons--%>
                     <button class="button layer button-effect" id="depth-1-btn"
                             style="margin-left: 2px;">Depth 1
                     </button>
@@ -116,7 +116,7 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
                             style="margin-left: 2px;">Depth 5
                     </button>
                 </div>
-##                <%--Legend--%>
+            ##                <%--Legend--%>
                 <div class="col-4">
                     <p>
                     <div class="box blue" style="display: inline-block;">
@@ -130,31 +130,31 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
                     In Progress
                     <div class="box green" style="display: inline-block;">
                     </div>
-                    Done
+                    Done (filtered out on default)
                     </p>
                 </div>
             </div>
             <div class="row">
-##                <%--Issue Link Map--%>
+            ##                <%--Issue Link Map--%>
                 <div class="card" id="issueLinkMap"></div>
                 <br>
             </div>
         </div>
-##        <%--Information--%>
+    ##        <%--Information--%>
         <div class="col-4">
 
-##            <%--Information buttons--%>
+        ##            <%--Information buttons--%>
             <ul class="nav nav-tabs nav-fill mb-3" id="info-nav" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info-box" role="tab"
                        aria-controls="info-tab" aria-selected="true">Info
                     </a>
                 </li>
-##                <%--<li class="nav-item">--%>
-##                <%--<a class="nav-link" id="list-tab" data-toggle="tab" href="#list-box" role="tab"--%>
-##                    <%--aria-controls="list-tab" aria-selected="true" onclick="listTab();">List--%>
-##                    <%--</a>--%>
-##                <%--</li>--%>
+            ##                <%--<li class="nav-item">--%>
+            ##                <%--<a class="nav-link" id="list-tab" data-toggle="tab" href="#list-box" role="tab"--%>
+            ##                    <%--aria-controls="list-tab" aria-selected="true" onclick="listTab();">List--%>
+            ##                    <%--</a>--%>
+            ##                <%--</li>--%>
                 <li class="nav-item">
                     <a class="nav-link" id="sd-tab" data-toggle="tab" href="#sd-box" role="tab"
                        aria-controls="sd-tab" aria-selected="false">Link Detection
@@ -173,7 +173,7 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
                     </a>
                 </li>
             </ul>
-##            <%--Information box--%>
+        ##            <%--Information box--%>
             <div class="tab-content" id="tabs-tabContent">
                 <div class="tab-pane fade show active" id="info-box" role="tabpanel"
                      aria-labelledby="info-tab">
@@ -191,13 +191,13 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
                     <p id="infoBoxIssueEnv"></p>
                     <div id="infoBoxIssueLink"></div>
                     <br>
-##                    <%--<div id="infoBoxIssueLinkTestJIRA"></div>--%>
+                ##                    <%--<div id="infoBoxIssueLinkTestJIRA"></div>--%>
                 </div>
-##                <%--<div class="tab-pane fade show" id="list-box" role="tabpanel"--%>
-##                <%--aria-labelledby="list-tab">--%>
-##                <%--<h5>Issue List</h5>--%>
-##                <%--<p id="IssuesList"></p>--%>
-##                <%--</div>--%>
+            ##                <%--<div class="tab-pane fade show" id="list-box" role="tabpanel"--%>
+            ##                <%--aria-labelledby="list-tab">--%>
+            ##                <%--<h5>Issue List</h5>--%>
+            ##                <%--<p id="IssuesList"></p>--%>
+            ##                <%--</div>--%>
                 <div class="tab-pane fade" id="sd-box" role="tabpanel" aria-labelledby="sd-tab">
                     <p id="ddResult"></p>
                     <p id="ddPending"></p>

@@ -339,6 +339,9 @@ function callTransitiveClosure()
             {
                 nodeEdgeObject = JSON.parse(xhr.responseText);
                 max_depth = nodeEdgeObject.max_depth;
+                if (max_depth < depth) {
+                    depth = max_depth;
+                }
                 if (typeof (nodeEdgeObject['0']['nodes']['0']) === "undefined")
                 {
                     window.location.replace('./ErrorPageAction.jspa?issue=' + issue)
@@ -1462,4 +1465,3 @@ function initNetwork() {
 function resizeCanvas() {
     $('#issueLinkMap').height($(document).height() * 0.70)
 }
-

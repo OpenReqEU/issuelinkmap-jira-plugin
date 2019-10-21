@@ -30,43 +30,43 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
         <h1>WP7 - Qt Trial</h1>
     </div>
 
-        <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" style="display:inline-block;">
-            <fieldset>
-                <div class="row">
-                    <div class="col-4">
-                        <h5>Issue Key(s):</h5>
-                        <input type="text" name="issue" id="issue" required="required" width="200px"><br>
-                        <i>
-                            <small>Search for an issue key.<br>
-                            </small>
-                        </i>
-                    </div>
-
-                    <div class="col-4">
-                        <h5>Depth:</h5>
-                        <input type="number" name="depth" id="layerDepth" min="1" max="5" width="100px"><br>
-                        <i>
-                            <small>Enter a number between 1 and 5.<br>
-                            </small>
-                        </i>
-                    </div>
-
-
-                    <div class="col-2">
-                        <br>
-
-                        <input type="submit"
-                               class="button search button-effect"
-                               value="Search">
-                    </div>
-
-                    <div class="col-2">
-                        <br>
-                        <div class="loader" id="loader"></div>
-                    </div>
+    <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" style="display:inline-block;">
+        <fieldset>
+            <div class="row">
+                <div class="col-4">
+                    <h5>Issue Key(s):</h5>
+                    <input type="text" name="issue" id="issue" required="required" width="200px"><br>
+                    <i>
+                        <small>Search for an issue key.<br>
+                        </small>
+                    </i>
                 </div>
-            </fieldset>
-        </form>
+
+                <div class="col-4">
+                    <h5>Depth:</h5>
+                    <input type="number" name="depth" id="layerDepth" min="1" max="5" width="100px"><br>
+                    <i>
+                        <small>Enter a number between 1 and 5.<br>
+                        </small>
+                    </i>
+                </div>
+
+
+                <div class="col-2">
+                    <br>
+
+                    <input type="submit"
+                           class="button search button-effect"
+                           value="Search">
+                </div>
+
+                <div class="col-2">
+                    <br>
+                    <div class="loader" id="loader"></div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
 
 
     <br>

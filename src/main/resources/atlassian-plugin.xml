@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2"> 
-  <plugin-info> 
-    <description>${project.description}</description>  
-    <version>${project.version}</version>  
-    <vendor name="${project.organization.name}" url="${project.organization.url}"/>  
-    <param name="plugin-icon">images/pluginIcon.png</param>  
-    <param name="plugin-logo">images/pluginLogo.png</param> 
-  </plugin-info>  
-  <!-- add our i18n resource -->  
-  <resource type="i18n" name="i18n" location="Qthulhu"/>  
-  <!-- add our web resources -->  
-  <web-resource key="Qthulhu-resources" name="Qthulhu Web Resources"> 
-    <dependency>com.atlassian.auiplugin:ajs</dependency>  
-    <resource type="download" name="Qthulhu.css" location="/css/Qthulhu.css"/>  
-    <resource type="download" name="Qthulhu.js" location="/js/Qthulhu.js"/>  
-    <resource type="download" name="images/" location="/images"/>  
-    <context>Qthulhu</context> 
-  </web-resource>  
-  <web-resource key="issueid-controller" name="main page - issueid"> 
-    <dependency>com.atlassian.auiplugin:ajs</dependency>  
-    <resource type="download" name="issueid-controller.js" location="/js/issueid-controller.js"/>  
-    <context>kitchen-duty-plugin</context> 
-  </web-resource>  
-  <web-resource key="error-page-controller" name="error page"> 
-    <dependency>com.atlassian.auiplugin:ajs</dependency>  
-    <resource type="download" name="error-page-controller.js" location="/js/error-page-controller.js"/>  
-    <context>kitchen-duty-plugin</context> 
-  </web-resource>  
-  <webwork1 key="link-map-webwork" name="Link Map Webwork" i18n-name-key="link-map-webwork.name"> 
-    <description key="link-map-webwork.description">The Link Map Webwork Plugin</description>  
-    <actions> 
-      <action name="openreq.qt.test.jira.webwork.LinkMapWebworkAction" alias="LinkMapWebworkAction"> 
-        <view name="success">/templates/link-map-webwork/success.vm</view>  
-        <view name="input">/templates/link-map-webwork/input.vm</view>  
-        <view name="error">/templates/link-map-webwork/error.vm</view> 
-      </action> 
-    </actions> 
-  </webwork1>  
-  <web-item name="Link Map Web Item" i18n-name-key="link-map-web-item.name" key="link-map-web-item" section="system.top.navigation.bar" weight="1000"> 
-    <description key="link-map-web-item.description">The Link Map Web Item Plugin</description>  
-    <label key="link-map-web-item.label"/>  
-    <link linkId="link-map-web-item-link">/secure/LinkMapWebworkAction.jspa</link> 
-  </web-item>  
-  <webwork1 key="issue-search-webwork" name="Issue Search Webwork" i18n-name-key="issue-search-webwork.name"> 
-    <description key="issue-search-webwork.description">The Issue Search Webwork Plugin</description>  
-    <actions> 
-      <action name="openreq.qt.test.jira.webwork.IssueSearchWebworkAction" alias="IssueSearchWebworkAction"> 
-        <view name="success">/templates/issue-search-webwork/success.vm</view>  
-        <view name="input">/templates/issue-search-webwork/input.vm</view>  
-        <view name="error">/templates/issue-search-webwork/error.vm</view> 
-      </action> 
-    </actions> 
-  </webwork1>  
-  <rest name="Issue Search Resource" i18n-name-key="issue-search-resource.name" key="issue-search-resource" path="/issuesearch" version="1.0"> 
-    <description key="issue-search-resource.description">The Issue Search Resource Plugin</description> 
-  </rest>  
-  <webwork1 key="error-page" name="Error Page" i18n-name-key="error-page.name"> 
-    <description key="error-page.description">The Error Page Plugin</description>  
-    <actions> 
-      <action name="openreq.qt.qthulhu.jira.webwork.ErrorPageAction" alias="ErrorPageAction"> 
-        <view name="success">/templates/error-page/success.vm</view>  
-        <view name="input">/templates/error-page/input.vm</view>  
-        <view name="error">/templates/error-page/error.vm</view> 
-      </action> 
-    </actions> 
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="issuelinkmap-jira-plugin"/>
+  <!-- add our web resources -->
+  <web-resource key="issuelinkmap-jira-plugin-resources" name="Issue Link Map Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="issuelinkmap-jira-plugin.css" location="/css/issuelinkmap-jira-plugin.css"/>
+    <resource type="download" name="issuelinkmap-jira-plugin.js" location="/js/issuelinkmap-jira-plugin.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>issuelinkmap-jira-plugin</context>
+  </web-resource>
+  <web-resource key="issueid-controller" name="main page - issueid">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="issueid-controller.js" location="/js/issueid-controller.js"/>
+    <context>kitchen-duty-plugin</context>
+  </web-resource>
+  <web-resource key="error-page-controller" name="error page">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="error-page-controller.js" location="/js/error-page-controller.js"/>
+    <context>kitchen-duty-plugin</context>
+  </web-resource>
+  <webwork1 key="link-map-webwork" name="Link Map Webwork" i18n-name-key="link-map-webwork.name">
+    <description key="link-map-webwork.description">The Link Map Webwork Plugin</description>
+    <actions>
+      <action name="openreq.qt.test.jira.webwork.LinkMapWebworkAction" alias="LinkMapWebworkAction">
+        <view name="success">/templates/link-map-webwork/success.vm</view>
+        <view name="input">/templates/link-map-webwork/input.vm</view>
+        <view name="error">/templates/link-map-webwork/error.vm</view>
+      </action>
+    </actions>
+  </webwork1>
+  <web-item name="Link Map Web Item" i18n-name-key="link-map-web-item.name" key="link-map-web-item" section="system.top.navigation.bar" weight="1000">
+    <description key="link-map-web-item.description">The Link Map Web Item Plugin</description>
+    <label key="link-map-web-item.label"/>
+    <link linkId="link-map-web-item-link">/secure/LinkMapWebworkAction.jspa</link>
+  </web-item>
+  <webwork1 key="issue-search-webwork" name="Issue Search Webwork" i18n-name-key="issue-search-webwork.name">
+    <description key="issue-search-webwork.description">The Issue Search Webwork Plugin</description>
+    <actions>
+      <action name="openreq.qt.test.jira.webwork.IssueSearchWebworkAction" alias="IssueSearchWebworkAction">
+        <view name="success">/templates/issue-search-webwork/success.vm</view>
+        <view name="input">/templates/issue-search-webwork/input.vm</view>
+        <view name="error">/templates/issue-search-webwork/error.vm</view>
+      </action>
+    </actions>
+  </webwork1>
+  <rest name="Issue Search Resource" i18n-name-key="issue-search-resource.name" key="issue-search-resource" path="/issuesearch" version="1.0">
+    <description key="issue-search-resource.description">The Issue Search Resource Plugin</description>
+  </rest>
+  <webwork1 key="error-page" name="Error Page" i18n-name-key="error-page.name">
+    <description key="error-page.description">The Error Page Plugin</description>
+    <actions>
+      <action name="openreq.qt.qthulhu.jira.webwork.ErrorPageAction" alias="ErrorPageAction">
+        <view name="success">/templates/error-page/success.vm</view>
+        <view name="input">/templates/error-page/input.vm</view>
+        <view name="error">/templates/error-page/error.vm</view>
+      </action>
+    </actions>
   </webwork1>
 </atlassian-plugin>
