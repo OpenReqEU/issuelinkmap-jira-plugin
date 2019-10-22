@@ -22,6 +22,8 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 ##        gtag('config', 'UA-146396443-1');
 ##    </script>
 
+    ##fixing stuff
+
     <title>WP7 - Qt Trial</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
