@@ -5,7 +5,6 @@
  */
 package openreq.qt.qthulhu.rest.json;
 
-
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,11 +17,10 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  *
  * @author ttlaurin
  */
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class MillaResponse {
 
     private List<Project> projects;
@@ -32,6 +30,8 @@ public class MillaResponse {
     private List<Dependency> dependencies;
 
     private Map<Integer, List<String>> layers;
+
+    private Integer numberOfOutpointingRelations;
 
     public List<Project> getProjects() {
         return projects;
@@ -65,6 +65,12 @@ public class MillaResponse {
         this.layers = layers;
     }
 
+    public Integer getNumberOfOutpointingRelations() {
+        return numberOfOutpointingRelations;
+    }
 
+    public void setNumberOfOutpointingRelations(Integer numberOfOutpointingRelations) {
+        this.numberOfOutpointingRelations = numberOfOutpointingRelations;
+    }
 
 }

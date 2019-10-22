@@ -21,17 +21,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 
 import openreq.qt.qthulhu.data.NodeEdgeSetBuilder;
 
 @Path("")
-public class FisutankkiResource {
+public class FisutankkiResource
+{
 
     @Inject
     private MillaService millaService;
@@ -45,19 +45,22 @@ public class FisutankkiResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getTransitiveClosureOfRequirement")
     public Response getTransitiveClosure(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount")
-            Integer layerCount) throws JqlParseException, SearchException, IOException, JSONException {
+            Integer layerCount) throws JqlParseException, SearchException, IOException, JSONException
+    {
 
         Gson gson = new Gson();
         ObjectMapper mapper = new ObjectMapper();
 
-        if (layerCount == null) {
+        if (layerCount == null)
+        {
             layerCount = 5;
         }
 
         String reqIdsString = "";
         String issue = "";
 
-        for (String id : requirementId) {
+        for (String id : requirementId)
+        {
             reqIdsString = reqIdsString + "&requirementId=" + id;
             //usually the list contains only one issue
             issue = id;
@@ -68,16 +71,20 @@ public class FisutankkiResource {
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
 
-        if (response==null) {
+        if (response == null)
+        {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Error connecting to Milla\"}").build();
         }
 
         MillaResponse closure;
 
-        try {
+        try
+        {
             // Parse the response JSON string to MillaResponse
             closure = mapper.readValue(response, MillaResponse.class);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             JSONObject error = new JSONObject();
             error.put("error", e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
@@ -85,13 +92,7 @@ public class FisutankkiResource {
         List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
         closure.setRequirements(filtered);
 
-        System.out.println("gson from json");
-//        this line caused an error
-        JsonObject responseJSON = gson.fromJson(response, JsonElement.class).getAsJsonObject();
-        System.out.println("responseJSON (response): " + responseJSON);
-        JsonObject responseJSON2 = gson.fromJson(mapper.writeValueAsString(closure), JsonObject.class);
-//        JsonObject responseJSON = gson.fromJson(response, JsonElement.class).getAsJsonObject();
-        System.out.println("responseJSON (mapper.writeValueAsString): " + responseJSON2);
+        JsonObject responseJSON = gson.toJsonTree(closure).getAsJsonObject();
 
         JsonObject nodeEdgeSet = NodeEdgeSetBuilder.buildNodeEdgeSet(responseJSON, issue, false);
         String nodeEdgeString = nodeEdgeSet.toString();
@@ -104,15 +105,18 @@ public class FisutankkiResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getTopProposedDependenciesOfRequirement")
     public Response topProposed(@QueryParam("requirementId") List<String> requirementId, @QueryParam("maxResults")
-            Integer maxResults) throws IOException, JqlParseException, SearchException, JSONException {
+            Integer maxResults) throws IOException, JqlParseException, SearchException, JSONException
+    {
 
         String reqIdsString = "";
 
-        if (maxResults==null) {
+        if (maxResults == null)
+        {
             maxResults = 0;
         }
 
-        for (String id : requirementId) {
+        for (String id : requirementId)
+        {
             reqIdsString = reqIdsString + "&requirementId=" + id;
         }
 
@@ -121,16 +125,20 @@ public class FisutankkiResource {
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
 
-        if (response==null) {
+        if (response == null)
+        {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Error connecting to Milla\"}").build();
         }
 
-        MillaResponse closure = null;
+        MillaResponse closure;
 
-        try {
+        try
+        {
             ObjectMapper mapper = new ObjectMapper();
             closure = mapper.readValue(response, MillaResponse.class);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             JSONObject error = new JSONObject();
             error.put("error", response);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
@@ -146,7 +154,8 @@ public class FisutankkiResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/updateProposedDependencies")
-    public Response sendUpdatedDependencies(List<Dependency> dependencies) throws JqlParseException, SearchException, CreateException, IOException {
+    public Response sendUpdatedDependencies(List<Dependency> dependencies) throws JqlParseException, SearchException, CreateException, IOException
+    {
 
         String urlTail = "/updateProposedDependencies";
 
@@ -165,18 +174,22 @@ public class FisutankkiResource {
     @Path("/getConsistencyCheckForRequirement")
     public Response consistencyCheck(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount")
             Integer layerCount, @QueryParam("timeOut")
-                                             Integer timeOut) throws IOException {
+                                             Integer timeOut) throws IOException
+    {
 
-        if (layerCount == null) {
+        if (layerCount == null)
+        {
             layerCount = 5;
         }
-        if (timeOut == null) {
+        if (timeOut == null)
+        {
             timeOut = 0;
         }
 
         String reqIdsString = "";
 
-        for (String id : requirementId) {
+        for (String id : requirementId)
+        {
             reqIdsString = reqIdsString + "&requirementId=" + id;
         }
 
@@ -188,8 +201,10 @@ public class FisutankkiResource {
         return checkNull(response);
     }
 
-    private Response checkNull(String responseString) {
-        if (responseString==null) {
+    private Response checkNull(String responseString)
+    {
+        if (responseString == null)
+        {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error connecting to Milla").build();
         }
         return Response.ok(responseString).build();
