@@ -23,6 +23,8 @@
 
 .idea
 
+.project
+.settings
 target/*
 #target/classes
 #target/generated-sources

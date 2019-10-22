@@ -70,7 +70,7 @@ public class FisutankkiResource
 
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
-
+        
         if (response == null)
         {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Error connecting to Milla\"}").build();
@@ -173,8 +173,7 @@ public class FisutankkiResource
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/getConsistencyCheckForRequirement")
     public Response consistencyCheck(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount")
-            Integer layerCount, @QueryParam("timeOut")
-                                             Integer timeOut) throws IOException
+            Integer layerCount, @QueryParam("timeOut") Integer timeOut) throws IOException
     {
 
         if (layerCount == null)

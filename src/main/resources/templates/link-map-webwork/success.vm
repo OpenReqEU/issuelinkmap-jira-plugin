@@ -113,7 +113,7 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 
                     You can either leave a comment in the <a target="_blank"
                                                              href="https://forum.qt.io/category/60/openreq-issue-link-map-tool">Qt
-                    Forum</a> or give feedback anonynoumsly in this
+                    Forum</a> or give feedback anonymously in this
                     <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9">form</a>.<br>
                     Click <a target="_blank" href="https://github.com/OpenReqEU/qthulhu/issues">here</a> if you would
                     like to report a bug.

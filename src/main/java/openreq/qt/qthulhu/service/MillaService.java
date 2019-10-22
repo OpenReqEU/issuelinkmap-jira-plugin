@@ -52,7 +52,7 @@ public class MillaService implements MillaApi
         try {
             request.setSoTimeout(10000000);
             response = (String)request.executeAndReturn(this.responseHandler);
-            System.out.println("request executed");
+            //System.out.println("request executed");
         } catch (ResponseException ex) {
             System.out.println("ERROR: " + ex);
             Logger.getLogger(MillaService.class.getName()).log(Level.SEVERE, null, ex);

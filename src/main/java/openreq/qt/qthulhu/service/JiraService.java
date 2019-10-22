@@ -5,7 +5,6 @@
  */
 package openreq.qt.qthulhu.service;
 
-
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.exception.CreateException;
 import com.atlassian.jira.issue.Issue;
@@ -37,7 +36,7 @@ import java.util.List;
  */
 @ExportAsService ({JiraApi.class})
 @Named("jiraService")
-public class JiraService {
+public class JiraService implements JiraApi{
 
     private final JqlQueryParser parser;
     private final SearchService ss;
@@ -53,7 +52,8 @@ public class JiraService {
         this.ilm = issueLinkManager;
         this.iltm = issueLinkTypeManager;
     }
-
+    
+    @Override
     public List<Requirement> filterRequirements(List<Requirement> requirements, ApplicationUser user) throws JqlParseException, SearchException {
         List<Requirement> filtered = new ArrayList<>();
 
@@ -86,6 +86,7 @@ public class JiraService {
     }
 
     // Method only for testing purpose
+    @Override
     public String rightsCheckGetResult(String issueId, ApplicationUser user) throws JqlParseException, SearchException {
         String query = "id = " + issueId;
         Query conditionQuery = parser.parseQuery(query);
@@ -97,6 +98,7 @@ public class JiraService {
 
 
     // Sets issue links in Jira for the dependencies accepted
+    @Override
     public String setAcceptedInJira(List<Dependency> dependencies, ApplicationUser user) throws JqlParseException, SearchException, CreateException {
         String result = "";
 
