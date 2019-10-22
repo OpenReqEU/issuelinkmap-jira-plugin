@@ -1,4 +1,4 @@
-$webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resources")
+$webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources")
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +17,7 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
 <body>
 <div class="topnav">
     <a target="_blank" href="https://openreq.eu/" style="padding: 0"><img alt="or_logo"
-                                                                          src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/or_icon.png"
+                                                                          src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
                                                                           width="40px" height="40px"/></a>
 ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 

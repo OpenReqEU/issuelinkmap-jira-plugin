@@ -7,7 +7,7 @@
 ##--%>
 ##<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 ##<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-$webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resources")
+$webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources")
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,7 +53,7 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
 ##<%--This is the navigation bar located at the top, it contains a link to the project website and a search box--%>
 <div class="topnav">
     <a target="_blank" href="https://openreq.eu/" style="padding: 0"><img alt="or_logo"
-                                                                          src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/or_icon.png"
+                                                                          src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
                                                                           width="40px" height="40px"/></a>
 ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 ##    <%--<a target="_blank" href="https://forum.qt.io/">Qt Forum</a>--%>
@@ -382,43 +382,43 @@ $webResourceManager.requireResource("openreq.qt.qthulhu.Qthulhu:Qthulhu-resource
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="0"/>
-                                <img src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/prio/0.png" width="20" height="20" alt="P0: Blocker"/>P0: Blocker
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/0.png" width="20" height="20" alt="P0: Blocker"/>P0: Blocker
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="1"/>
-                                <img src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/prio/1.png" width="20" height="20" alt="P1: Critical"/>P1: Critical
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/1.png" width="20" height="20" alt="P1: Critical"/>P1: Critical
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="2"/>
-                                <img src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/prio/2.png" width="20" height="20" alt="P2: Important"/>P2: Important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/2.png" width="20" height="20" alt="P2: Important"/>P2: Important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="3"/>
-                                <img src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/prio/3.png" width="20" height="20" alt="P3: Somewhat important"/>P3: Somewhat important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/3.png" width="20" height="20" alt="P3: Somewhat important"/>P3: Somewhat important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="4"/>
-                                <img src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/prio/4.png" width="20" height="20" alt="P4: Low"/>P4: Low
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/4.png" width="20" height="20" alt="P4: Low"/>P4: Low
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="5"/>
-                                <img src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/prio/5.png" width="20" height="20" alt="P5: Not important"/>P5: Not important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/5.png" width="20" height="20" alt="P5: Not important"/>P5: Not important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="7"/>
-                                <img src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/prio/7.png" width="20" height="20" alt="Not evaluated"/>Not evaluated
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/7.png" width="20" height="20" alt="Not evaluated"/>Not evaluated
                             </label>
                         </span>
                         <br>
