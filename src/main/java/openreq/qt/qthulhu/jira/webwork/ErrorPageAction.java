@@ -18,7 +18,7 @@ public class ErrorPageAction extends JiraWebActionSupport
     @Override
     public String execute() throws Exception {
         pageBuilderService.assembler().resources().requireWebResource(
-                "openreq.qt.qthulhu.Qthulhu:error-page-controller"
+                "openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:error-page-controller"
         );
 
         return "success";
