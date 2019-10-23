@@ -20,7 +20,7 @@ public class IssueSearchWebworkAction extends JiraWebActionSupport
     @Override
     public String execute() throws Exception {
         pageBuilderService.assembler().resources().requireWebResource(
-                "openreq.qt.qthulhu.Qthulhu:issueid-controller"
+                "openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issueid-controller"
         );
 
         return "success";

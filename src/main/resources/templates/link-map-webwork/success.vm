@@ -21,8 +21,9 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                                                                           width="40px" height="40px"/></a>
 ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 
-    <a target="_blank" href="https://github.com/OpenReqEU/qthulhu/issues">Report a Bug</a>
-    <p style="float: center;">Version 1.0.1</p>
+    <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
+    <p style="float: top;">Version 1.0.2</p>
+
 </div>
 
 
@@ -115,10 +116,10 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                                                              href="https://forum.qt.io/category/60/openreq-issue-link-map-tool">Qt
                     Forum</a> or give feedback anonymously in this
                     <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9">form</a>.<br>
-                    Click <a target="_blank" href="https://github.com/OpenReqEU/qthulhu/issues">here</a> if you would
+                    Click <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">here</a> if you would
                     like to report a bug.
                     <br>
-                    Click <a target="_blank" href="https://github.com/OpenReqEU/qthulhu">here</a> if you would like to
+                    Click <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin">here</a> if you would like to
                     contribute.
                 </p>
                 </p>

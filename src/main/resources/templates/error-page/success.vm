@@ -34,7 +34,7 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
     <a href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 
 
-    <a target="_blank" href="https://github.com/OpenReqEU/qthulhu/issues">Report a Bug</a>
+    <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
     <a href="./LinkMapWebworkAction.jspa">Return to Homepage</a>
 
 </div>

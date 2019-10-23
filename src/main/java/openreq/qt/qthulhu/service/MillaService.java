@@ -32,7 +32,7 @@ public class MillaService implements MillaApi
     // method to handle out-going rest-call to OpenReq infra in localhost
     @Override
     public String getResponseFromMilla(String urlTail, String body, boolean isPost) {
-        //String millaAddress = "https://bugreports-test.qt.io/rest/fisutankki/1";
+//        String millaAddress = "https://bugreports-test.qt.io/rest/fisutankki/1";
         String millaAddress = "http://localhost:9203";
         String completeAddress = millaAddress + urlTail;
 
@@ -57,7 +57,7 @@ public class MillaService implements MillaApi
             System.out.println("ERROR: " + ex);
             Logger.getLogger(MillaService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //System.out.println("milla return " + response);
+        System.out.println("milla return " + response);
         return response;
 
     }

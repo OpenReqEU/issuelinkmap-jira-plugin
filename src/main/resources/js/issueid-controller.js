@@ -1299,7 +1299,7 @@ function infoTab() {
     document.getElementById('infoBoxIssueVersion').innerHTML = "<strong>Version: </strong>".concat(infoVersion);
     document.getElementById('infoBoxIssueFix').innerHTML = "<strong>Fix Version: </strong>".concat(infoFixVersion);
     document.getElementById('infoBoxIssuePlatform').innerHTML = "<strong>Platform(s): </strong>".concat(infoPlatform);
-    document.getElementById('infoBoxIssuePrio').innerHTML = '<strong>Priority:  </strong><img src="../download/resources/openreq.qt.qthulhu.Qthulhu:Qthulhu-resources/images/prio/' + issueInfo.priority + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoPriority);
+    document.getElementById('infoBoxIssuePrio').innerHTML = '<strong>Priority:  </strong><img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/' + issueInfo.priority + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoPriority);
 }
 
 
