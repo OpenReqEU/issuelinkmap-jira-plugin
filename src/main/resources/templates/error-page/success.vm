@@ -31,7 +31,7 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
     <a href="https://openreq.eu/"><img alt="or_logo"
                                        src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
                                        width="40px" height="40px"/></a>
-    <a href="https://bugreports.qt.io/browse/">Qt's Jira</a>
+##    <a href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 
 
     <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
