@@ -38,7 +38,7 @@ public class MillaService implements MillaApi
 
         //System.out.println("milla addr: " + completeAddress);
 
-        Request request = null;
+        Request request;
 
         if (isPost) {
             request = requestFactory.createRequest(Request.MethodType.POST, completeAddress);
@@ -57,7 +57,7 @@ public class MillaService implements MillaApi
             System.out.println("ERROR: " + ex);
             Logger.getLogger(MillaService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("milla return " + response);
+        //System.out.println("milla return " + response);
         return response;
 
     }

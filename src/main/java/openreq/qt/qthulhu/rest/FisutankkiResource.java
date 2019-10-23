@@ -25,7 +25,6 @@ import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonElement;
 
 
 import openreq.qt.qthulhu.data.NodeEdgeSetBuilder;
@@ -93,11 +92,7 @@ public class FisutankkiResource
         List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
         closure.setRequirements(filtered);
 
-        System.out.println("closure: "  + closure);
-        JsonObject responseJSON = gson.toJsonTree(closure).getAsJsonObject();
-        System.out.println("toJsonTree: " + responseJSON);
-        responseJSON = gson.fromJson(response, JsonElement.class).getAsJsonObject();
-        System.out.println("gson fromJson: " + responseJSON);
+        JsonObject responseJSON = gson.toJsonTree(closure).getAsJsonObject();    
 
         JsonObject nodeEdgeSet = NodeEdgeSetBuilder.buildNodeEdgeSet(responseJSON, issue, false);
         String nodeEdgeString = nodeEdgeSet.toString();
