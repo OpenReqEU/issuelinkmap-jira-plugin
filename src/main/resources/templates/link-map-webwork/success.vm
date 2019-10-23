@@ -22,7 +22,8 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 
     <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
-    <p style="float: top;">Version 1.0.1</p>
+    <p style="float: top;">Version 1.0.2</p>
+
 </div>
 
 
