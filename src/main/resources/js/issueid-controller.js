@@ -754,7 +754,7 @@ function createDepthLevelNodes(nodeEdgeObject) {
         var nodename = v['name'];
         var nodestatus = v['status'];
         var noderesolution = v['resolution'];
-        var nodegroup = colorPaletteStatus[nodestatus];
+        var nodegroup = colorPaletteStatus[nodestatus] || "unkown";
         var nodesize = 25;
         if (nodedepth == 0) {
             nodesize = 40;
