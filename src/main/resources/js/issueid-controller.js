@@ -1292,17 +1292,17 @@ function infoTab() {
     document.getElementById('infoBoxHeading').innerHTML = "".concat(currentIssue);
     //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLink + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt JIRA</a>';
     document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';
-    document.getElementById('infoBoxIssueStatus').innerHTML = "<strong>Status: </strong>".concat(infoStatus);
-    document.getElementById('infoBoxIssueType').innerHTML = '<strong>Type: </strong><img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/' + issueInfo.requirement_type + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoType);
-    document.getElementById('infoBoxIssueSummary').innerHTML = "<strong>Summary: </strong>".concat(infoTitle);
-    document.getElementById('infoBoxIssueResolution').innerHTML = "<strong>Resolution: </strong>".concat(infoResolution);
-    document.getElementById('infoBoxIssueEnv').innerHTML = "<strong>Environment: </strong>".concat(infoEnvironment);
-    document.getElementById('infoBoxIssueComponent').innerHTML = "<strong>Component: </strong>".concat(infoComponent);
-    document.getElementById('infoBoxIssueLabel').innerHTML = "<strong>Label: </strong>".concat(infoLabel);
-    document.getElementById('infoBoxIssueVersion').innerHTML = "<strong>Version: </strong>".concat(infoVersion);
-    document.getElementById('infoBoxIssueFix').innerHTML = "<strong>Fix Version: </strong>".concat(infoFixVersion);
-    document.getElementById('infoBoxIssuePlatform').innerHTML = "<strong>Platform(s): </strong>".concat(infoPlatform);
-    document.getElementById('infoBoxIssuePrio').innerHTML = '<strong>Priority:  </strong><img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/' + issueInfo.priority + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoPriority);
+    document.getElementById('infoBoxIssueStatus').innerHTML = infoStatus;
+    document.getElementById('infoBoxIssueType').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/' + issueInfo.requirement_type + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoType);
+    document.getElementById('infoBoxIssueSummary').innerHTML = infoTitle;
+    document.getElementById('infoBoxIssueResolution').innerHTML = infoResolution;
+    document.getElementById('infoBoxIssueEnv').innerHTML = infoEnvironment;
+    document.getElementById('infoBoxIssueComponent').innerHTML = infoComponent;
+    document.getElementById('infoBoxIssueLabel').innerHTML = infoLabel;
+    document.getElementById('infoBoxIssueVersion').innerHTML = infoVersion;
+    document.getElementById('infoBoxIssueFix').innerHTML = infoFixVersion;
+    document.getElementById('infoBoxIssuePlatform').innerHTML = infoPlatform;
+    document.getElementById('infoBoxIssuePrio').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/' + issueInfo.priority + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoPriority);
 }
 
 

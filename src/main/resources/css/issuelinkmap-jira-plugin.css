@@ -52,6 +52,8 @@
     /*width: 25px;*/
     /*height: 10px;*/
     display: inline-block;
+    padding: 2px 3px;
+    font-size: 14px;
 }
 
 .ellipse {
@@ -194,11 +196,11 @@
     margin: auto;
 }
 
-.back {
-    background-color: #0052cc;
-    padding: 15px 30px;
-    font-size: 25px;
-}
+/*.back {*/
+/*    background-color: #0052cc;*/
+/*    padding: 15px 30px;*/
+/*    font-size: 25px;*/
+/*}*/
 
 .reject {
     background-color: #ffffff;

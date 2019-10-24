@@ -101,7 +101,7 @@ $webResourceManager.requireResource(
     <div class="row">
         <div class="col-8">
             <div class="row">
-                <div class="col-6">
+                <div class="col-7">
                 ##                    <%--Depth buttons--%>
                     <button class="button layer button-effect" id="depth-1-btn"
                             style="margin-left: 2px;">Depth 1
@@ -120,8 +120,8 @@ $webResourceManager.requireResource(
                     </button>
                 </div>
             ##                <%--Legend--%>
-                <div class="col-6">
-                    <p>
+                <div class="col-5" style="float: right; font-size: 14px;">
+
                     <div class="box blue" style="display: inline-block;">
                          To-Do
                     </div>
@@ -138,7 +138,7 @@ $webResourceManager.requireResource(
                     <div class="box grey" style="display: inline-block;">
                          not specified
                     </div>
-                    </p>
+
                 </div>
             </div>
             <div class="row">
@@ -156,6 +156,7 @@ $webResourceManager.requireResource(
                     <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info-box" role="tab"
                        aria-controls="info-tab" aria-selected="true">Info
                     </a>
+                    <span class="tooltiptext">The Info tab contains some of the properties of the corresponding view issue page in Jira.</span>
                 </li>
             ##                <%--<li class="nav-item">--%>
             ##                <%--<a class="nav-link" id="list-tab" data-toggle="tab" href="#list-box" role="tab"--%>
@@ -178,14 +179,28 @@ $webResourceManager.requireResource(
                     <a class="nav-link" id="filter-tab" data-toggle="tab" href="#filter-box" role="tab"
                        aria-controls="filter-tab" aria-selected="false">Node Filter
                     </a>
+                    <span class="tooltiptext">The Node Filter tab contains the properties to filter the issues by, these are status, type and priority.</span>
                 </li>
             </ul>
         ##            <%--Information box--%>
             <div class="tab-content" id="tabs-tabContent">
                 <div class="tab-pane fade show active" id="info-box" role="tabpanel"
                      aria-labelledby="info-tab">
-                    <h5 id="infoBoxHeading"></h5>
-                    <p id="infoBoxIssueSummary"></p>
+                    <h5 style="color: #0052cc" id="infoBoxHeading"></h5>
+                    <div class="row"> <div class="col-2">
+                        <p><strong>Summary</strong></p>
+                        <p><strong>Status</strong></p>
+                        <p><strong>Type</strong></p>
+                        <p><strong>Priority</strong></p>
+                        <p><strong>Resolution</strong></p>
+                        <p><strong>Component</strong></p>
+                        <p><strong>Label</strong></p>
+                        <p><strong>Version</strong></p>
+                        <p><strong>Fix Version</strong></p>
+                        <p><strong>Platform(s)</strong></p>
+                        <p><strong>Environment</strong></p>
+                    </div>
+                    <div class="col-10"><p id="infoBoxIssueSummary"></p>
                     <p id="infoBoxIssueStatus"></p>
                     <p id="infoBoxIssueType"></p>
                     <p id="infoBoxIssuePrio"></p>
@@ -196,6 +211,8 @@ $webResourceManager.requireResource(
                     <p id="infoBoxIssueFix"></p>
                     <p id="infoBoxIssuePlatform"></p>
                     <p id="infoBoxIssueEnv"></p>
+                    </div>
+                    </div>
                     <div id="infoBoxIssueLink"></div>
                     <br>
                 ##                    <%--<div id="infoBoxIssueLinkTestJIRA"></div>--%>
@@ -210,16 +227,15 @@ $webResourceManager.requireResource(
                     <p id="ddPending"></p>
                 </div>
                 <div class="tab-pane fade" id="cc-box" role="tabpanel" aria-labelledby="cc-tab">
-                    <p id="ccResult"></p>
+                    <div id="ccResult"></div>
                     <button class="accordion" id="ccRelIncButton">Inconsistent releases</button>
                     <div class="panel"><p id="ccRelInc"></p></div>
                     <button class="accordion" id="ccReleasesButton">Releases</button>
                     <div class="panel"><p id="ccReleases"></p></div>
                 </div>
                 <div class="tab-pane fade" id="filter-box" role="tabpanel" aria-labelledby="filter-tab">
-                    <p>Only issues with one of the selected statuses and types will be displayed.</p>
                     <div class="filterOptions">
-                        <h5>Statuses:</h5>
+                        <h5 style="color: #0052cc">Statuses</h5>
                         <span style="color: #4a6685">
                             <label>
                                 <input name="ToDoStatus" type="checkbox" checked="checked" id="todos-toggle">
@@ -334,7 +350,8 @@ $webResourceManager.requireResource(
                                 <strong> Toggle All Statuses </strong>
                             </label>
                         </span>
-                        <h5>Types:</h5>
+                        <br>
+                        <h5 style="color: #0052cc">Types</h5>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="task"/>
@@ -391,7 +408,7 @@ $webResourceManager.requireResource(
                             </label>
                         </span>
                         <br>
-                        <h5>Priority:</h5>
+                        <h5 style="color: #0052cc">Priority</h5>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="0"/>
