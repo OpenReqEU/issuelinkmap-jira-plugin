@@ -647,7 +647,10 @@ var colorPaletteStatus = {
     'Withdrawn': 'green',
     'Rejected': 'green',
     'Done': 'green',
-    'Verified': 'green'
+    'Verified': 'green',
+    'not in database': 'unknown',
+    'confidential': 'unknown',
+    'not specified': 'unknown'
 };
 //map to create the correct type of error, links like duplicates do not have a direction
 var arrowPaletteType = {
@@ -1290,7 +1293,7 @@ function infoTab() {
     //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLink + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt JIRA</a>';
     document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';
     document.getElementById('infoBoxIssueStatus').innerHTML = "<strong>Status: </strong>".concat(infoStatus);
-    document.getElementById('infoBoxIssueType').innerHTML = "<strong>Type: </strong>".concat(infoType);
+    document.getElementById('infoBoxIssueType').innerHTML = '<strong>Type: </strong><img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/' + issueInfo.requirement_type + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoType);
     document.getElementById('infoBoxIssueSummary').innerHTML = "<strong>Summary: </strong>".concat(infoTitle);
     document.getElementById('infoBoxIssueResolution').innerHTML = "<strong>Resolution: </strong>".concat(infoResolution);
     document.getElementById('infoBoxIssueEnv').innerHTML = "<strong>Environment: </strong>".concat(infoEnvironment);

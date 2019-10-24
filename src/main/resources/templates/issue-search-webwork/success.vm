@@ -331,37 +331,37 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="task"/>
-                                Task
+                                 <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/task.png" width="20" height="20" alt="task"/> Task
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="bug"/>
-                                Bug
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/bug.png" width="20" height="20" alt="bug"/> Bug
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="issue"/>
-                                Issue
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png" width="20" height="20" alt="suggestion"/> Issue
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="epic"/>
-                                Epic
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/epic.png" width="20" height="20" alt="epic"/> Epic
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="user_story"/>
-                                User Story
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/user-story.png" width="20" height="20" alt="user-story"/> User Story
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="suggestion"/>
-                                Suggestion
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png" width="20" height="20" alt="suggestion"/> Suggestion
                             </label>
                         </span>
                         <span>

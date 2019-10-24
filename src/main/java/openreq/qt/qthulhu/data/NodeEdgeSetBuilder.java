@@ -170,7 +170,7 @@ public class NodeEdgeSetBuilder
                 currentReq.add("requirementParts", new JsonArray());
                 if (reqKey.contains("mock")) //mocks are placeholder and not real issues
                 {
-                    placeholder = nameCleaned = "not in DB";
+                    placeholder = nameCleaned = "not in database";
                 }
                 else // no name - means it's a private issue
                 {
