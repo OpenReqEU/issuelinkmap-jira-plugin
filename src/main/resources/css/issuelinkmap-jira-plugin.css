@@ -205,37 +205,49 @@
 .reject {
     background-color: #ffffff;
     border: 2px solid #660000;
-    padding: 4px 15px;
-    font-size: 25px;
+    padding: 4px 8px;
+    font-size: 14px;
     color: #172b4d;
 }
 
 .accept {
     background-color: #ffffff;
     border: 2px solid #0052cc;
-    padding: 4px 15px;
-    font-size: 25px;
+    padding: 4px 8px;
+    font-size: 14px;
     color: #172b4d;
 }
 
 .rejected {
     background-color: #660000;
     border: 2px solid #660000;
-    padding: 4px 15px;
-    font-size: 25px;
+    padding: 4px 8px;
+    font-size: 14px;
     color: #ffffff;
 }
 
 .accepted {
     background-color: #0052cc;
     border: 2px solid #0052cc;
-    padding: 4px 15px;
-    font-size: 25px;
+    padding: 4px 8px;
+    font-size: 14px;
     color: #ffffff;
 }
 
 .active, .button-effect:hover {
-    background-color: #0065FF;
+     background-color: #0065FF;
+     transition: background-color .1s ease-out;
+     color: white;
+ }
+
+.button-effect-accept:hover {
+    background-color: #0052cc;
+    transition: background-color .1s ease-out;
+    color: white;
+}
+
+.button-effect-reject:hover {
+    background-color: #660000;
     transition: background-color .1s ease-out;
     color: white;
 }

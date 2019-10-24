@@ -108,7 +108,9 @@ public class FisutankkiResource
             Integer maxResults) throws IOException, JqlParseException, SearchException, JSONException
     {
 
+        Gson gson = new Gson();
         String reqIdsString = "";
+        String issue = "";
 
         if (maxResults == null)
         {
@@ -118,6 +120,8 @@ public class FisutankkiResource
         for (String id : requirementId)
         {
             reqIdsString = reqIdsString + "&requirementId=" + id;
+            //usually the list contains only one issue
+            issue = id;
         }
 
         String urlTail = "/getTopProposedDependenciesOfRequirement?maxResults=" + maxResults + reqIdsString;
@@ -130,12 +134,12 @@ public class FisutankkiResource
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Error connecting to Milla\"}").build();
         }
 
-        MillaResponse closure;
+        MillaResponse proposedDependencies;
 
         try
         {
             ObjectMapper mapper = new ObjectMapper();
-            closure = mapper.readValue(response, MillaResponse.class);
+            proposedDependencies = mapper.readValue(response, MillaResponse.class);
         }
         catch (IOException e)
         {
@@ -144,10 +148,15 @@ public class FisutankkiResource
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
         }
 
-        List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
-        closure.setRequirements(filtered);
+        List<Requirement> filtered = jiraService.filterRequirements(proposedDependencies.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
+        proposedDependencies.setRequirements(filtered);
 
-        return Response.ok(closure).build();
+        JsonObject responseJSON = gson.toJsonTree(proposedDependencies).getAsJsonObject();
+
+        JsonObject proposedNodeEdgeSet = NodeEdgeSetBuilder.buildNodeEdgeSet(responseJSON, issue, true);
+        String proposedNodeEdgeString = proposedNodeEdgeSet.toString();
+
+        return Response.ok(proposedNodeEdgeString).build();
     }
 
     @POST
