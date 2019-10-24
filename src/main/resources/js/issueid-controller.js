@@ -173,7 +173,7 @@ AJS.toInit(function(){
                 var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue;
                 xhr.open("GET", url, true);
 
-                document.getElementById('ccResult').innerHTML = "Pending...";
+                document.getElementById('ccResult').innerHTML = '<h5><font color=\"#0052CC\">Pending...</font></h5>';
                 document.getElementById('ccRelIncButton').innerHTML = "Inconsistent links are being calculated...";
                 document.getElementById('ccReleasesButton').innerHTML = "Searching for releases in link map...";
                 xhr.onreadystatechange = function ()
@@ -898,7 +898,7 @@ function proposedLinks() {
 
             xhr.open("GET", url, true);
 
-            document.getElementById('ddResult').innerHTML = "pending...";
+            document.getElementById('ddResult').innerHTML = '<h5><font color=\"#0052CC\">Pending...</font></h5>';
             var issueInfo = findElement(nodeEdgeObject.nodes, "id", currentIssue);
             var level = issueInfo.depth + 1;
 
@@ -997,10 +997,10 @@ function proposedLinks() {
 
                     proposedViewActive = true;
                     if (proposedIssuesList.length === 0) {
-                        document.getElementById('ddResult').innerHTML = "No proposed links for issue " + currentIssue + ".";
+                        document.getElementById('ddResult').innerHTML = '<h5><font color="#0052CC">No proposed links for issue ' + currentIssue + '.</font></h5>';
                     }
                     else {
-                        var stringList = " <h5>Proposed Links of " + currentIssue + "</h5>" +
+                        var stringList = '<h5><font color=\"#0052CC\">Proposed Links of ' + currentIssue + "</font></h5>" +
                             "<table style='width: 100%'><tr>\n" +
                             "<th>Issue Key</th>" +
                             "<th>Link type</th>" +
@@ -1201,7 +1201,8 @@ function sendLinkData() {
         //{ dependencies : [...] }  => [...]
         updatedProposedLinksResponse = updatedProposedLinksResponse.substring(updatedProposedLinksResponse.indexOf(":") + 1, updatedProposedLinksResponse.length - 1);
         xhr.send(updatedProposedLinksResponse);
-        document.getElementById("ddPending").innerHTML = "Your request is being processed.<br>."
+        console.log(updatedProposedLinksJSON)
+        document.getElementById("ddPending").innerHTML = "Your request is being processed.<br>"
     }
     catch
         (err) {
@@ -1215,6 +1216,7 @@ var proposedNodesEdges = [];
 var proposedIssuesList = [];
 var numberOfProposedLinks = 0;
 
+//milla should update by itself
 // function sendProjectToMulperi(projectID) {
 //     try {
 //         var xhr = new XMLHttpRequest();
