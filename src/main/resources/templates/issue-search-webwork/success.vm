@@ -7,7 +7,8 @@
 ##--%>
 ##<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 ##<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-$webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources")
+$webResourceManager.requireResource(
+    "openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources")
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,9 +40,11 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
             width: 100%;
             height: 100%;
         }
+
         input[type=number] {
             width: 100px;
         }
+
         input[type=text] {
             width: 150px;
         }
@@ -98,7 +101,7 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
     <div class="row">
         <div class="col-8">
             <div class="row">
-                <div class="col-8">
+                <div class="col-6">
                 ##                    <%--Depth buttons--%>
                     <button class="button layer button-effect" id="depth-1-btn"
                             style="margin-left: 2px;">Depth 1
@@ -117,20 +120,24 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                     </button>
                 </div>
             ##                <%--Legend--%>
-                <div class="col-4">
+                <div class="col-6">
                     <p>
                     <div class="box blue" style="display: inline-block;">
+                         To-Do
                     </div>
-                    To-Do
                     <div class="box red" style="display: inline-block;">
+                         Stuck
                     </div>
-                    Stuck
                     <div class="box yellow" style="display: inline-block;">
+                         In Progress
                     </div>
-                    In Progress
                     <div class="box green" style="display: inline-block;">
+                         Done
                     </div>
-                    Done (filtered out on default)
+                    (filtered out on default)
+                    <div class="box grey" style="display: inline-block;">
+                         not specified
+                    </div>
                     </p>
                 </div>
             </div>
@@ -331,37 +338,43 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="task"/>
-                                 <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/task.png" width="20" height="20" alt="task"/> Task
+                                 <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/task.png"
+                                      width="20" height="20" alt="task"/> Task
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="bug"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/bug.png" width="20" height="20" alt="bug"/> Bug
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/bug.png"
+                                     width="20" height="20" alt="bug"/> Bug
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="issue"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png" width="20" height="20" alt="suggestion"/> Issue
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png"
+                                     width="20" height="20" alt="suggestion"/> Issue
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="epic"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/epic.png" width="20" height="20" alt="epic"/> Epic
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/epic.png"
+                                     width="20" height="20" alt="epic"/> Epic
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="user_story"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/user-story.png" width="20" height="20" alt="user-story"/> User Story
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/user-story.png"
+                                     width="20" height="20" alt="user-story"/> User Story
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="suggestion"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png" width="20" height="20" alt="suggestion"/> Suggestion
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png"
+                                     width="20" height="20" alt="suggestion"/> Suggestion
                             </label>
                         </span>
                         <span>
@@ -382,43 +395,50 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="0"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/0.png" width="20" height="20" alt="P0: Blocker"/>P0: Blocker
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/0.png"
+                                     width="20" height="20" alt="P0: Blocker"/>P0: Blocker
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="1"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/1.png" width="20" height="20" alt="P1: Critical"/>P1: Critical
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/1.png"
+                                     width="20" height="20" alt="P1: Critical"/>P1: Critical
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="2"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/2.png" width="20" height="20" alt="P2: Important"/>P2: Important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/2.png"
+                                     width="20" height="20" alt="P2: Important"/>P2: Important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="3"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/3.png" width="20" height="20" alt="P3: Somewhat important"/>P3: Somewhat important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/3.png"
+                                     width="20" height="20" alt="P3: Somewhat important"/>P3: Somewhat important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="4"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/4.png" width="20" height="20" alt="P4: Low"/>P4: Low
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/4.png"
+                                     width="20" height="20" alt="P4: Low"/>P4: Low
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="5"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/5.png" width="20" height="20" alt="P5: Not important"/>P5: Not important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/5.png"
+                                     width="20" height="20" alt="P5: Not important"/>P5: Not important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="7"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/7.png" width="20" height="20" alt="Not evaluated"/>Not evaluated
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/7.png"
+                                     width="20" height="20" alt="Not evaluated"/>Not evaluated
                             </label>
                         </span>
                         <br>
@@ -440,8 +460,6 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 </div>
 
 <script>
-
-
 
 
 </script>

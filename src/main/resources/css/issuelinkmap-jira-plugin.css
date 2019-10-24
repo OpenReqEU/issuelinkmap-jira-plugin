@@ -10,31 +10,34 @@
 
 .red {
     background: #ce0000;
-    color: #000000;
+    color: #ffffff;
 }
 
 .jirared {
     background: #660000;
-    color: #000000;
 }
 
 .jirablue {
     background: #0052cc;
-    color: #000000;
 }
 
 .green {
     background: #14882c;
-    color: #000000;
+    color: #ffffff;
 }
 
 .blue {
     background: #4a6685;
-    color: #000000;
+    color: #ffffff;
 }
 
 .yellow {
-    background: #ffd351;
+     background: #ffd351;
+     color: #594200;
+ }
+
+.grey {
+    background: #cecfd5;
     color: #000000;
 }
 
@@ -46,8 +49,8 @@
     border-style: solid;
     border-width: 1px;
     text-align: center;
-    width: 25px;
-    height: 10px;
+    /*width: 25px;*/
+    /*height: 10px;*/
     display: inline-block;
 }
 
