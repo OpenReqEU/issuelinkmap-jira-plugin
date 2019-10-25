@@ -23,7 +23,7 @@ $webResourceManager.requireResource(
 ##        gtag('config', 'UA-146396443-1');
 ##    </script>
 
-    <title>WP7 - Qt Trial</title>
+    <title>IssueLinkMap</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
@@ -123,20 +123,20 @@ $webResourceManager.requireResource(
                 <div class="col-5" style="float: right; font-size: 14px;">
 
                     <div class="box blue" style="display: inline-block;">
-                         To-Do
+                        To-Do
                     </div>
                     <div class="box red" style="display: inline-block;">
-                         Stuck
+                        Stuck
                     </div>
                     <div class="box yellow" style="display: inline-block;">
-                         In Progress
+                        In Progress
                     </div>
                     <div class="box green" style="display: inline-block;">
-                         Done
+                        Done
                     </div>
                     (filtered out on default)
                     <div class="box grey" style="display: inline-block;">
-                         not specified
+                        not specified
                     </div>
 
                 </div>
@@ -187,32 +187,64 @@ $webResourceManager.requireResource(
                 <div class="tab-pane fade show active" id="info-box" role="tabpanel"
                      aria-labelledby="info-tab">
                     <h5 style="color: #0052cc" id="infoBoxHeading"></h5>
-                    <div class="row"> <div class="col-2">
-                        <p><strong>Summary</strong></p>
-                        <p><strong>Status</strong></p>
-                        <p><strong>Type</strong></p>
-                        <p><strong>Priority</strong></p>
-                        <p><strong>Resolution</strong></p>
-                        <p><strong>Component</strong></p>
-                        <p><strong>Label</strong></p>
-                        <p><strong>Version</strong></p>
-                        <p><strong>Fix Version</strong></p>
-                        <p><strong>Platform(s)</strong></p>
-                        <p><strong>Environment</strong></p>
-                    </div>
-                    <div class="col-10"><p id="infoBoxIssueSummary"></p>
-                    <p id="infoBoxIssueStatus"></p>
-                    <p id="infoBoxIssueType"></p>
-                    <p id="infoBoxIssuePrio"></p>
-                    <p id="infoBoxIssueResolution"></p>
-                    <p id="infoBoxIssueComponent"></p>
-                    <p id="infoBoxIssueLabel"></p>
-                    <p id="infoBoxIssueVersion"></p>
-                    <p id="infoBoxIssueFix"></p>
-                    <p id="infoBoxIssuePlatform"></p>
-                    <p id="infoBoxIssueEnv"></p>
-                    </div>
-                    </div>
+                    <table style="border-collapse: collapse; text-align-all:left">
+                        <tr>
+                            <td><strong>Summary</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueSummary"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status</strong></td>
+                            <td></td>
+                            <td> <p id="infoBoxIssueStatus"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueType"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Priority</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssuePrio"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Resolution</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueResolution"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Component</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueComponent"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Label</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueLabel"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Version</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueVersion"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fix Version</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueFix"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Platform(s)</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssuePlatform"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Environment</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueEnv"></p></td>
+                        </tr>
+                    </table>
+                    <br>
                     <div id="infoBoxIssueLink"></div>
                     <br>
                 ##                    <%--<div id="infoBoxIssueLinkTestJIRA"></div>--%>
@@ -232,7 +264,9 @@ $webResourceManager.requireResource(
                     <div class="panel"><p id="ccRelInc"></p></div>
                     <button class="accordion" id="ccReleasesButton">Releases</button>
                     <div class="panel"><p id="ccReleases"></p></div>
-                    <p>The Consistency Checker currently ignores cross projects links, f.e. a link to QTBUG-1 from QBS-585 will not be considered by the Consistency Checker.</p>
+                    <br>
+                    <p>The Consistency Checker currently ignores cross projects links, f.e. a link to QTBUG-1 from
+                        QBS-585 will not be considered by the Consistency Checker.</p>
                 </div>
                 <div class="tab-pane fade" id="filter-box" role="tabpanel" aria-labelledby="filter-tab">
                     <div class="filterOptions">

@@ -1634,16 +1634,14 @@ function getInconsistencies()
         var xhr = new XMLHttpRequest();
 
         var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "?analysisOnly=false";
-        console.log("hi1")
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function ()
         {
-            console.log("hi2")
             if (xhr.readyState === 4 && xhr.status === 200)
             {
                 var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
+                console.log(jsonPart)
                 var json = JSON.parse(jsonPart);
-                console.log("hi3")
 
                 console.log(json);
 
