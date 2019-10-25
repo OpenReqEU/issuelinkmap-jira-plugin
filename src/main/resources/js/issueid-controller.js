@@ -364,7 +364,7 @@ function callTransitiveClosure()
 //Help Functions
 //builds URL for search form
 function buildURL() {
-    var url = "../issue/" + document.getElementById("issueInput").value;
+    var url = "IssueSearchWebworkAction.jspa?issue=" + document.getElementById("issueInput").value;
     var search_form = document.getElementById("search-id");
     search_form.action = url;
 }
