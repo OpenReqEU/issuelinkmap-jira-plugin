@@ -217,7 +217,8 @@ AJS.toInit(function ()
                         var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
                         var json = JSON.parse(jsonPart);
 
-                        //console.log(json);
+                        console.log("Analysis only")
+                        console.log(json);
 
                         var releases = json.response[0].Releases;
                         var regsInReleases = "";
@@ -1731,9 +1732,10 @@ function getInconsistencies()
             if (xhr.readyState === 4 && xhr.status === 200)
             {
                 var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
-                console.log(jsonPart)
+                console.log(jsonPart);
                 var json = JSON.parse(jsonPart);
 
+                console.log("DIAGNOSIS");
                 console.log(json);
 
                 var relList = "";
