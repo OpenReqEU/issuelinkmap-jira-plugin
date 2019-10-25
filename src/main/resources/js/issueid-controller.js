@@ -1121,20 +1121,24 @@ function proposedLinks()
                                 x: positions.x,
                                 y: positions.y
                             });
-                            proposedIssuesList.push({
-                                id: nodekey
-                            })
+                            // proposedIssuesList.push({
+                            //     id: nodekey
+                            // })
                         }
                     });
 
+                    var proposedSortingArray = [];
                     //add edges
                     $.each(proposedNodesEdges['edges'], function (i, v)
                     {
                         var edgestatus = v['status'];
                         var fromID = v['node_fromid'];
                         var toID = v['node_toid'];
+                        var fromName = v['fromid'];
+                        var toName = v['toid'];
                         var edgelabel = findProposed(v['status'], v['dependency_type']);
                         var edgearrow = arrowPaletteType[edgelabel];
+                        var dependency_score = v['dependency_score'];
 
                         if (!(checkNodesContains(fromID) && checkNodesContains(toID)))
                         {
@@ -1148,8 +1152,17 @@ function proposedLinks()
                                 dashes: true
                             });
                         }
+                        proposedSortingArray.push({
+                            fromID: fromID,
+                            fromName: fromName,
+                            toID: toID,
+                            toName: toName,
+                            score: dependency_score
+                        })
+
                     });
 
+                    sortProposed(proposedSortingArray);
                     numberOfProposedLinks = proposedEdgeElements.length;
                     linkDetectionResponse = Array(numberOfProposedLinks);
 
@@ -1201,6 +1214,37 @@ function proposedLinks()
         }
     }
 }
+
+function sortProposed(array)
+{
+    for (var i = 0; i < array.length; i++)
+    {
+        var maxScore = -1;
+        var maxIndex = 0;
+        var nameToAdd;
+        for (var k = 0; k < array.length; k++)
+        {
+            if (array[k].score > maxScore)
+            {
+                maxScore = array[k].score;
+                maxIndex = k;
+            }
+        }
+        if (checkNodesContains(array[maxIndex].fromID) && !checkNodesContains(array[maxIndex].toID))
+        {
+            nameToAdd = array[maxIndex].toName;
+        }
+        else if (!checkNodesContains(array[maxIndex].fromID) && checkNodesContains(array[maxIndex].toID))
+        {
+            nameToAdd = array[maxIndex].fromName;
+        }
+        console.log("idToAdd: "  + nameToAdd);
+        proposedIssuesList.push({
+            id: nameToAdd
+        });
+    }
+}
+
 
 function registerClick(elem)
 {
