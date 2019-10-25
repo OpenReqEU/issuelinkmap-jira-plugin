@@ -66,4 +66,10 @@
       </action>
     </actions>
   </webwork1>
+  <web-panel name="JiraRedirection" i18n-name-key="jira-redirection.name" key="jira-redirection" location="atl.jira.view.issue.left.context" weight="400">
+    <description key="jira-redirection.description">The JiraRedirection Plugin</description>
+    <context-provider class="openreq.qt.qthulhu.jira.webpanel.JiraRedirection"/>
+    <label key="jira-redirection.title"/>
+    <resource name="view" type="velocity" location="templates/jira-redirection.vm"/>
+  </web-panel>
 </atlassian-plugin>
