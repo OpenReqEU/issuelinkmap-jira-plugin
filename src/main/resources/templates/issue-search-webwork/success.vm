@@ -167,13 +167,13 @@ $webResourceManager.requireResource(
                     <a class="nav-link" id="sd-tab" data-toggle="tab" href="#sd-box" role="tab"
                        aria-controls="sd-tab" aria-selected="false">Link Detection
                     </a>
-                    <span class="tooltiptext">The Link Detection service finds similar or related items based on the textual fields. The accepted and rejected links are NOT written to Jira.</span>
+                    <span class="tooltiptext">The Link Detection service finds similar or related items based on the textual fields. The limit is set to 5, so after accepting or rejecting recommended links, there might be more, although with a lower score. The accepted and rejected links are NOT written to Jira.</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="cc-tab" data-toggle="tab" href="#cc-box" role="tab"
                        aria-controls="cc-tab" aria-selected="false">Consistency Checker
                     </a>
-                    <span class="tooltiptext">The Consistency Checker verifies the viability of the release plan regarding the issue link map. <br>For example if a feature is required by another one, it is not assigned to later release.</span>
+                    <span class="tooltiptext">The Consistency Checker verifies the viability of the release plan regarding the issue link map. F.e. if a feature is required by another one, it is not assigned to later release. Currently cross project links are not considered by the Consistency Checker.</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="filter-tab" data-toggle="tab" href="#filter-box" role="tab"
@@ -232,6 +232,7 @@ $webResourceManager.requireResource(
                     <div class="panel"><p id="ccRelInc"></p></div>
                     <button class="accordion" id="ccReleasesButton">Releases</button>
                     <div class="panel"><p id="ccReleases"></p></div>
+                    <p>The Consistency Checker currently ignores cross projects links, f.e. a link to QTBUG-1 from QBS-585 will not be considered by the Consistency Checker.</p>
                 </div>
                 <div class="tab-pane fade" id="filter-box" role="tabpanel" aria-labelledby="filter-tab">
                     <div class="filterOptions">

@@ -223,30 +223,17 @@ AJS.toInit(function() {
                         var ccMessage = "";
                         var relList = "";
 
-                        if (json.response[0].Consistent_msg === "Release plan contains errors")
-                        {
-                            ccMessage = ccMessage.concat("<h5><font color=\"#CC0000\">Release plan is inconsistent.</font></h5>");
-                            var relInc = json.response[0].RelationshipsInconsistent;
-                            relList = relList +
-                                "<table style='width: 100%'><tr>\n" +
-                                "<th>Issue Keys</th>" +
-                                "<th>Link type</th>" +
-                                "</tr>";
-                            for (var i = 0; i < relInc.length; i++)
-                            {
-                                relList = relList + "<tr><td>" + relInc[i].To + ", " + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td></tr>";
-                            }
-                            relList = relList + "</table>";
-                            document.getElementById('ccRelInc').innerHTML = relList;
-                            document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
-                        }
-                        else
+                        if(json.response[0].Consistent)
                         {
                             ccMessage = ccMessage.concat("<h5><font color=\"#0052cc\">Release plan is consistent.</font></h5>");
-                            document.getElementById("ccRelInc").style.display = "none";
-                            document.getElementById("ccRelIncButton").style.display = "none"
+
+                        } else
+                        {
+                            ccMessage = ccMessage.concat("<div class='col6'><h5><font color=\"#CC0000\">Release plan is inconsistent.</font></h5></div><div class='col6'><button class='button button-effect' onclick ='getInconsistencies()'>Get inconsistencies</button></div>");
                         }
 
+                        document.getElementById("ccRelInc").style.display = "none";
+                        document.getElementById("ccRelIncButton").style.display = "none"
                         document.getElementById('ccResult').innerHTML = "<br>".concat(ccMessage).concat("<br>");
                         document.getElementById('ccReleases').innerHTML = "<br>".concat(regsInReleases).concat("<br>");
                         document.getElementById('ccReleasesButton').innerHTML = "Releases found";
@@ -726,6 +713,7 @@ var colorPaletteStatus = {
     'Accepted': 'blue',
     'Reported': 'blue',
     'To-Do': 'blue',
+    'To Do': 'blue',
     'Blocked': 'red',
     'On hold': 'red',
     'Need more info': 'red',
@@ -1434,6 +1422,9 @@ function infoTab()
     var infoLinkTestJIRA = "https://bugreports-test.qt.io/browse/" + currentIssue;
     var infoTitle = issueInfo.name;
     var infoType = issueInfo.requirement_type;
+    if (infoType === "issue"){
+        infoType = "suggestion"
+    }
     var infoStatus = issueInfo.status;
     //var infoDescription = issueInfo.issueDescription;
     var infoResolution = issueInfo.resolution;
@@ -1634,4 +1625,52 @@ function initNetwork()
 function resizeCanvas()
 {
     $('#issueLinkMap').height($(document).height() * 0.70)
+}
+
+function getInconsistencies()
+{
+    try
+    {
+        var xhr = new XMLHttpRequest();
+
+        var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "?analysisOnly=false";
+        console.log("hi1")
+        xhr.open("GET", url, true);
+        xhr.onreadystatechange = function ()
+        {
+            console.log("hi2")
+            if (xhr.readyState === 4 && xhr.status === 200)
+            {
+                var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
+                var json = JSON.parse(jsonPart);
+                console.log("hi3")
+
+                console.log(json);
+
+                var relList = "";
+
+                var relInc = json.response.RelationshipsInconsistent;
+                relList = relList +
+                    "<table style='width: 100%'><tr>\n" +
+                    "<th>Issue Keys</th>" +
+                    "<th>Link type</th>" +
+                    "</tr>";
+                for (var i = 0; i < relInc.length; i++)
+                {
+                    relList = relList + "<tr><td>" + relInc[i].To + ", " + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td></tr>";
+                }
+                relList = relList + "</table>";
+                document.getElementById("ccRelInc").style.display = "inline-block";
+                document.getElementById("ccRelIncButton").style.display = "inline-block";
+                document.getElementById('ccRelInc').innerHTML = relList;
+                document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
+            }
+        };
+
+        xhr.send(null);
+    } catch (err)
+    {
+        alert(err);
+        document.getElementById('ccResult').innerHTML = "there was an error...";
+    }
 }
