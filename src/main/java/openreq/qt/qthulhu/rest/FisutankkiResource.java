@@ -89,8 +89,10 @@ public class FisutankkiResource
             error.put("error", e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
         }
+
         List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
         closure.setRequirements(filtered);
+
 
         JsonObject responseJSON = gson.toJsonTree(closure).getAsJsonObject();    
 

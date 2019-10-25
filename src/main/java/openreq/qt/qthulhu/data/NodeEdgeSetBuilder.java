@@ -90,26 +90,26 @@ public class NodeEdgeSetBuilder
             }
         }
 
-        JsonObject depthNodeEdgeSet = buildDepthNodeEdgeSet(reqs, deps, isProposed);
+        JsonObject depthNodeEdgeSet = buildDepthNodeEdgeSet(reqs, deps, isProposed, issue);
         depthNodeEdgeSet.addProperty("max_depth", maxLayer);
 
         //if this is a proposed set the "core" issue itself should not be proposed
-        if (isProposed)
-        {
-            JsonArray proposedReqs = depthNodeEdgeSet.getAsJsonArray("nodes");
-            for (int i = 0; i < proposedReqs.size(); i++)
-            {
-                JsonObject currentNode = proposedReqs.get(i).getAsJsonObject();
-                if (currentNode.get("id").getAsString().equals(issue))
-                {
-                    //proposedReqs.remove(i);
-                }
-            }
-        }
+//        if (isProposed)
+//        {
+//            JsonArray proposedReqs = depthNodeEdgeSet.getAsJsonArray("nodes");
+//            for (int i = 0; i < proposedReqs.size(); i++)
+//            {
+//                JsonObject currentNode = proposedReqs.get(i).getAsJsonObject();
+//                if (currentNode.get("id").getAsString().equals(issue))
+//                {
+//                    proposedReqs.remove(i);
+//                }
+//            }
+//        }
         return depthNodeEdgeSet;
     }
 
-    static JsonObject buildDepthNodeEdgeSet(JsonArray reqs, JsonArray deps, boolean isProposed)
+    static JsonObject buildDepthNodeEdgeSet(JsonArray reqs, JsonArray deps, boolean isProposed, String issue)
     {
         JsonObject depthNodeEdgeSet = new JsonObject();
 
@@ -128,13 +128,13 @@ public class NodeEdgeSetBuilder
             }
         }
         depthNodeEdgeSet.add("nodes", new JsonArray());
-        depthNodeEdgeSet = buildNodes(reqs, depthNodeEdgeSet, isProposed);
+        depthNodeEdgeSet = buildNodes(reqs, depthNodeEdgeSet, isProposed, issue);
         depthNodeEdgeSet = buildEdges(deps, depthNodeEdgeSet, isProposed);
 
         return depthNodeEdgeSet;
     }
 
-    private static JsonObject buildNodes(JsonArray reqs, JsonObject depthNodeEdgeSet, boolean isProposed)
+    private static JsonObject buildNodes(JsonArray reqs, JsonObject depthNodeEdgeSet, boolean isProposed, String issue)
     {
         String placeholder;
         int reqLayer;
@@ -146,6 +146,7 @@ public class NodeEdgeSetBuilder
             String reqKey = currentReq.get("id").getAsString();
             long nodeId = calculateUniqueID(reqKey);
             currentReq.addProperty("nodeid", nodeId);
+
 
             //add layer information to issue data if it is not a proposed set
             if (!isProposed) {
