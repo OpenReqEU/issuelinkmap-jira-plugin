@@ -1235,7 +1235,6 @@ function sortProposed(array)
         {
             nameToAdd = array[maxIndex].fromName;
         }
-        console.log("idToAdd: "  + nameToAdd);
         proposedIssuesList.push({
             id: nameToAdd
         });
@@ -1730,7 +1729,19 @@ function initNetwork()
             }
             if (proposedViewActive)
             {
-                proposedLinks()
+                //proposedLinks() will only be called if the selected node is not a proposed one
+                var isAlreadyProposed = false;
+                $.each(proposedNodesEdges['nodes'], function (i, v)
+                {
+                    //includes returns true if the values are the same and if currentIssue is "[v.id]-mock"
+                    if (currentIssue.includes(v.id)) {
+                        isAlreadyProposed = true;
+                    }
+                });
+                if (!isAlreadyProposed)
+                {
+                    proposedLinks();
+                }
             }
         }
     });
