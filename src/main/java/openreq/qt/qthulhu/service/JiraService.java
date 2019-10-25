@@ -111,7 +111,7 @@ public class JiraService implements JiraApi{
                     Issue fromIssue = results.getIssues().get(0);
                     Issue toIssue = results.getIssues().get(1);
                     String type = dep.getDependency_type();
-                    String typeCapitalized = type.substring(0, 1).toUpperCase() + type.substring(1);
+                    String typeCapitalized = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
                     Collection<IssueLinkType> issueTypes = iltm.getIssueLinkTypesByName(typeCapitalized);
                     if (issueTypes.size()>0) {
                         Long typeId = issueTypes.iterator().next().getId();
