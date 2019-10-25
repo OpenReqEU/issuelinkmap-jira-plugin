@@ -7,7 +7,7 @@ AJS.toInit(function() {
         var url = new URL(url_string);
         issue = url.searchParams.get("issue").toUpperCase();
         var depthParam = url.searchParams.get("depth");
-        if (depthParam === "")
+        if ((depthParam === null) || (depthParam === ""))
         {
             depth = 1;
         } else {
