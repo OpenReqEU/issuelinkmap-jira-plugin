@@ -183,6 +183,8 @@ AJS.toInit(function(){
                         var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
                         var json = JSON.parse(jsonPart);
 
+                        //console.log(json);
+
                         var releases = json.response[0].Releases;
                         var regsInReleases = "";
                         for (var i = 0; i < releases.length; i++)
@@ -304,8 +306,7 @@ var currentIssue;
 var helpNodeSet = [];
 var filteredNodes = [];
 var filterArray = [];
-//the initial distance for every layer is 240, it may change depending on the number of nodes
-var distances = [240, 240, 240, 240, 240];
+var distances = [];
 var deprDistance = 240;
 var maxNodesPerLayer;
 var priorityArray = ["P0: Blocker", "P1: Critical", "P2: Important", "P3: Somewhat important", "P4: Low", "P5: Not important", "", "Not Evaluated"];
@@ -337,6 +338,7 @@ function callTransitiveClosure()
             if (xhr.readyState === 4 && xhr.status === 200)
             {
                 nodeEdgeObject = JSON.parse(xhr.responseText);
+                console.log(nodeEdgeObject)
                 max_depth = nodeEdgeObject.max_depth;
                 if (max_depth < depth) {
                     depth = max_depth;
@@ -548,7 +550,7 @@ function calculateProposedDepthOnePositions(j, maxElements) {
     var angle = 360 / maxElements;
     var direction;
 
-    // if only one element is proposed it will be displayed below the center
+    // if depth 1 has only one element it will be displayed below the center
     if (maxElements === 1) {
         direction = getDirectionByAngle(0);
     }
@@ -914,7 +916,7 @@ function proposedLinks() {
                         var nodename = v['name'];
                         var nodestatus = v['status'];
                         var noderesolution = v['resolution'];
-                        var nodehidden = false;
+                        var nodehidden = v['layer'] > depth;
                         var nodegroup = colorPaletteStatus[nodestatus] || "unknown";
                         var nodelabel = "";
                         if (typeof nodetype === "undefined") {
@@ -939,8 +941,7 @@ function proposedLinks() {
                         //calculate positions for the proposed issue
                         var positions;
                         if (issue === propLinksIssue) {
-                            // -1 because the currently selected node will be returned in the proposed nodes but is already in the graph
-                            positions = calculateProposedDepthOnePositions(j, proposedNodesEdges['nodes'].length - 1);
+                            positions = calculateProposedDepthOnePositions(j, proposedNodesEdges['nodes'].length);
                         } else {
                             positions = calculateProposedOuterPositions(issueInfo, j);
                         }
@@ -983,6 +984,11 @@ function proposedLinks() {
                             });
                         }
                     });
+
+                    console.log(proposedEdgeElements)
+                    console.log(proposedNodeElements)
+                    console.log(proposedIssuesList)
+
                     numberOfProposedLinks = proposedEdgeElements.length;
                     linkDetectionResponse = Array(numberOfProposedLinks);
 
@@ -1180,6 +1186,7 @@ function sendLinkData() {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var response = xhr.responseText;
+                console.log(response);
                 // if (projectsToUpdate.includes("QTBUG"))
                 // {
                 //     document.getElementById("ddPending").innerHTML += "<br><br>QTBUG is the largest project and will take a while to update. This can take up to 2 minutes. Thank you for your patience.";
@@ -1194,6 +1201,7 @@ function sendLinkData() {
         //{ dependencies : [...] }  => [...]
         updatedProposedLinksResponse = updatedProposedLinksResponse.substring(updatedProposedLinksResponse.indexOf(":") + 1, updatedProposedLinksResponse.length - 1);
         xhr.send(updatedProposedLinksResponse);
+        console.log(updatedProposedLinksJSON)
         document.getElementById("ddPending").innerHTML = "Your request is being processed.<br>"
     }
     catch

@@ -184,7 +184,7 @@ public class FisutankkiResource
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/getConsistencyCheckForRequirement")
     public Response consistencyCheck(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount")
-            Integer layerCount, @QueryParam("timeOut") Integer timeOut) throws IOException
+            Integer layerCount, @QueryParam("timeOut") Integer timeOut, @QueryParam("omitCrossProject") Boolean omitCrossProject, @QueryParam("analysisOnly") Boolean analysisOnly) throws IOException
     {
 
         if (layerCount == null)
@@ -195,6 +195,15 @@ public class FisutankkiResource
         {
             timeOut = 0;
         }
+        //currently crossProject does not work
+        if (omitCrossProject == null)
+        {
+            omitCrossProject = true;
+        }
+        if (analysisOnly == null)
+        {
+            analysisOnly = true;
+        }
 
         String reqIdsString = "";
 
@@ -203,7 +212,7 @@ public class FisutankkiResource
             reqIdsString = reqIdsString + "&requirementId=" + id;
         }
 
-        String urlTail = "/getConsistencyCheckForRequirement?layerCount=" + layerCount + "&timeOut=" + timeOut + reqIdsString;
+        String urlTail = "/getConsistencyCheckForRequirement?layerCount=" + layerCount + "&analysisOnly=" + analysisOnly + "&omitCrossProject=" + omitCrossProject + "&timeOut=" + timeOut + reqIdsString;
 
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
