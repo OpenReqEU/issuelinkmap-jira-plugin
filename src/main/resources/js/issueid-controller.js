@@ -870,10 +870,9 @@ function createDepthLevelNodes(nodeEdgeObject)
         var nodestatus = v['status'];
         var noderesolution = v['resolution'];
         var nodegroup = colorPaletteStatus[nodestatus] || "unkown";
-        var nodesize = 25;
-        if (nodedepth == 0)
+        if (nodedepth === 0)
         {
-            nodesize = 40;
+            nodegroup = nodegroup.concat("_center");
         }
         var nodehidden = v['layer'] > depth;
         var nodelabel = "";
@@ -901,7 +900,7 @@ function createDepthLevelNodes(nodeEdgeObject)
             }
             else
             {
-                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(nodetype.toString());
+                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(titleCase(nodetype.toString()));
                 nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
             }
         } else
@@ -918,7 +917,6 @@ function createDepthLevelNodes(nodeEdgeObject)
 
         depthLevelNodes.push({
             id: ID,
-            font: {multi: true},
             label: nodelabel,
             group: nodegroup,
             shape: 'box',
@@ -929,7 +927,6 @@ function createDepthLevelNodes(nodeEdgeObject)
             hidden: nodehidden,
             type: nodetype,
             priority: nodeprio,
-            size: nodesize
         });
     });
     return depthLevelNodes;
@@ -1083,7 +1080,7 @@ function proposedLinks()
                             }
                             else
                             {
-                                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(nodetype.toString());
+                                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(titleCase(nodetype.toString()));
                                 nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
                             }
                         } else
@@ -1121,20 +1118,24 @@ function proposedLinks()
                                 x: positions.x,
                                 y: positions.y
                             });
-                            proposedIssuesList.push({
-                                id: nodekey
-                            })
+                            // proposedIssuesList.push({
+                            //     id: nodekey
+                            // })
                         }
                     });
 
+                    var proposedSortingArray = [];
                     //add edges
                     $.each(proposedNodesEdges['edges'], function (i, v)
                     {
                         var edgestatus = v['status'];
                         var fromID = v['node_fromid'];
                         var toID = v['node_toid'];
+                        var fromName = v['fromid'];
+                        var toName = v['toid'];
                         var edgelabel = findProposed(v['status'], v['dependency_type']);
                         var edgearrow = arrowPaletteType[edgelabel];
+                        var dependency_score = v['dependency_score'];
 
                         if (!(checkNodesContains(fromID) && checkNodesContains(toID)))
                         {
@@ -1148,8 +1149,17 @@ function proposedLinks()
                                 dashes: true
                             });
                         }
+                        proposedSortingArray.push({
+                            fromID: fromID,
+                            fromName: fromName,
+                            toID: toID,
+                            toName: toName,
+                            score: dependency_score
+                        })
+
                     });
 
+                    sortProposed(proposedSortingArray);
                     numberOfProposedLinks = proposedEdgeElements.length;
                     linkDetectionResponse = Array(numberOfProposedLinks);
 
@@ -1201,6 +1211,36 @@ function proposedLinks()
         }
     }
 }
+
+function sortProposed(array)
+{
+    for (var i = 0; i < array.length; i++)
+    {
+        var maxScore = -1;
+        var maxIndex = 0;
+        var nameToAdd;
+        for (var k = 0; k < array.length; k++)
+        {
+            if (array[k].score > maxScore)
+            {
+                maxScore = array[k].score;
+                maxIndex = k;
+            }
+        }
+        if (checkNodesContains(array[maxIndex].fromID) && !checkNodesContains(array[maxIndex].toID))
+        {
+            nameToAdd = array[maxIndex].toName;
+        }
+        else if (!checkNodesContains(array[maxIndex].fromID) && checkNodesContains(array[maxIndex].toID))
+        {
+            nameToAdd = array[maxIndex].fromName;
+        }
+        proposedIssuesList.push({
+            id: nameToAdd
+        });
+    }
+}
+
 
 function registerClick(elem)
 {
@@ -1548,27 +1588,52 @@ function initNetwork()
             "yellow": {
                 color: {background: '#ffd351', border: 'none'},
                 borderWidth: 0,
-                font: {color: '#594200', multi: 'html'}
+                font: {color: '#594200', multi: 'html', size: 14}
             },
             "green": {
                 color: {background: '#14882c', border: 'none'},
                 borderWidth: 0,
-                font: {color: 'white', multi: 'html'}
+                font: {color: 'white', multi: 'html', size: 14}
             },
             "blue": {
                 color: {background: '#4a6685', border: 'none'},
                 borderWidth: 0,
-                font: {color: 'white', multi: 'html'}
+                font: {color: 'white', multi: 'html', size: 14}
             },
             "red": {
                 color: {background: '#ce0000', border: 'none'},
                 borderWidth: 0,
-                font: {color: 'white', multi: 'html'}
+                font: {color: 'white', multi: 'html', size: 14}
             },
             "unknown": {
                 color: {background: '#cecfd5', border: '#09102b'},
                 borderWidth: 0,
-                font: {color: 'black', multi: 'html'}
+                font: {color: 'black', multi: 'html', size: 14}
+            },
+            "yellow_center": {
+                color: {background: '#ffd351', border: 'none'},
+                borderWidth: 0,
+                font: {color: '#594200', multi: 'html', size: 20}
+            },
+            "green_center": {
+                color: {background: '#14882c', border: 'none'},
+                borderWidth: 0,
+                font: {color: 'white', multi: 'html', size: 20}
+            },
+            "blue_center": {
+                color: {background: '#4a6685', border: 'none'},
+                borderWidth: 0,
+                font: {color: 'white', multi: 'html', size: 20}
+            },
+            "red_center": {
+                color: {background: '#ce0000', border: 'none'},
+                borderWidth: 0,
+                font: {color: 'white', multi: 'html', size: 20}
+            },
+            "unknown_center": {
+                color: {background: '#cecfd5', border: '#09102b'},
+                borderWidth: 0,
+                font: {color: 'black', multi: 'html', size: 20}
             }
         },
         //node design
@@ -1650,6 +1715,7 @@ function initNetwork()
     {
         params.event = "[original event]";
 
+
         var node = nodes.get(params.nodes);
         var issueID = node[0].id;
         var issueNode = findElement(nodeEdgeObject.nodes, "nodeid", issueID);
@@ -1663,7 +1729,19 @@ function initNetwork()
             }
             if (proposedViewActive)
             {
-                proposedLinks()
+                //proposedLinks() will only be called if the selected node is not a proposed one
+                var isAlreadyProposed = false;
+                $.each(proposedNodesEdges['nodes'], function (i, v)
+                {
+                    //includes returns true if the values are the same and if currentIssue is "[v.id]-mock"
+                    if (currentIssue.includes(v.id)) {
+                        isAlreadyProposed = true;
+                    }
+                });
+                if (!isAlreadyProposed)
+                {
+                    proposedLinks();
+                }
             }
         }
     });

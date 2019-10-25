@@ -121,7 +121,7 @@ $webResourceManager.requireResource(
                 </div>
             ##                <%--Legend--%>
                 <div class="col-5" style="float: right; font-size: 14px;">
-
+                    <h4>Legend: </h4>
                     <div class="box blue" style="display: inline-block;">
                         To-Do
                     </div>

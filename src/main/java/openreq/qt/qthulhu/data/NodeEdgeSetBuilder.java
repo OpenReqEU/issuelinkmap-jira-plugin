@@ -173,7 +173,7 @@ public class NodeEdgeSetBuilder
                 {
                     placeholder = nameCleaned = "not in database";
                 }
-                else // no name - means it's a private issue
+                else // no name - means it's a private issue (usually)
                 {
                     placeholder = nameCleaned = "confidential";
                 }
