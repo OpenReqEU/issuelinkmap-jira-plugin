@@ -870,10 +870,9 @@ function createDepthLevelNodes(nodeEdgeObject)
         var nodestatus = v['status'];
         var noderesolution = v['resolution'];
         var nodegroup = colorPaletteStatus[nodestatus] || "unkown";
-        var nodesize = 25;
-        if (nodedepth == 0)
+        if (nodedepth === 0)
         {
-            nodesize = 40;
+            nodegroup = nodegroup.concat("_center");
         }
         var nodehidden = v['layer'] > depth;
         var nodelabel = "";
@@ -901,7 +900,7 @@ function createDepthLevelNodes(nodeEdgeObject)
             }
             else
             {
-                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(nodetype.toString());
+                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(titleCase(nodetype.toString()));
                 nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
             }
         } else
@@ -918,7 +917,6 @@ function createDepthLevelNodes(nodeEdgeObject)
 
         depthLevelNodes.push({
             id: ID,
-            font: {multi: true},
             label: nodelabel,
             group: nodegroup,
             shape: 'box',
@@ -929,7 +927,6 @@ function createDepthLevelNodes(nodeEdgeObject)
             hidden: nodehidden,
             type: nodetype,
             priority: nodeprio,
-            size: nodesize
         });
     });
     return depthLevelNodes;
@@ -1083,7 +1080,7 @@ function proposedLinks()
                             }
                             else
                             {
-                                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(nodetype.toString());
+                                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(titleCase(nodetype.toString()));
                                 nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
                             }
                         } else
@@ -1592,27 +1589,52 @@ function initNetwork()
             "yellow": {
                 color: {background: '#ffd351', border: 'none'},
                 borderWidth: 0,
-                font: {color: '#594200', multi: 'html'}
+                font: {color: '#594200', multi: 'html', size: 14}
             },
             "green": {
                 color: {background: '#14882c', border: 'none'},
                 borderWidth: 0,
-                font: {color: 'white', multi: 'html'}
+                font: {color: 'white', multi: 'html', size: 14}
             },
             "blue": {
                 color: {background: '#4a6685', border: 'none'},
                 borderWidth: 0,
-                font: {color: 'white', multi: 'html'}
+                font: {color: 'white', multi: 'html', size: 14}
             },
             "red": {
                 color: {background: '#ce0000', border: 'none'},
                 borderWidth: 0,
-                font: {color: 'white', multi: 'html'}
+                font: {color: 'white', multi: 'html', size: 14}
             },
             "unknown": {
                 color: {background: '#cecfd5', border: '#09102b'},
                 borderWidth: 0,
-                font: {color: 'black', multi: 'html'}
+                font: {color: 'black', multi: 'html', size: 14}
+            },
+            "yellow_center": {
+                color: {background: '#ffd351', border: 'none'},
+                borderWidth: 0,
+                font: {color: '#594200', multi: 'html', size: 20}
+            },
+            "green_center": {
+                color: {background: '#14882c', border: 'none'},
+                borderWidth: 0,
+                font: {color: 'white', multi: 'html', size: 20}
+            },
+            "blue_center": {
+                color: {background: '#4a6685', border: 'none'},
+                borderWidth: 0,
+                font: {color: 'white', multi: 'html', size: 20}
+            },
+            "red_center": {
+                color: {background: '#ce0000', border: 'none'},
+                borderWidth: 0,
+                font: {color: 'white', multi: 'html', size: 20}
+            },
+            "unknown_center": {
+                color: {background: '#cecfd5', border: '#09102b'},
+                borderWidth: 0,
+                font: {color: 'black', multi: 'html', size: 20}
             }
         },
         //node design
@@ -1693,6 +1715,7 @@ function initNetwork()
     network.on("selectNode", function (params)
     {
         params.event = "[original event]";
+
 
         var node = nodes.get(params.nodes);
         var issueID = node[0].id;

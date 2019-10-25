@@ -125,6 +125,10 @@ public class JiraService implements JiraApi{
             }
         }
 
+        if (result.isEmpty()) {
+            result = "No changes made";
+        }
+        
         return result;
     }
 
