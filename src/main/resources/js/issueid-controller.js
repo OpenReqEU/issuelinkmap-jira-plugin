@@ -1,6 +1,7 @@
 //is called when the page is opened for the first time
 //assigns all "onclick" functions
-AJS.toInit(function() {
+AJS.toInit(function ()
+{
     $(document).ready(function ()
     {
         var url_string = window.location.href;
@@ -10,7 +11,8 @@ AJS.toInit(function() {
         if ((depthParam === null) || (depthParam === ""))
         {
             depth = 1;
-        } else {
+        } else
+        {
             depth = parseInt(depthParam, 10)
         }
         document.getElementById('issue-headline').innerText = "Issue Links of " + issue;
@@ -46,7 +48,10 @@ AJS.toInit(function() {
         {
             resizeCanvas();
         });
-        setTimeout(function(){ network.fit(); }, 1000);
+        setTimeout(function ()
+        {
+            network.fit();
+        }, 1000);
     });
 
     document.getElementById('depth-1-btn').onclick = function depth1()
@@ -223,7 +228,7 @@ AJS.toInit(function() {
                         var ccMessage = "";
                         var relList = "";
 
-                        if(json.response[0].Consistent)
+                        if (json.response[0].Consistent)
                         {
                             ccMessage = ccMessage.concat("<h5><font color=\"#0052cc\">Release plan is consistent.</font></h5>");
 
@@ -243,8 +248,7 @@ AJS.toInit(function() {
                 };
 
                 xhr.send(null);
-            }
-            catch (err)
+            } catch (err)
             {
                 alert(err);
                 document.getElementById('ccResult').innerHTML = "there was an error...";
@@ -300,7 +304,7 @@ AJS.toInit(function() {
     acc = document.getElementsByClassName("accordion");
     for (var i = 0; i < acc.length; i++)
     {
-        acc[i].addEventListener("click", function()
+        acc[i].addEventListener("click", function ()
         {
             /* Toggle between adding and removing the "active" class,
             to highlight the button that controls the panel */
@@ -311,7 +315,8 @@ AJS.toInit(function() {
             if (panel.style.display === "block")
             {
                 panel.style.display = "none";
-            } else {
+            } else
+            {
                 panel.style.display = "block";
             }
         });
@@ -374,16 +379,14 @@ function callTransitiveClosure()
                 if (typeof (nodeEdgeObject['0']['nodes']['0']) === "undefined")
                 {
                     window.location.replace('./ErrorPageAction.jspa?issue=' + issue)
-                }
-                else
+                } else
                 {
                     currentIssue = nodeEdgeObject['0']['nodes']['0']['id'];
                 }
             }
         };
         xhr.send(null);
-    }
-    catch (err)
+    } catch (err)
     {
         alert(err);
     }
@@ -455,7 +458,8 @@ function findProposed(status, type)
 {
     if (status === "proposed")
         return "proposed";
-    else {
+    else
+    {
         return type;
     }
 }
@@ -557,7 +561,8 @@ function positionsDepthOne(maxElements, currentElement)
         resultingAngle = 180 + angle * currentElement;
     }
     // even amount: first element on the top right, rest circle around center
-    else {
+    else
+    {
         direction = getDirectionByAngle(45 + (angle * currentElement));
         resultingAngle = 45 + angle * currentElement;
     }
@@ -629,7 +634,8 @@ function calculateProposedDepthOnePositions(j, maxElements)
         direction = getDirectionByAngle(180 + (angle * j));
     }
     // even amount: first element on the top right, rest circle around center
-    else {
+    else
+    {
         direction = getDirectionByAngle(45 + (angle * j));
     }
     var coord_x = 0.6 * distances[1] * direction.x;
@@ -755,61 +761,71 @@ function updateDepthButtons()
     if (1 > max_depth)
     {
         $("#depth-1-btn").prop("disabled", true);
-    } else {
+    } else
+    {
         $("#depth-1-btn").removeAttr('disabled');
     }
     if (2 > max_depth)
     {
         $("#depth-2-btn").prop("disabled", true);
-    } else {
+    } else
+    {
         $("#depth-2-btn").removeAttr('disabled');
     }
     if (3 > max_depth)
     {
         $("#depth-3-btn").prop("disabled", true);
-    } else {
+    } else
+    {
         $("#depth-3-btn").removeAttr('disabled');
     }
     if (4 > max_depth)
     {
         $("#depth-4-btn").prop("disabled", true);
-    } else {
+    } else
+    {
         $("#depth-4-btn").removeAttr('disabled');
     }
     if (5 > max_depth)
     {
         $("#depth-5-btn").prop("disabled", true);
-    } else {
+    } else
+    {
         $("#depth-5-btn").removeAttr('disabled');
     }
     if (1 === depth)
     {
         $("#depth-1-btn").attr("class", "button layer button-effect active");
-    } else {
+    } else
+    {
         $("#depth-1-btn").attr('class', "button layer button-effect");
     }
     if (2 === depth)
     {
         $("#depth-2-btn").attr("class", "button layer button-effect active");
-    } else {
+    } else
+    {
         $("#depth-2-btn").attr('class', "button layer button-effect");
     }
     if (3 === depth)
     {
         $("#depth-3-btn").attr("class", "button layer button-effect active");
-    } else {
+    } else
+    {
         $("#depth-3-btn").attr('class', "button layer button-effect");
     }
     if (4 === depth)
     {
         $("#depth-4-btn").attr("class", "button layer button-effect active");
-    } else {
+    } else
+    {
         $("#depth-4-btn").attr('class', "button layer button-effect");
     }
     if (5 === depth)
     {
         $("#depth-5-btn").attr("class", "button layer button-effect active");
-    } else {
+    } else
+    {
         $("#depth-5-btn").attr('class', "button layer button-effect");
     }
 }
@@ -868,21 +884,34 @@ function createDepthLevelNodes(nodeEdgeObject)
         }
         if (typeof nodetype === "undefined")
         {
-            nodetype = "not specified"
+            if (v['resolution'] === "confidential")
+            {
+                nodetype = "confidential"
+                nodeprio = "confidential"
+            } else
+            {
+                nodetype = "not specified"
+            }
         }
         if (!(nodetype == null))
         {
-            nodelabel = nodelabel + "<i>".concat(nodekey).concat("</i>").concat("\n").concat(nodetype.toString());
-            nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
-        }
-        else
-            nodelabel = nodelabel + "<i>".concat(nodekey).concat("</i>").concat("\n not specified");
+            if(nodetype === "confidential")
+            {
+                nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("confidential");
+            }
+            else
+            {
+                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(nodetype.toString());
+                nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
+            }
+        } else
+            nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n not specified");
         var nodetitle = "";
         if (nodename.toString().length > 20)
         {
             nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("...\n");
-        }
-        else {
+        } else
+        {
             nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("\n")
         }
         //blub
@@ -918,7 +947,8 @@ function createDepthLevelEdges(nodeEdgeObject)
         if (typeof v['description'] === "undefined")
         {
             edgelabel = findProposed(v['status'], v['dependency_type']);
-        } else {
+        } else
+        {
             edgelabel = findProposed(v['status'], v['description']['0']);
         }
         var edgearrow = arrowPaletteType[edgelabel];
@@ -946,6 +976,7 @@ var depth5Edges;
 var allEdges;
 var nodes;
 var edges;
+
 function initNodesEdges()
 {
     allNodesArray = [];
@@ -990,7 +1021,8 @@ function proposedLinks()
     {
         propLinksIssue = currentIssue;
 
-        try {
+        try
+        {
             nodes.remove(proposedNodeElements);
             edges.remove(proposedEdgeElements);
 
@@ -1027,27 +1059,43 @@ function proposedLinks()
                         var nodehidden = v['layer'] > depth;
                         var nodegroup = colorPaletteStatus[nodestatus] || "unknown";
                         var nodelabel = "";
+                        var nodeprio = v['priority'].toString();
+                        if (v['priority'] === 6)
+                        {
+                            nodeprio = "5";
+                        }
                         if (typeof nodetype === "undefined")
                         {
-                            nodetype = "not specified"
-                        }
-                        if (nodetype !== null)
-                        {
-                            nodelabel = nodelabel + "<i>".concat(nodekey).concat("</i>").concat("\n");
-
-                            if (nodename.toString().length > 20)
+                            if (v['resolution'] === "confidential")
                             {
-                                nodelabel = nodelabel.concat(nodename.toString().substring(0, 20)).concat("...\n").concat(nodetype.toString());
-                            }
-                            else {
-                                nodelabel = nodelabel.concat(nodename.toString().substring(0, 20)).concat("\n").concat(nodetype.toString());
+                                nodetype = "confidential";
+                                nodeprio = "confidential"
+                            } else
+                            {
+                                nodetype = "not specified"
                             }
                         }
-                        else {
-                            nodelabel = nodelabel + "<i>".concat(nodekey).concat("</i>").concat("\n not specified");
-                        }
+                        if (!(nodetype == null))
+                        {
+                            if(nodetype === "confidential")
+                            {
+                                nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("confidential");
+                            }
+                            else
+                            {
+                                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(nodetype.toString());
+                                nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
+                            }
+                        } else
+                            nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n not specified");
                         var nodetitle = "";
-                        nodetitle = nodetitle.concat(nodestatus).concat("\n, ").concat(noderesolution);
+                        if (nodename.toString().length > 20)
+                        {
+                            nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("...\n");
+                        } else
+                        {
+                            nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("\n")
+                        }
 
                         //calculate positions for the proposed issue
                         var positions;
@@ -1055,7 +1103,8 @@ function proposedLinks()
                         {
                             //  -1 because the currently selected issue is returned in the proposed issues
                             positions = calculateProposedDepthOnePositions(j, proposedNodesEdges['nodes'].length - 1);
-                        } else {
+                        } else
+                        {
                             positions = calculateProposedOuterPositions(issueInfo, j);
                         }
                         j++;
@@ -1111,8 +1160,8 @@ function proposedLinks()
                     if (proposedIssuesList.length === 0)
                     {
                         document.getElementById('ddResult').innerHTML = '<h5><font color="#0052CC">No proposed links for issue ' + currentIssue + '.</font></h5>';
-                    }
-                    else {
+                    } else
+                    {
                         var stringList = '<h5><font color=\"#0052CC\">Proposed Links of ' + currentIssue + "</font></h5>" +
                             "<table style='width: 100%'><tr>\n" +
                             "<th>Issue Key</th>" +
@@ -1146,7 +1195,7 @@ function proposedLinks()
             xhr.send(null);
 
         } catch (err)
-{
+        {
             document.getElementById('ddResult').innerHTML = "We are sorry, there was an error getting the proposed dependencies...";
             alert(err);
         }
@@ -1170,15 +1219,15 @@ function registerClick(elem)
             $(btnid).addClass('rejected');
             linkDetectionResponse[elem.id.charAt(0)] = "reject";
             proposedIssueOrderLDR[elem.id.charAt(0)] = elem.id.substring(2);
-        }
-        else {
+        } else
+        {
             $(btnid).removeClass('rejected');
             $(btnid).addClass('reject');
             delete linkDetectionResponse[elem.id.charAt(0)];
             delete proposedIssueOrderLDR[elem.id.charAt(0)];
         }
-    }
-    else {
+    } else
+    {
         var selectid = elem.id.charAt(0) + "s";
         var selectedItem = document.getElementById(selectid).value;
         var btnid = "#" + elem.id;
@@ -1194,8 +1243,8 @@ function registerClick(elem)
             $(btnid).addClass('accepted');
             linkDetectionResponse[elem.id.charAt(0)] = selectedItem;
             proposedIssueOrderLDR[elem.id.charAt(0)] = elem.id.substring(2);
-        }
-        else {
+        } else
+        {
             $(btnid).removeClass('accepted');
             $(btnid).addClass('accept');
             delete linkDetectionResponse[elem.id.charAt(0)];
@@ -1268,16 +1317,15 @@ function sendLinkData()
                         {
                             projectsToUpdate.push(toProject);
                         }
-                    }
-                    else if (toProject === currentProjectId)
+                    } else if (toProject === currentProjectId)
                     {
                         if (projectsToUpdate.indexOf(fromProject) === -1)
                         {
                             projectsToUpdate.push(fromProject);
                         }
                     }
-                }
-                else {
+                } else
+                {
                     updatedProposedLinksJSON.dependencies[i].status = "REJECTED";
 
                     //this will safe all projects that need to be updated
@@ -1287,8 +1335,7 @@ function sendLinkData()
                         {
                             projectsToUpdate.push(toProject);
                         }
-                    }
-                    else if (toProject === currentProjectId)
+                    } else if (toProject === currentProjectId)
                     {
                         if (projectsToUpdate.indexOf(fromProject) === -1)
                         {
@@ -1296,15 +1343,16 @@ function sendLinkData()
                         }
                     }
                 }
-            }
-            else {
+            } else
+            {
                 updatedProposedLinksJSON.dependencies.splice(i, 1);
             }
         }
     }
     var updatedProposedLinksResponse = JSON.stringify(updatedProposedLinksJSON);
 
-    try {
+    try
+    {
 
         var xhr = new XMLHttpRequest();
         var url = "../rest/issuesearch/1.0/updateProposedDependencies";
@@ -1330,8 +1378,7 @@ function sendLinkData()
         updatedProposedLinksResponse = updatedProposedLinksResponse.substring(updatedProposedLinksResponse.indexOf(":") + 1, updatedProposedLinksResponse.length - 1);
         xhr.send(updatedProposedLinksResponse);
         document.getElementById("ddPending").innerHTML = "Your request is being processed.<br>"
-    }
-    catch
+    } catch
         (err)
     {
         alert(err);
@@ -1422,7 +1469,8 @@ function infoTab()
     var infoLinkTestJIRA = "https://bugreports-test.qt.io/browse/" + currentIssue;
     var infoTitle = issueInfo.name;
     var infoType = issueInfo.requirement_type;
-    if (infoType === "issue"){
+    if (infoType === "issue")
+    {
         infoType = "suggestion"
     }
     var infoStatus = issueInfo.status;
@@ -1435,22 +1483,41 @@ function infoTab()
     var infoPlatform = issueInfo.platforms;
     var infoFixVersion = issueInfo.fixversion;
     var infoPriority = priorityArray[issueInfo.priority];
-
-    //put the issues in the corressponding part of the website
+    if (typeof infoType === "undefined")
+    {
+        if (infoResolution === "confidential")
+        {
+            infoType = "confidential"
+            infoPriority = "confidential"
+        } else
+        {
+            infoType = "not specified"
+        }
+    }
     document.getElementById('infoBoxHeading').innerHTML = "".concat(currentIssue);
-    //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLink + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt JIRA</a>';
-    document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';
-    document.getElementById('infoBoxIssueStatus').innerHTML = infoStatus;
-    document.getElementById('infoBoxIssueType').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/' + issueInfo.requirement_type + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoType);
-    document.getElementById('infoBoxIssueSummary').innerHTML = infoTitle;
-    document.getElementById('infoBoxIssueResolution').innerHTML = infoResolution;
-    document.getElementById('infoBoxIssueEnv').innerHTML = infoEnvironment;
-    document.getElementById('infoBoxIssueComponent').innerHTML = infoComponent;
-    document.getElementById('infoBoxIssueLabel').innerHTML = infoLabel;
-    document.getElementById('infoBoxIssueVersion').innerHTML = infoVersion;
-    document.getElementById('infoBoxIssueFix').innerHTML = infoFixVersion;
-    document.getElementById('infoBoxIssuePlatform').innerHTML = infoPlatform;
-    document.getElementById('infoBoxIssuePrio').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/' + issueInfo.priority + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoPriority);
+    if (infoType === "confidential")
+    {
+        document.getElementById("infoConfidential").innerHTML = "This issue is confidential, you might not be logged into Jira or have the permissions to see it.";
+        document.getElementById('infoTable').style.display = "none";
+    }
+    else
+    {
+        //put the issues in the corressponding part of the website
+        //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLink + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt JIRA</a>';
+        document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';
+        document.getElementById('infoBoxIssueStatus').innerHTML = infoStatus;
+        document.getElementById('infoBoxIssueType').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/' + infoType + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(titleCase(infoType));
+        document.getElementById('infoBoxIssuePrio').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/' + issueInfo.priority + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoPriority);
+        document.getElementById('infoBoxIssueSummary').innerHTML = infoTitle;
+        document.getElementById('infoBoxIssueResolution').innerHTML = infoResolution;
+        document.getElementById('infoBoxIssueEnv').innerHTML = infoEnvironment;
+        document.getElementById('infoBoxIssueComponent').innerHTML = infoComponent;
+        document.getElementById('infoBoxIssueLabel').innerHTML = infoLabel;
+        document.getElementById('infoBoxIssueVersion').innerHTML = infoVersion;
+        document.getElementById('infoBoxIssueFix').innerHTML = infoFixVersion;
+        document.getElementById('infoBoxIssuePlatform').innerHTML = infoPlatform;
+        document.getElementById("infoConfidential").style.display = "none";
+    }
 }
 
 
@@ -1458,6 +1525,7 @@ function infoTab()
 
 
 var network;
+
 function initNetwork()
 {
     // create a network
@@ -1671,4 +1739,25 @@ function getInconsistencies()
         alert(err);
         document.getElementById('ccResult').innerHTML = "there was an error...";
     }
+}
+
+function titleCase(str)
+{
+    if (typeof str === "undefined")
+    {
+        return "not specified";
+    }
+    if (str === "confidential")
+    {
+        return "confidential";
+    }
+    var splitStr = str.toLowerCase().split(' ');
+    for (var i = 0; i < splitStr.length; i++)
+    {
+        // You do not need to check if i is larger than splitStr length, as your for does that for you
+        // Assign it back to the array
+        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    }
+    // Directly return the joined string
+    return splitStr.join(' ');
 }
