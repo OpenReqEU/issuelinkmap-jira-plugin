@@ -498,5 +498,6 @@ select {
 /*Tables*/
 
 th, td {
-    border-bottom: 1px solid lightgray;
+    text-align: left;
+    vertical-align: top;
 }
