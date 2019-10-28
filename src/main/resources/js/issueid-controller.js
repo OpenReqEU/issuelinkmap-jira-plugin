@@ -1217,7 +1217,7 @@ function sortProposed(array)
 {
     for (var i = 0; i < array.length; i++)
     {
-        var maxScore = -1;
+        var maxScore = 0;
         var maxIndex = 0;
         var nameToAdd;
         for (var k = 0; k < array.length; k++)
@@ -1226,6 +1226,7 @@ function sortProposed(array)
             {
                 maxScore = array[k].score;
                 maxIndex = k;
+                array[k].score = -1;
             }
         }
         if (checkNodesContains(array[maxIndex].fromID) && !checkNodesContains(array[maxIndex].toID))
