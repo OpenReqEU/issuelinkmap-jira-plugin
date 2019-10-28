@@ -204,11 +204,10 @@ AJS.toInit(function ()
             {
                 var xhr = new XMLHttpRequest();
 
-                var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue;
+                var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=true";
                 xhr.open("GET", url, true);
 
                 document.getElementById('ccResult').innerHTML = '<h5><font color=\"#0052CC\">Pending...</font></h5>';
-                document.getElementById('ccRelIncButton').innerHTML = "Inconsistent links are being calculated...";
                 document.getElementById('ccReleasesButton').innerHTML = "Searching for releases in link map...";
                 xhr.onreadystatechange = function ()
                 {
@@ -217,7 +216,7 @@ AJS.toInit(function ()
                         var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
                         var json = JSON.parse(jsonPart);
 
-                        console.log("Analysis only")
+                        console.log("Analysis only");
                         console.log(json);
 
                         var releases = json.response[0].Releases;
@@ -227,7 +226,20 @@ AJS.toInit(function ()
                             regsInReleases = regsInReleases + "<strong>Release " + releases[i].Release + "</strong><br>" + releases[i].RequirementsAssigned_msg + "<br>"
                         }
                         var ccMessage = "";
-                        var relList = "";
+
+                        var ignoredRelList = "";
+                        var relIgnored = json.response[0].RelationshipsIgnored;
+                        console.log(relIgnored)
+                        ignoredRelList = ignoredRelList + "<br>" +
+                            "<table style='width: 100%'><tr>\n" +
+                            "<th>Issue Keys</th>" +
+                            "<th>Link type</th>" +
+                            "</tr>";
+                        for (var j = 0; j < relIgnored.length; j++)
+                        {
+                            ignoredRelList  = ignoredRelList  + "<tr><td>" + relIgnored[j].To + ", " + relIgnored[j].From + "</a></td><td>" + relIgnored[j].Type + "</td></tr>";
+                        }
+                        ignoredRelList  = ignoredRelList  + "</table>";
 
                         if (json.response[0].Consistent)
                         {
@@ -235,14 +247,17 @@ AJS.toInit(function ()
 
                         } else
                         {
-                            ccMessage = ccMessage.concat("<div class='col6'><h5><font color=\"#CC0000\">Release plan is inconsistent.</font></h5></div><div class='col6'><button class='button button-effect' onclick ='getInconsistencies()'>Get inconsistencies</button></div>");
+                            ccMessage = ccMessage.concat("<h5><font color=\"#CC0000\">Release plan is inconsistent.</font></h5>");
+                            document.getElementById('ccInconsistencisBtn').style.display = "inline-block";
                         }
-
-                        document.getElementById("ccRelInc").style.display = "none";
-                        document.getElementById("ccRelIncButton").style.display = "none"
                         document.getElementById('ccResult').innerHTML = "<br>".concat(ccMessage).concat("<br>");
                         document.getElementById('ccReleases').innerHTML = "<br>".concat(regsInReleases).concat("<br>");
                         document.getElementById('ccReleasesButton').innerHTML = "Releases found";
+                        document.getElementById("ccRelIgnored").style.display = "inline-block";
+                        document.getElementById("ccRelIgnoredButton").style.display = "inline-block";
+                        document.getElementById('ccRelIgnored').innerHTML = ignoredRelList;
+
+
 
                         consistencyChecked = true;
                     }
@@ -886,9 +901,15 @@ function createDepthLevelNodes(nodeEdgeObject)
         {
             if (v['resolution'] === "confidential")
             {
-                nodetype = "confidential"
-                nodeprio = "confidential"
-            } else
+                nodetype = "confidential";
+                nodeprio = "confidential";
+            }
+            else if(v['resolution'] === "not in database")
+            {
+                nodetype = "not in database"
+                nodeprio = "not in database"
+            }
+            else
             {
                 nodetype = "not specified"
             }
@@ -898,6 +919,10 @@ function createDepthLevelNodes(nodeEdgeObject)
             if(nodetype === "confidential")
             {
                 nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("confidential");
+            }
+            else if(v['resolution'] === "not in database")
+            {
+                nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("not in database");
             }
             else
             {
@@ -1067,8 +1092,14 @@ function proposedLinks()
                             if (v['resolution'] === "confidential")
                             {
                                 nodetype = "confidential";
-                                nodeprio = "confidential"
-                            } else
+                                nodeprio = "confidential";
+                            }
+                            else if(v['resolution'] === "not in database")
+                            {
+                                nodetype = "not in database";
+                                nodeprio = "not in database";
+                            }
+                            else
                             {
                                 nodetype = "not specified"
                             }
@@ -1078,6 +1109,10 @@ function proposedLinks()
                             if(nodetype === "confidential")
                             {
                                 nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("confidential");
+                            }
+                            else if(nodetype === "not in database")
+                            {
+                                nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("not in database");
                             }
                             else
                             {
@@ -1200,6 +1235,7 @@ function proposedLinks()
                         stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
                         document.getElementById('ddResult').innerHTML = stringList;
                     }
+                    console.log(proposedIssuesList);
                 }
 
             };
@@ -1527,20 +1563,21 @@ function infoTab()
     var infoPriority = priorityArray[issueInfo.priority];
     if (typeof infoType === "undefined")
     {
-        if (infoResolution === "confidential")
-        {
-            infoType = "confidential"
-            infoPriority = "confidential"
-        } else
         {
             infoType = "not specified"
         }
     }
     document.getElementById('infoBoxHeading').innerHTML = "".concat(currentIssue);
-    if (infoType === "confidential")
+    if (infoResolution === "confidential")
     {
-        document.getElementById("infoConfidential").innerHTML = "This issue is confidential, you might not be logged into Jira or have the permissions to see it.";
+        document.getElementById("infoOther").innerHTML = "This issue is confidential, you might not be logged into Jira or have the permissions to see it.";
         document.getElementById('infoTable').style.display = "none";
+    }
+    else if (infoResolution==="not in database")
+    {
+        document.getElementById("infoOther").innerHTML = "This issue is not in the database, you might need to wait until the database is updated.";
+        document.getElementById('infoTable').style.display = "none";
+
     }
     else
     {
@@ -1558,7 +1595,7 @@ function infoTab()
         document.getElementById('infoBoxIssueVersion').innerHTML = infoVersion;
         document.getElementById('infoBoxIssueFix').innerHTML = infoFixVersion;
         document.getElementById('infoBoxIssuePlatform').innerHTML = infoPlatform;
-        document.getElementById("infoConfidential").style.display = "none";
+        document.getElementById("infoOther").style.display = "none";
     }
 }
 
@@ -1781,7 +1818,7 @@ function getInconsistencies()
     {
         var xhr = new XMLHttpRequest();
 
-        var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "?analysisOnly=false";
+        var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=false";
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function ()
         {
@@ -1796,8 +1833,8 @@ function getInconsistencies()
 
                 var relList = "";
 
-                var relInc = json.response.RelationshipsInconsistent;
-                relList = relList +
+                var relInc = json.response[0].RelationshipsInconsistent;
+                relList = relList + "<br>" +
                     "<table style='width: 100%'><tr>\n" +
                     "<th>Issue Keys</th>" +
                     "<th>Link type</th>" +
@@ -1831,6 +1868,10 @@ function titleCase(str)
     if (str === "confidential")
     {
         return "confidential";
+    }
+    if (str === "not in database")
+    {
+        return "not in database";
     }
     var splitStr = str.toLowerCase().split(' ');
     for (var i = 0; i < splitStr.length; i++)

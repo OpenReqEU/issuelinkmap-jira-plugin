@@ -173,7 +173,7 @@ $webResourceManager.requireResource(
                     <a class="nav-link" id="cc-tab" data-toggle="tab" href="#cc-box" role="tab"
                        aria-controls="cc-tab" aria-selected="false">Consistency Checker
                     </a>
-                    <span class="tooltiptext">The Consistency Checker verifies the viability of the release plan regarding the issue link map. F.e. if a feature is required by another one, it is not assigned to later release. Currently cross project links are not considered by the Consistency Checker.</span>
+                    <span class="tooltiptext">The Consistency Checker verifies the viability of the release plan regarding the issue link map, e.g. if a feature is required by another one, it is not assigned to later release. The Consistency Checker checks consistency always to depth 5. Currently links between projects are ignored by the Consistency Checker.</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="filter-tab" data-toggle="tab" href="#filter-box" role="tab"
@@ -196,7 +196,7 @@ $webResourceManager.requireResource(
                         <tr>
                             <td><strong>Status</strong></td>
                             <td></td>
-                            <td> <p id="infoBoxIssueStatus"></p></td>
+                            <td><p id="infoBoxIssueStatus"></p></td>
                         </tr>
                         <tr>
                             <td><strong>Type</strong></td>
@@ -244,7 +244,7 @@ $webResourceManager.requireResource(
                             <td><p id="infoBoxIssueEnv"></p></td>
                         </tr>
                     </table>
-                    <p id="infoConfidential"></p>
+                    <p id="infoOther"></p>
                     <br>
                     <div id="infoBoxIssueLink"></div>
                     <br>
@@ -260,14 +260,31 @@ $webResourceManager.requireResource(
                     <p id="ddPending"></p>
                 </div>
                 <div class="tab-pane fade" id="cc-box" role="tabpanel" aria-labelledby="cc-tab">
-                    <div id="ccResult"></div>
-                    <button class="accordion" id="ccRelIncButton">Inconsistent releases</button>
-                    <div class="panel"><p id="ccRelInc"></p></div>
-                    <button class="accordion" id="ccReleasesButton">Releases</button>
-                    <div class="panel"><p id="ccReleases"></p></div>
-                    <br>
-                    <p>The Consistency Checker currently ignores cross projects links, f.e. a link to QTBUG-1 from
-                        QBS-585 will not be considered by the Consistency Checker.</p>
+                    <div class="row">
+                        <div class="col-8">
+                            <div id="ccResult"></div>
+                        </div>
+                        <div class="col-4">
+                            <button class='button button-effect' onclick='getInconsistencies()' id='ccInconsistencisBtn'
+                                    style="display: none;">Get inconsistencies
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="accordion" id="ccRelIncButton" style="display: none">Inconsistent releases
+                        </button>
+                        <div class="panel"><p id="ccRelInc" style="display: none"></p></div>
+                        <br>
+                    </div>
+                    <div class="row">
+                        <button class="accordion" id="ccReleasesButton">Releases</button>
+                        <div class="panel"><p id="ccReleases"></p></div>
+                        <br>
+                    </div>
+                    <div class="row">
+                        <button class="accordion" id="ccRelIgnoredButton" style="display: none">Ignored links</button>
+                        <div class="panel"><p id="ccRelIgnored" style="display: none"></p></div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="filter-box" role="tabpanel" aria-labelledby="filter-tab">
                     <div class="filterOptions">

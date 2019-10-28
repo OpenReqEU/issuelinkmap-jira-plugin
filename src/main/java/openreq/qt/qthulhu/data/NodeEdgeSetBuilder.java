@@ -214,13 +214,14 @@ public class NodeEdgeSetBuilder
                 JsonObject req = new JsonObject();
                 req.addProperty("id", keyId);
                 req.addProperty("nodeid", idMap.get(keyId));
-                req.addProperty("name", "Not in DB");
-                req.addProperty("requirement_type", "Not in DB");
-                req.addProperty("status", "Not in DB");
-                req.addProperty("resolution", "Not in DB");
+                req.addProperty("name", "not in database");
+                req.addProperty("requirement_type", "not in database");
+                req.addProperty("status", "not in database");
+                req.addProperty("resolution", "not in database");
+                req.addProperty("priority", "not in database");
                 req.add("requirementParts", new JsonArray());
                 JsonArray parts = req.getAsJsonArray("requirementParts");
-                parts = HelperFunctions.fillParts(parts, "Not in DB");
+                parts = HelperFunctions.fillParts(parts, "not in database");
                 for (int k = 0; k < parts.size(); k++)
                 {
                     JsonObject part = parts.get(k).getAsJsonObject();

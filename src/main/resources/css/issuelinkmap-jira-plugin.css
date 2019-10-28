@@ -344,14 +344,19 @@
     padding: 18px;
     width: 100%;
     text-align: left;
-    border: none;
-    outline: none;
+    border: 5px;
+    border-color: #ffffff;
+    outline: 5px;
+    outline-color: #0052cc;;
     transition: 0.4s;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .accordion.active, .accordion:hover {
-    background-color: #0065FF;
+    background-color: #ffffff;
+    border: 5px;
+    border-color: #0052cc;
+    color: #0052cc;
 }
 
 /* Style the accordion panel. Note: hidden by default */
