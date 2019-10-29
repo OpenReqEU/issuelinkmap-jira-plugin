@@ -25,6 +25,7 @@ import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
 
 import openreq.qt.qthulhu.data.NodeEdgeSetBuilder;
 
@@ -150,6 +151,10 @@ public class FisutankkiResource {
 
         String urlTail = "/updateProposedDependencies";
 
+        dependencies.forEach((dep) -> {
+            dep.setDescription(new ArrayList<>());
+        });
+        
         ObjectMapper mapper = new ObjectMapper();
         String dependencyJson = mapper.writeValueAsString(dependencies);
 
