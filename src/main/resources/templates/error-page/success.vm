@@ -34,6 +34,15 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
     <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
     <a href="./LinkMapWebworkAction.jspa">Return to Info Page</a>
 
+    <div class="search-container">
+        <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" name="search">
+            <button type="submit"><em class="fa fa-search" style="color: #deebff;"></em></button>
+            <input type="text" name="issue" id="issueInput" required="required" placeholder="Issue Key..."
+                   style="margin-right: 20px">
+            <input type="number" name="depth" id="depthInput" min="1" max="5" placeholder="Depth..."
+                   style="margin-right: 20px">
+        </form>
+    </div>
 </div>
 
 <div class="container-fluid" style="padding-left: 50px; padding-top: 30px">

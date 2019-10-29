@@ -190,7 +190,7 @@ public class FisutankkiResource {
             reqIdsString = reqIdsString + "&requirementId=" + id;
         }
 
-        String urlTail = "/getConsistencyCheckForRequirement?layerCount=" + layerCount + "&analysisOnly=" + analysisOnly + "&omitCrossProject=" + omitCrossProject + "&timeOut=" + timeOut + reqIdsString;
+        String urlTail = "/getConsistencyCheckForRequirement?layerCount=" + layerCount + "&omitCrossProject=" + omitCrossProject + "&timeOut=" + timeOut + reqIdsString + "&analysisOnly=" + analysisOnly ;
 
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
