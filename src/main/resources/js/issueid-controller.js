@@ -237,9 +237,9 @@ AJS.toInit(function ()
                             "</tr>";
                         for (var j = 0; j < relIgnored.length; j++)
                         {
-                            ignoredRelList  = ignoredRelList  + "<tr><td>" + relIgnored[j].To + ", " + relIgnored[j].From + "</a></td><td>" + relIgnored[j].Type + "</td></tr>";
+                            ignoredRelList = ignoredRelList + "<tr><td>" + relIgnored[j].To + ", " + relIgnored[j].From + "</a></td><td>" + relIgnored[j].Type + "</td></tr>";
                         }
-                        ignoredRelList  = ignoredRelList  + "</table>";
+                        ignoredRelList = ignoredRelList + "</table>";
 
                         if (json.response[0].Consistent)
                         {
@@ -256,7 +256,6 @@ AJS.toInit(function ()
                         document.getElementById("ccRelIgnored").style.display = "inline-block";
                         document.getElementById("ccRelIgnoredButton").style.display = "inline-block";
                         document.getElementById('ccRelIgnored').innerHTML = ignoredRelList;
-
 
 
                         consistencyChecked = true;
@@ -903,28 +902,24 @@ function createDepthLevelNodes(nodeEdgeObject)
             {
                 nodetype = "confidential";
                 nodeprio = "confidential";
-            }
-            else if(v['resolution'] === "not in database")
+            } else if (v['resolution'] === "not in database")
             {
                 nodetype = "not in database"
                 nodeprio = "not in database"
-            }
-            else
+            } else
             {
                 nodetype = "not specified"
             }
         }
         if (!(nodetype == null))
         {
-            if(nodetype === "confidential")
+            if (nodetype === "confidential")
             {
-                nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("confidential");
-            }
-            else if(v['resolution'] === "not in database")
+                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat("confidential");
+            } else if (v['resolution'] === "not in database")
             {
-                nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("not in database");
-            }
-            else
+                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat("not in database");
+            } else
             {
                 nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(titleCase(nodetype.toString()));
                 nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
@@ -1021,6 +1016,7 @@ function initNodesEdges()
 
 
     //create an array with nodes
+
     nodes = new vis.DataSet(nodeElements);
     // create an array with edges
     edges = new vis.DataSet(edgeElements);
@@ -1093,28 +1089,24 @@ function proposedLinks()
                             {
                                 nodetype = "confidential";
                                 nodeprio = "confidential";
-                            }
-                            else if(v['resolution'] === "not in database")
+                            } else if (v['resolution'] === "not in database")
                             {
                                 nodetype = "not in database";
                                 nodeprio = "not in database";
-                            }
-                            else
+                            } else
                             {
                                 nodetype = "not specified"
                             }
                         }
                         if (!(nodetype == null))
                         {
-                            if(nodetype === "confidential")
+                            if (nodetype === "confidential")
                             {
-                                nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("confidential");
-                            }
-                            else if(nodetype === "not in database")
+                                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat("confidential");
+                            } else if (nodetype === "not in database")
                             {
-                                nodelabel=nodelabel+ "<b>".concat(nodekey).concat("</b>").concat("\n").concat("not in database");
-                            }
-                            else
+                                nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat("not in database");
+                            } else
                             {
                                 nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n").concat(titleCase(nodetype.toString()));
                                 nodelabel = nodelabel.concat("\n").concat(nodestatus).concat(", ").concat(noderesolution);
@@ -1268,8 +1260,7 @@ function sortProposed(array)
         if (checkNodesContains(array[maxIndex].fromID) && !checkNodesContains(array[maxIndex].toID))
         {
             nameToAdd = array[maxIndex].toName;
-        }
-        else if (!checkNodesContains(array[maxIndex].fromID) && checkNodesContains(array[maxIndex].toID))
+        } else if (!checkNodesContains(array[maxIndex].fromID) && checkNodesContains(array[maxIndex].toID))
         {
             nameToAdd = array[maxIndex].fromName;
         }
@@ -1572,14 +1563,12 @@ function infoTab()
     {
         document.getElementById("infoOther").innerHTML = "This issue is confidential, you might not be logged into Jira or have the permissions to see it.";
         document.getElementById('infoTable').style.display = "none";
-    }
-    else if (infoResolution==="not in database")
+    } else if (infoResolution === "not in database")
     {
         document.getElementById("infoOther").innerHTML = "This issue is not in the database, you might need to wait until the database is updated.";
         document.getElementById('infoTable').style.display = "none";
 
-    }
-    else
+    } else
     {
         //put the issues in the corressponding part of the website
         //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLink + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt JIRA</a>';
@@ -1773,7 +1762,8 @@ function initNetwork()
                 $.each(proposedNodesEdges['nodes'], function (i, v)
                 {
                     //includes returns true if the values are the same and if currentIssue is "[v.id]-mock"
-                    if (currentIssue.includes(v.id)) {
+                    if (currentIssue.includes(v.id))
+                    {
                         isAlreadyProposed = true;
                     }
                 });
@@ -1848,6 +1838,7 @@ function getInconsistencies()
                 document.getElementById("ccRelIncButton").style.display = "inline-block";
                 document.getElementById('ccRelInc').innerHTML = relList;
                 document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
+                document.getElementById('ccInconsistencisBtn').style.display = "none";
             }
         };
 
