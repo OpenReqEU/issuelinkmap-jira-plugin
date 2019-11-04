@@ -127,7 +127,7 @@ public class FisutankkiResource {
             proposedDependencies = mapper.readValue(response, MillaResponse.class);
         } catch (IOException e) {
             JSONObject error = new JSONObject();
-            error.put("error", response);
+            error.put("error", e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
         }
 
