@@ -216,30 +216,46 @@ AJS.toInit(function ()
                         var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
                         var json = JSON.parse(jsonPart);
 
-                        // console.log("Analysis only");
-                        // console.log(json);
+                        console.log(jsonPart);
+                        console.log("Analysis only");
+                        console.log(json);
 
                         var releases = json.response[0].Releases;
                         var regsInReleases = "";
+                        console.log(releases);
                         for (var i = 0; i < releases.length; i++)
                         {
-                            regsInReleases = regsInReleases + "<strong>Release " + releases[i].Release + "</strong><br>" + releases[i].RequirementsAssigned_msg + "<br>"
+                            regsInReleases = regsInReleases + "<strong>Release " + releases[i].Release + "</strong><br>";
+                            for (var k = 0; k < releases[i].RequirementsAssigned.length - 1; k++)
+                            {
+                                regsInReleases = regsInReleases + releases[i].RequirementsAssigned[k] + ", "
+                            }
+
+                            regsInReleases = regsInReleases + releases[i].RequirementsAssigned[releases[i].RequirementsAssigned.length - 1] + "<br>"
                         }
                         var ccMessage = "";
 
                         var ignoredRelList = "";
                         var relIgnored = json.response[0].RelationshipsIgnored;
                         // console.log(relIgnored)
-                        ignoredRelList = ignoredRelList + "<br>" +
-                            "<table style='width: 100%'><tr>\n" +
-                            "<th>Issue Keys</th>" +
-                            "<th>Link type</th>" +
-                            "</tr>";
-                        for (var j = 0; j < relIgnored.length; j++)
+
+                        if(relIgnored.length !== 0)
                         {
-                            ignoredRelList = ignoredRelList + "<tr><td>" + relIgnored[j].To + ", " + relIgnored[j].From + "</a></td><td>" + relIgnored[j].Type + "</td></tr>";
+                            ignoredRelList = ignoredRelList + "<br>" +
+                                "<table style='width: 100%'><tr>\n" +
+                                "<th>Issue Keys</th>" +
+                                "<th>Link type</th>" +
+                                "</tr>";
+                            for (var j = 0; j < relIgnored.length; j++)
+                            {
+                                ignoredRelList = ignoredRelList + "<tr><td>" + relIgnored[j].To + ", " + relIgnored[j].From + "</a></td><td>" + relIgnored[j].Type + "</td></tr>";
+                            }
+                            ignoredRelList = ignoredRelList + "</table>";
                         }
-                        ignoredRelList = ignoredRelList + "</table>";
+                        else
+                        {
+                            ignoredRelList = "<br>" + "There are no ignored links.";
+                        }
 
                         if (json.response[0].Consistent)
                         {
@@ -253,10 +269,10 @@ AJS.toInit(function ()
                         document.getElementById('ccResult').innerHTML = "<br>".concat(ccMessage).concat("<br>");
                         document.getElementById('ccReleases').innerHTML = "<br>".concat(regsInReleases).concat("<br>");
                         document.getElementById('ccReleasesButton').innerHTML = "Releases found";
+
                         document.getElementById("ccRelIgnored").style.display = "inline-block";
                         document.getElementById("ccRelIgnoredButton").style.display = "inline-block";
                         document.getElementById('ccRelIgnored').innerHTML = ignoredRelList;
-
 
                         consistencyChecked = true;
                     }
