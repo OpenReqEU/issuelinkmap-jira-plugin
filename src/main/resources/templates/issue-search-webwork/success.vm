@@ -7,7 +7,8 @@
 ##--%>
 ##<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 ##<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-$webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources")
+$webResourceManager.requireResource(
+    "openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources")
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +23,7 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 ##        gtag('config', 'UA-146396443-1');
 ##    </script>
 
-    <title>WP7 - Qt Trial</title>
+    <title>IssueLinkMap</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
@@ -39,9 +40,11 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
             width: 100%;
             height: 100%;
         }
+
         input[type=number] {
             width: 100px;
         }
+
         input[type=text] {
             width: 150px;
         }
@@ -52,14 +55,22 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 
 ##<%--This is the navigation bar located at the top, it contains a link to the project website and a search box--%>
 <div class="topnav">
-    <a target="_blank" href="https://openreq.eu/" style="padding: 0"><img alt="or_logo"
-                                                                          src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
-                                                                          width="40px" height="40px"/></a>
-##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
-##    <%--<a target="_blank" href="https://forum.qt.io/">Qt Forum</a>--%>
-##    <%--<a target="_blank" href="https://forms.gle/GQQhym7obLEss3bCA">Feedback</a>--%>
-    <a class="button-effect-orange" href="./LinkMapWebworkAction.jspa">Return to Info Page</a>
-    <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
+    <div class="link-container">
+        <a target="_blank" href="https://openreq.eu/" style="padding: 0"><img alt="or_logo"
+                                                                              src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
+                                                                              width="40px" height="40px"/></a>
+    ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
+    ##    <%--<a target="_blank" href="https://forum.qt.io/">Qt Forum</a>--%>
+    ##    <%--<a target="_blank" href="https://forms.gle/GQQhym7obLEss3bCA">Feedback</a>--%>
+        <a class="button-effect" href="./LinkMapWebworkAction.jspa">Return to Info Page</a>
+        <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
+    </div>
+    <div class="text-container">
+        <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback
+            through
+            the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
+            this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>
+    </div>
     <div class="search-container">
         <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" name="search">
             <button type="submit"><em class="fa fa-search" style="color: #deebff;"></em></button>
@@ -67,39 +78,27 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                    style="margin-right: 20px">
             <input type="number" name="depth" id="depthInput" min="1" max="5" placeholder="Depth..."
                    style="margin-right: 20px">
+            <div class="loader" id="loader"></div>
         </form>
     </div>
 </div>
 
 <div class="container-fluid" style="padding-left: 50px; padding-top: 30px">
-    <div class="row">
-        <p>
-            This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback through
-            the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
-            this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.
-        </p>
-    </div>
-##    <%--Header and Loader--%>
-    <div class="row">
 
-        <div class="col-10">
-            <h2 id="issue-headline">Issue Links of </h2>
-        </div>
-
-        <div class="col-2">
-            <div class="loader" id="loader"></div>
-        </div>
-
-    </div>
-</div>
-
-<div class="container-fluid" style="padding-left: 50px; padding-top: 30px">
-##    <%--Network--%>
+## Header
     <div class="row">
         <div class="col-8">
             <div class="row">
-                <div class="col-8">
-                ##                    <%--Depth buttons--%>
+                <div class="col-6">
+                    <h2 id="issue-headline">Issue Links of </h2>
+                </div>
+
+            </div>
+
+        ## Manipulation of network
+            <div class="row">
+                <div class="col-6">
+                ## Depth buttons
                     <button class="button layer button-effect" id="depth-1-btn"
                             style="margin-left: 2px;">Depth 1
                     </button>
@@ -116,39 +115,300 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                             style="margin-left: 2px;">Depth 5
                     </button>
                 </div>
-            ##                <%--Legend--%>
-                <div class="col-4">
-                    <p>
-                    <div class="box blue" style="display: inline-block;">
+                <div class="col-6">
+                    <div class="filterOptions" style="float: right">
+
+                        <div class="dropdown">
+                            <button class="dropbtn">Type</button>
+                            <div class="dropdown-content">
+                                <span>
+                                    <label>
+                                        <input name="Type" type="checkbox" checked="checked" value="task"/>
+                                        <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/task.png"
+                                             width="20" height="20" alt="task"/> Task
+                                    </label>
+                                </span>
+                                <span>
+                                    <label>
+                                        <input name="Type" type="checkbox" checked="checked" value="bug"/>
+                                        <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/bug.png"
+                                             width="20" height="20" alt="bug"/> Bug
+                                    </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Type" type="checkbox" checked="checked" value="issue"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png"
+                                     width="20" height="20" alt="suggestion"/> Issue
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Type" type="checkbox" checked="checked" value="epic"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/epic.png"
+                                     width="20" height="20" alt="epic"/> Epic
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Type" type="checkbox" checked="checked" value="user_story"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/user-story.png"
+                                     width="20" height="20" alt="user-story"/> User Story
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Type" type="checkbox" checked="checked" value="suggestion"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png"
+                                     width="20" height="20" alt="suggestion"/> Suggestion
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Type" type="checkbox" checked="checked" value="not specified"/>
+                                not specified
+                            </label>
+                        </span>
+                                <br>
+                                <span>
+                            <label>
+                                <input id="type-toggle" name="Type" type="checkbox" checked="checked"/>
+                                <strong> Toggle All Types </strong>
+                            </label>
+                        </span>
+                            </div>
+                        </div>
+
+                        <div class="dropdown">
+                            <button class="dropbtn">Status</button>
+                            <div class="dropdown-content">
+                        <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" id="todos-toggle">
+                                <strong>To-Do:</strong>
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" value="Open"/>
+                                Open
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" value="Reported"/>
+                                Reported
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" value="Accepted"/>
+                                Accepted
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" value="Reopened"/>
+                                Reopened
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" value="To Do"/>
+                                To Do
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" value="Blocked"/>
+                                Blocked
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" value="Need More Info"/>
+                                Need More Info
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="ToDoStatus" type="checkbox" checked="checked" value="Waiting 3rd party"/>
+                                Waiting 3rd party
+                            </label>
+                        </span>
+                                <span style="color: #ffd351">
+                            <label>
+                                <input name="ProgStatus" type="checkbox" checked="checked" value="In Progress">
+                                <strong>In Progress</strong>
+                            </label>
+                        </span>
+                                <br>
+
+                                <span style="color: #14882c">
+                            <label>
+                                <input name="DoneStatus" type="checkbox" id="done-toggle">
+                                <strong>Done:</strong>
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="DoneStatus" type="checkbox" value="Closed"/>
+                                Closed
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="DoneStatus" type="checkbox" value="Done"/>
+                                Done
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="DoneStatus" type="checkbox" value="Rejected"/>
+                                Rejected
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="DoneStatus" type="checkbox" value="Resolved"/>
+                                Resolved
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="DoneStatus" type="checkbox" value="Withdrawn"/>
+                                Withdrawn
+                            </label>
+                        </span>
+                                <br>
+                                <span>
+                            <label>
+                                <input name="Status" type="checkbox" checked="checked" value="confidential"/>
+                                Confidential
+                            </label>
+                        </span>
+                                <br>
+                                <span>
+                            <label>
+                                <input id="all-toggle" type="checkbox" checked="checked"/>
+                                <strong> Toggle All Statuses </strong>
+                            </label>
+                        </span>
+                                <br>
+                            </div>
+                        </div>
+
+                        <div class="dropdown">
+                            <button class="dropbtn">Priority</button>
+                            <div class="dropdown-content">
+
+                        <span>
+                            <label>
+                                <input name="Priority" type="checkbox" checked="checked" value="0"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/0.png"
+                                     width="20" height="20" alt="P0: Blocker"/>P0: Blocker
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Priority" type="checkbox" checked="checked" value="1"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/1.png"
+                                     width="20" height="20" alt="P1: Critical"/>P1: Critical
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Priority" type="checkbox" checked="checked" value="2"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/2.png"
+                                     width="20" height="20" alt="P2: Important"/>P2: Important
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Priority" type="checkbox" checked="checked" value="3"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/3.png"
+                                     width="20" height="20" alt="P3: Somewhat important"/>P3: Somewhat important
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Priority" type="checkbox" checked="checked" value="4"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/4.png"
+                                     width="20" height="20" alt="P4: Low"/>P4: Low
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Priority" type="checkbox" checked="checked" value="5"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/5.png"
+                                     width="20" height="20" alt="P5: Not important"/>P5: Not important
+                            </label>
+                        </span>
+                                <span>
+                            <label>
+                                <input name="Priority" type="checkbox" checked="checked" value="7"/>
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/7.png"
+                                     width="20" height="20" alt="Not evaluated"/>Not evaluated
+                            </label>
+                        </span>
+                                <br>
+                                <span>
+                            <label>
+                                <input id="prio-toggle" name="Priority" type="checkbox" checked="checked"/>
+                                <strong> Toggle All Priorities </strong>
+                            </label>
+                        </span>
+                                <br>
+                            </div>
+                        </div>
+
+                        <input id="filter-search" type="button" class="button search button-effect"
+                               value="Apply filter"/>
                     </div>
-                    To-Do
-                    <div class="box red" style="display: inline-block;">
-                    </div>
-                    Stuck
-                    <div class="box yellow" style="display: inline-block;">
-                    </div>
-                    In Progress
-                    <div class="box green" style="display: inline-block;">
-                    </div>
-                    Done (filtered out on default)
-                    </p>
+                    <p id="filterOptions"></p>
                 </div>
             </div>
             <div class="row">
-            ##                <%--Issue Link Map--%>
+            ## Issue Link Map
                 <div class="card" id="issueLinkMap"></div>
                 <br>
             </div>
         </div>
-    ##        <%--Information--%>
+    ## Information
         <div class="col-4">
 
-        ##            <%--Information buttons--%>
+        ## Legend
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Legend</h5>
+                    <p class="card-text">
+                    <div class="box blue" style="display: inline-block;">
+                        To-Do
+                    </div>
+                    <div class="box red" style="display: inline-block;">
+                        Stuck
+                    </div>
+                    <div class="box yellow" style="display: inline-block;">
+                        In Progress
+                    </div>
+                    <div class="box green" style="display: inline-block;">
+                        Done
+                    </div>
+                    (filtered out on default)
+                    <div class="box grey" style="display: inline-block;">
+                        not specified
+                    </div>
+                    </p>
+                </div>
+            </div>
+        ## Information buttons
+
             <ul class="nav nav-tabs nav-fill mb-3" id="info-nav" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info-box" role="tab"
                        aria-controls="info-tab" aria-selected="true">Info
                     </a>
+                    <span class="tooltiptext">The Info tab contains some of the properties of the corresponding view issue page in Jira.</span>
                 </li>
             ##                <%--<li class="nav-item">--%>
             ##                <%--<a class="nav-link" id="list-tab" data-toggle="tab" href="#list-box" role="tab"--%>
@@ -159,36 +419,85 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                     <a class="nav-link" id="sd-tab" data-toggle="tab" href="#sd-box" role="tab"
                        aria-controls="sd-tab" aria-selected="false">Link Detection
                     </a>
-                    <span class="tooltiptext">The Link Detection service finds similar or related items based on the textual fields. The accepted and rejected links are NOT written to Jira.</span>
+                    <span class="tooltiptext">The Link Detection service finds similar or related items based on the textual fields. The limit is set to 5, so after accepting or rejecting recommended links, there might be more, although with a lower score. The accepted and rejected links are NOT written to Jira.</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="cc-tab" data-toggle="tab" href="#cc-box" role="tab"
                        aria-controls="cc-tab" aria-selected="false">Consistency Checker
                     </a>
-                    <span class="tooltiptext">The Consistency Checker verifies the viability of the release plan regarding the issue link map. <br>For example if a feature is required by another one, it is not assigned to later release.</span>
+                    <span class="tooltiptext">The Consistency Checker verifies the viability of the release plan regarding the issue link map, e.g. if a feature is required by another one, it is not assigned to later release. The Consistency Checker checks consistency always to depth 5. Currently links between projects are ignored by the Consistency Checker.</span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="filter-tab" data-toggle="tab" href="#filter-box" role="tab"
                        aria-controls="filter-tab" aria-selected="false">Node Filter
                     </a>
+                    <span class="tooltiptext">The Node Filter tab contains the properties to filter the issues by, these are status, type and priority.</span>
                 </li>
             </ul>
         ##            <%--Information box--%>
             <div class="tab-content" id="tabs-tabContent">
                 <div class="tab-pane fade show active" id="info-box" role="tabpanel"
                      aria-labelledby="info-tab">
-                    <h5 id="infoBoxHeading"></h5>
-                    <p id="infoBoxIssueSummary"></p>
-                    <p id="infoBoxIssueStatus"></p>
-                    <p id="infoBoxIssueType"></p>
-                    <p id="infoBoxIssuePrio"></p>
-                    <p id="infoBoxIssueResolution"></p>
-                    <p id="infoBoxIssueComponent"></p>
-                    <p id="infoBoxIssueLabel"></p>
-                    <p id="infoBoxIssueVersion"></p>
-                    <p id="infoBoxIssueFix"></p>
-                    <p id="infoBoxIssuePlatform"></p>
-                    <p id="infoBoxIssueEnv"></p>
+                    <h5 style="color: #0052cc" id="infoBoxHeading"></h5>
+                    <table style="border-collapse: collapse; text-align-all:left" id="infoTable">
+                        <tr>
+                            <td><strong>Summary</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueSummary"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueStatus"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueType"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Priority</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssuePrio"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Resolution</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueResolution"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Component</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueComponent"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Label</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueLabel"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Version</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueVersion"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fix Version</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueFix"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Platform(s)</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssuePlatform"></p></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Environment</strong></td>
+                            <td></td>
+                            <td><p id="infoBoxIssueEnv"></p></td>
+                        </tr>
+                    </table>
+                    <p id="infoOther"></p>
+                    <br>
                     <div id="infoBoxIssueLink"></div>
                     <br>
                 ##                    <%--<div id="infoBoxIssueLinkTestJIRA"></div>--%>
@@ -202,17 +511,40 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                     <p id="ddResult"></p>
                     <p id="ddPending"></p>
                 </div>
+            ##            </div>
+            ##        </div>
+            ##    </div>
+            ##</div>
                 <div class="tab-pane fade" id="cc-box" role="tabpanel" aria-labelledby="cc-tab">
-                    <p id="ccResult"></p>
-                    <button class="accordion" id="ccRelIncButton">Inconsistent releases</button>
-                    <div class="panel"><p id="ccRelInc"></p></div>
-                    <button class="accordion" id="ccReleasesButton">Releases</button>
-                    <div class="panel"><p id="ccReleases"></p></div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div id="ccResult"></div>
+                        </div>
+                        <div class="col-4">
+                            <button class='button button-effect' onclick='getInconsistencies()'
+                                    id='ccInconsistencisBtn'
+                                    style="display: none;">Get inconsistencies
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="accordion" id="ccRelIncButton" style="display: none">Inconsistent releases
+                        </button>
+                        <div class="panel"><p id="ccRelInc" style="display: none"></p></div>
+                    </div>
+                    <div class="row">
+                        <button class="accordion" id="ccReleasesButton">Releases</button>
+                        <div class="panel"><p id="ccReleases"></p></div>
+                    </div>
+                    <div class="row">
+                        <button class="accordion" id="ccRelIgnoredButton" style="display: none">Ignored links
+                        </button>
+                        <div class="panel"><p id="ccRelIgnored" style="display: none"></p></div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="filter-box" role="tabpanel" aria-labelledby="filter-tab">
-                    <p>Only issues with one of the selected statuses and types will be displayed.</p>
                     <div class="filterOptions">
-                        <h5>Statuses:</h5>
+                        <h5>Status</h5>
                         <span style="color: #4a6685">
                             <label>
                                 <input name="ToDoStatus" type="checkbox" checked="checked" id="todos-toggle">
@@ -327,41 +659,49 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                                 <strong> Toggle All Statuses </strong>
                             </label>
                         </span>
-                        <h5>Types:</h5>
+                        <br>
+
+                        <h5>Type</h5>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="task"/>
-                                Task
+                                 <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/task.png"
+                                      width="20" height="20" alt="task"/> Task
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="bug"/>
-                                Bug
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/bug.png"
+                                     width="20" height="20" alt="bug"/> Bug
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="issue"/>
-                                Issue
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png"
+                                     width="20" height="20" alt="suggestion"/> Issue
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="epic"/>
-                                Epic
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/epic.png"
+                                     width="20" height="20" alt="epic"/> Epic
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="user_story"/>
-                                User Story
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/user-story.png"
+                                     width="20" height="20" alt="user-story"/> User Story
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Type" type="checkbox" checked="checked" value="suggestion"/>
-                                Suggestion
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/suggestion.png"
+                                     width="20" height="20" alt="suggestion"/> Suggestion
                             </label>
                         </span>
                         <span>
@@ -377,48 +717,54 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                                 <strong> Toggle All Types </strong>
                             </label>
                         </span>
-                        <br>
-                        <h5>Priority:</h5>
+                        <h5>Priority</h5>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="0"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/0.png" width="20" height="20" alt="P0: Blocker"/>P0: Blocker
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/0.png"
+                                     width="20" height="20" alt="P0: Blocker"/>P0: Blocker
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="1"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/1.png" width="20" height="20" alt="P1: Critical"/>P1: Critical
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/1.png"
+                                     width="20" height="20" alt="P1: Critical"/>P1: Critical
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="2"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/2.png" width="20" height="20" alt="P2: Important"/>P2: Important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/2.png"
+                                     width="20" height="20" alt="P2: Important"/>P2: Important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="3"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/3.png" width="20" height="20" alt="P3: Somewhat important"/>P3: Somewhat important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/3.png"
+                                     width="20" height="20" alt="P3: Somewhat important"/>P3: Somewhat important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="4"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/4.png" width="20" height="20" alt="P4: Low"/>P4: Low
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/4.png"
+                                     width="20" height="20" alt="P4: Low"/>P4: Low
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="5"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/5.png" width="20" height="20" alt="P5: Not important"/>P5: Not important
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/5.png"
+                                     width="20" height="20" alt="P5: Not important"/>P5: Not important
                             </label>
                         </span>
                         <span>
                             <label>
                                 <input name="Priority" type="checkbox" checked="checked" value="7"/>
-                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/7.png" width="20" height="20" alt="Not evaluated"/>Not evaluated
+                                <img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/7.png"
+                                     width="20" height="20" alt="Not evaluated"/>Not evaluated
                             </label>
                         </span>
                         <br>
@@ -431,17 +777,17 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                         <br>
                         <input id="filter-search" type="button" class="button search button-effect"
                                value="Apply filter"/>
+
+                        <p id="filterOptions"></p>
                     </div>
-                    <p id="filterOptions"></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
 <script>
-
-
 
 
 </script>

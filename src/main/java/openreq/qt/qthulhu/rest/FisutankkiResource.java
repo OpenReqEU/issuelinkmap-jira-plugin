@@ -25,13 +25,12 @@ import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
+import java.util.ArrayList;
 
 import openreq.qt.qthulhu.data.NodeEdgeSetBuilder;
 
 @Path("")
-public class FisutankkiResource
-{
+public class FisutankkiResource {
 
     @Inject
     private MillaService millaService;
@@ -39,28 +38,23 @@ public class FisutankkiResource
     @Inject
     private JiraService jiraService;
 
-
     @GET
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getTransitiveClosureOfRequirement")
-    public Response getTransitiveClosure(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount")
-            Integer layerCount) throws JqlParseException, SearchException, IOException, JSONException
-    {
+    public Response getTransitiveClosure(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount") Integer layerCount) throws JqlParseException, SearchException, IOException, JSONException {
 
         Gson gson = new Gson();
         ObjectMapper mapper = new ObjectMapper();
 
-        if (layerCount == null)
-        {
+        if (layerCount == null) {
             layerCount = 5;
         }
 
         String reqIdsString = "";
         String issue = "";
 
-        for (String id : requirementId)
-        {
+        for (String id : requirementId) {
             reqIdsString = reqIdsString + "&requirementId=" + id;
             //usually the list contains only one issue
             issue = id;
@@ -70,29 +64,26 @@ public class FisutankkiResource
 
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
-        
-        if (response == null)
-        {
+
+        if (response == null) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Error connecting to Milla\"}").build();
         }
 
         MillaResponse closure;
 
-        try
-        {
+        try {
             // Parse the response JSON string to MillaResponse
             closure = mapper.readValue(response, MillaResponse.class);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             JSONObject error = new JSONObject();
             error.put("error", e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
         }
+
         List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
         closure.setRequirements(filtered);
 
-        JsonObject responseJSON = gson.toJsonTree(closure).getAsJsonObject();    
+        JsonObject responseJSON = gson.toJsonTree(closure).getAsJsonObject();
 
         JsonObject nodeEdgeSet = NodeEdgeSetBuilder.buildNodeEdgeSet(responseJSON, issue, false);
         String nodeEdgeString = nodeEdgeSet.toString();
@@ -104,20 +95,20 @@ public class FisutankkiResource
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getTopProposedDependenciesOfRequirement")
-    public Response topProposed(@QueryParam("requirementId") List<String> requirementId, @QueryParam("maxResults")
-            Integer maxResults) throws IOException, JqlParseException, SearchException, JSONException
-    {
+    public Response topProposed(@QueryParam("requirementId") List<String> requirementId, @QueryParam("maxResults") Integer maxResults) throws IOException, JqlParseException, SearchException, JSONException {
 
+        Gson gson = new Gson();
         String reqIdsString = "";
+        String issue = "";
 
-        if (maxResults == null)
-        {
+        if (maxResults == null) {
             maxResults = 0;
         }
 
-        for (String id : requirementId)
-        {
+        for (String id : requirementId) {
             reqIdsString = reqIdsString + "&requirementId=" + id;
+            //usually the list contains only one issue
+            issue = id;
         }
 
         String urlTail = "/getTopProposedDependenciesOfRequirement?maxResults=" + maxResults + reqIdsString;
@@ -125,45 +116,50 @@ public class FisutankkiResource
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
 
-        if (response == null)
-        {
+        if (response == null) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Error connecting to Milla\"}").build();
         }
 
-        MillaResponse closure;
+        MillaResponse proposedDependencies;
 
-        try
-        {
+        try {
             ObjectMapper mapper = new ObjectMapper();
-            closure = mapper.readValue(response, MillaResponse.class);
-        }
-        catch (IOException e)
-        {
+            proposedDependencies = mapper.readValue(response, MillaResponse.class);
+        } catch (IOException e) {
             JSONObject error = new JSONObject();
-            error.put("error", response);
+            error.put("error", e.getMessage());
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error.toString()).build();
         }
 
-        List<Requirement> filtered = jiraService.filterRequirements(closure.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
-        closure.setRequirements(filtered);
+        List<Requirement> filtered = jiraService.filterRequirements(proposedDependencies.getRequirements(), ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
+        proposedDependencies.setRequirements(filtered);
 
-        return Response.ok(closure).build();
+        JsonObject responseJSON = gson.toJsonTree(proposedDependencies).getAsJsonObject();
+
+        JsonObject proposedNodeEdgeSet = NodeEdgeSetBuilder.buildNodeEdgeSet(responseJSON, issue, true);
+        String proposedNodeEdgeString = proposedNodeEdgeSet.toString();
+
+        return Response.ok(proposedNodeEdgeString).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/updateProposedDependencies")
-    public Response sendUpdatedDependencies(List<Dependency> dependencies) throws JqlParseException, SearchException, CreateException, IOException
-    {
+    public Response sendUpdatedDependencies(List<Dependency> dependencies) throws JqlParseException, SearchException, CreateException, IOException {
+        String response = "Jira response:\n" + jiraService.setAcceptedInJira(dependencies, ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
 
         String urlTail = "/updateProposedDependencies";
 
+        dependencies.forEach((dep) -> {
+            dep.setDescription(new ArrayList<>());
+        });
+        
         ObjectMapper mapper = new ObjectMapper();
         String dependencyJson = mapper.writeValueAsString(dependencies);
 
         // Forward the call to OpenReq services in localhost
-        String response = "\n\nMilla response:\n\n" + millaService.getResponseFromMilla(urlTail, dependencyJson, true);
+        response += "\n\nMilla response:\n\n" + millaService.getResponseFromMilla(urlTail, dependencyJson, true);
 
         return Response.ok(response).build();
     }
@@ -172,27 +168,29 @@ public class FisutankkiResource
     @AnonymousAllowed
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/getConsistencyCheckForRequirement")
-    public Response consistencyCheck(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount")
-            Integer layerCount, @QueryParam("timeOut") Integer timeOut) throws IOException
-    {
+    public Response consistencyCheck(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount") Integer layerCount, @QueryParam("timeOut") Integer timeOut, @QueryParam("omitCrossProject") Boolean omitCrossProject, @QueryParam("analysisOnly") Boolean analysisOnly) throws IOException {
 
-        if (layerCount == null)
-        {
+        if (layerCount == null) {
             layerCount = 5;
         }
-        if (timeOut == null)
-        {
+        if (timeOut == null) {
             timeOut = 0;
+        }
+        //currently crossProject does not work
+        if (omitCrossProject == null) {
+            omitCrossProject = true;
+        }
+        if (analysisOnly == null) {
+            analysisOnly = true;
         }
 
         String reqIdsString = "";
 
-        for (String id : requirementId)
-        {
+        for (String id : requirementId) {
             reqIdsString = reqIdsString + "&requirementId=" + id;
         }
 
-        String urlTail = "/getConsistencyCheckForRequirement?layerCount=" + layerCount + "&timeOut=" + timeOut + reqIdsString;
+        String urlTail = "/getConsistencyCheckForRequirement?layerCount=" + layerCount + "&omitCrossProject=" + omitCrossProject + "&timeOut=" + timeOut + reqIdsString + "&analysisOnly=" + analysisOnly ;
 
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
@@ -200,10 +198,8 @@ public class FisutankkiResource
         return checkNull(response);
     }
 
-    private Response checkNull(String responseString)
-    {
-        if (responseString == null)
-        {
+    private Response checkNull(String responseString) {
+        if (responseString == null) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error connecting to Milla").build();
         }
         return Response.ok(responseString).build();

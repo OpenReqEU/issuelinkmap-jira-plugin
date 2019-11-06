@@ -31,7 +31,7 @@ public class MillaResponse {
 
     private Map<Integer, List<String>> layers;
 
-    private Integer numberOfOutpointingRelations;
+    private int numberOfOutpointingRelations;
 
     public List<Project> getProjects() {
         return projects;
@@ -65,11 +65,11 @@ public class MillaResponse {
         this.layers = layers;
     }
 
-    public Integer getNumberOfOutpointingRelations() {
+    public int getNumberOfOutpointingRelations() {
         return numberOfOutpointingRelations;
     }
 
-    public void setNumberOfOutpointingRelations(Integer numberOfOutpointingRelations) {
+    public void setNumberOfOutpointingRelations(int numberOfOutpointingRelations) {
         this.numberOfOutpointingRelations = numberOfOutpointingRelations;
     }
 

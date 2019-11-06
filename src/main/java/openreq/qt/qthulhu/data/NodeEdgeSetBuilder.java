@@ -90,26 +90,26 @@ public class NodeEdgeSetBuilder
             }
         }
 
-        JsonObject depthNodeEdgeSet = buildDepthNodeEdgeSet(reqs, deps, isProposed);
+        JsonObject depthNodeEdgeSet = buildDepthNodeEdgeSet(reqs, deps, isProposed, issue);
         depthNodeEdgeSet.addProperty("max_depth", maxLayer);
 
         //if this is a proposed set the "core" issue itself should not be proposed
-        if (isProposed)
-        {
-            JsonArray proposedReqs = depthNodeEdgeSet.getAsJsonArray("nodes");
-            for (int i = 0; i < proposedReqs.size(); i++)
-            {
-                JsonObject currentNode = proposedReqs.get(i).getAsJsonObject();
-                if (currentNode.get("id").getAsString().equals(issue))
-                {
-                    //proposedReqs.remove(i);
-                }
-            }
-        }
+//        if (isProposed)
+//        {
+//            JsonArray proposedReqs = depthNodeEdgeSet.getAsJsonArray("nodes");
+//            for (int i = 0; i < proposedReqs.size(); i++)
+//            {
+//                JsonObject currentNode = proposedReqs.get(i).getAsJsonObject();
+//                if (currentNode.get("id").getAsString().equals(issue))
+//                {
+//                    proposedReqs.remove(i);
+//                }
+//            }
+//        }
         return depthNodeEdgeSet;
     }
 
-    static JsonObject buildDepthNodeEdgeSet(JsonArray reqs, JsonArray deps, boolean isProposed)
+    static JsonObject buildDepthNodeEdgeSet(JsonArray reqs, JsonArray deps, boolean isProposed, String issue)
     {
         JsonObject depthNodeEdgeSet = new JsonObject();
 
@@ -128,13 +128,13 @@ public class NodeEdgeSetBuilder
             }
         }
         depthNodeEdgeSet.add("nodes", new JsonArray());
-        depthNodeEdgeSet = buildNodes(reqs, depthNodeEdgeSet, isProposed);
+        depthNodeEdgeSet = buildNodes(reqs, depthNodeEdgeSet, isProposed, issue);
         depthNodeEdgeSet = buildEdges(deps, depthNodeEdgeSet, isProposed);
 
         return depthNodeEdgeSet;
     }
 
-    private static JsonObject buildNodes(JsonArray reqs, JsonObject depthNodeEdgeSet, boolean isProposed)
+    private static JsonObject buildNodes(JsonArray reqs, JsonObject depthNodeEdgeSet, boolean isProposed, String issue)
     {
         String placeholder;
         int reqLayer;
@@ -146,6 +146,7 @@ public class NodeEdgeSetBuilder
             String reqKey = currentReq.get("id").getAsString();
             long nodeId = calculateUniqueID(reqKey);
             currentReq.addProperty("nodeid", nodeId);
+
 
             //add layer information to issue data if it is not a proposed set
             if (!isProposed) {
@@ -170,9 +171,9 @@ public class NodeEdgeSetBuilder
                 currentReq.add("requirementParts", new JsonArray());
                 if (reqKey.contains("mock")) //mocks are placeholder and not real issues
                 {
-                    placeholder = nameCleaned = "not in DB";
+                    placeholder = nameCleaned = "not in database";
                 }
-                else // no name - means it's a private issue
+                else // no name - means it's a private issue (usually)
                 {
                     placeholder = nameCleaned = "confidential";
                 }
@@ -213,13 +214,14 @@ public class NodeEdgeSetBuilder
                 JsonObject req = new JsonObject();
                 req.addProperty("id", keyId);
                 req.addProperty("nodeid", idMap.get(keyId));
-                req.addProperty("name", "Not in DB");
-                req.addProperty("requirement_type", "Not in DB");
-                req.addProperty("status", "Not in DB");
-                req.addProperty("resolution", "Not in DB");
+                req.addProperty("name", "not in database");
+                req.addProperty("requirement_type", "not in database");
+                req.addProperty("status", "not in database");
+                req.addProperty("resolution", "not in database");
+                req.addProperty("priority", "not in database");
                 req.add("requirementParts", new JsonArray());
                 JsonArray parts = req.getAsJsonArray("requirementParts");
-                parts = HelperFunctions.fillParts(parts, "Not in DB");
+                parts = HelperFunctions.fillParts(parts, "not in database");
                 for (int k = 0; k < parts.size(); k++)
                 {
                     JsonObject part = parts.get(k).getAsJsonObject();

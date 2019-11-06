@@ -4,7 +4,7 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 <head>
 
     <meta charset="UTF-8">
-    <title>WP7 - Qt trial</title>
+    <title>IssueLinkMap</title>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
@@ -28,15 +28,27 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 <body>
 
 <div class="topnav">
-    <a href="https://openreq.eu/"><img alt="or_logo"
+    <div class="link-container">
+        <a href="https://openreq.eu/"><img alt="or_logo"
                                        src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
                                        width="40px" height="40px"/></a>
-##    <a href="https://bugreports.qt.io/browse/">Qt's Jira</a>
-
-
     <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
-    <a href="./LinkMapWebworkAction.jspa">Return to Homepage</a>
-
+    <a href="./LinkMapWebworkAction.jspa">Return to Info Page</a>
+    </div>
+    <div class="text-container">
+        <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback through
+            the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
+            this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>
+    </div>
+    <div class="search-container">
+        <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" name="search">
+            <button type="submit"><em class="fa fa-search" style="color: #deebff;"></em></button>
+            <input type="text" name="issue" id="issueInput" required="required" placeholder="Issue Key..."
+                   style="margin-right: 20px">
+            <input type="number" name="depth" id="depthInput" min="1" max="5" placeholder="Depth..."
+                   style="margin-right: 20px">
+        </form>
+    </div>
 </div>
 
 <div class="container-fluid" style="padding-left: 50px; padding-top: 30px">
@@ -50,12 +62,12 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 <div class="container" style="padding-left: 50px; padding-top: 50px">
     <div class="row">
         <div class="col-8">
-            <h1>Sorry, I could not find the page you were looking for.</h1>
-            <h3>Searched issue key </h3>
-            <h3 id="issue_placeholder"></h3>
-            <h3> does not exist or access to it is limited, please check that you wrote the issue key correctly.</h3>
+            <h3>Sorry, I could not find the page you were looking for.</h3>
+            <h5>Searched issue key </h5>
+            <h5 id="issue_placeholder"></h5>
+            <h5> does not exist or access to it is limited, please check that you wrote the issue key correctly.</h5>
             <h3>Thank you.</h3>
-            <a href="./LinkMapWebworkAction.jspa" class="button back button-effect-orange">&#171 Go to Main Page</a>
+            <a href="./LinkMapWebworkAction.jspa" class="button button-effect">&#171 Go to Info Page</a>
         </div>
         <div class="col-4">
 <pre>

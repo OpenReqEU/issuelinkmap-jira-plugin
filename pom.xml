@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>openreq.qt.issuelinkmap-jira-plugin</groupId>
     <artifactId>issuelinkmap-jira-plugin</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.12</version>
     <organization>
         <name>Qt Company</name>
         <url>http://www.openreq.eu/</url>
@@ -23,6 +23,7 @@
         <!-- This is not normally recommended, but may be required eg when migrating a plugin originally developed against JIRA 4.x -->
         <!--
         <dependency>
+        
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-core</artifactId>
             <version>${jira.version}</version>
@@ -198,25 +199,47 @@
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.atlassian.plugin</groupId>-->
+<!--                <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>-->
+<!--                <version>${atlassian.spring.scanner.version}</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>atlassian-spring-scanner</goal>-->
+<!--                        </goals>-->
+<!--                        &lt;!&ndash; process-classes seems to be skipped if you are using scala-->
+<!--                             so perhaps use prepare-package &ndash;&gt;-->
+<!--                        <phase>process-classes</phase>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash; Enable this to get build-time logging of annotations atlassian-spring-scanner-maven-plugin has noticed &ndash;&gt;-->
+<!--                    <verbose>false</verbose>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--For SonarQube            -->
             <plugin>
-                <groupId>com.atlassian.plugin</groupId>
-                <artifactId>atlassian-spring-scanner-maven-plugin</artifactId>
-                <version>${atlassian.spring.scanner.version}</version>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.0</version>
                 <executions>
                     <execution>
+                        <id>default-prepare-agent</id>
                         <goals>
-                            <goal>atlassian-spring-scanner</goal>
+                            <goal>prepare-agent</goal>
                         </goals>
-                        <!-- process-classes seems to be skipped if you are using scala
-                             so perhaps use prepare-package -->
-                        <phase>process-classes</phase>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <!-- Enable this to get build-time logging of annotations atlassian-spring-scanner-maven-plugin has noticed -->
-                    <verbose>false</verbose>
-                </configuration>
             </plugin>
+
         </plugins>
     </build>
     <properties>

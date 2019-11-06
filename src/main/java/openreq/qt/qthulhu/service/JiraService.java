@@ -110,8 +110,8 @@ public class JiraService implements JiraApi{
                 if (results.getIssues().size()==2) {
                     Issue fromIssue = results.getIssues().get(0);
                     Issue toIssue = results.getIssues().get(1);
-                    String type = dep.getDependency_type();
-                    String typeCapitalized = type.substring(0, 1).toUpperCase() + type.substring(1);
+                    String type = dep.getDescription().get(0);
+                    String typeCapitalized = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
                     Collection<IssueLinkType> issueTypes = iltm.getIssueLinkTypesByName(typeCapitalized);
                     if (issueTypes.size()>0) {
                         Long typeId = issueTypes.iterator().next().getId();
@@ -125,6 +125,10 @@ public class JiraService implements JiraApi{
             }
         }
 
+        if (result.isEmpty()) {
+            result = "No changes made";
+        }
+        
         return result;
     }
 
