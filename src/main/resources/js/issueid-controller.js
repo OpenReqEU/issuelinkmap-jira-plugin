@@ -216,8 +216,8 @@ AJS.toInit(function ()
                         var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
                         var json = JSON.parse(jsonPart);
 
-                        console.log("Analysis only");
-                        console.log(json);
+                        // console.log("Analysis only");
+                        // console.log(json);
 
                         var releases = json.response[0].Releases;
                         var regsInReleases = "";
@@ -229,7 +229,7 @@ AJS.toInit(function ()
 
                         var ignoredRelList = "";
                         var relIgnored = json.response[0].RelationshipsIgnored;
-                        console.log(relIgnored)
+                        // console.log(relIgnored)
                         ignoredRelList = ignoredRelList + "<br>" +
                             "<table style='width: 100%'><tr>\n" +
                             "<th>Issue Keys</th>" +
