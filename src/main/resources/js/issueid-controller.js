@@ -943,14 +943,27 @@ function createDepthLevelNodes(nodeEdgeObject)
         } else
             nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n not specified");
         var nodetitle = "";
-        if (nodename.toString().length > 20)
-        {
-            nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("...\n");
-        } else
-        {
-            nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("\n")
-        }
+        // if (nodename.toString().length > 20)
+        // {
+        //     nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("...\n");
+        // } else
+        // {
+        //     nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("\n");
+        // }
         //blub
+        var lenOfLine = 20;
+        var titleWords = nodename.toString().split(" ");
+        var lenCounter = 0;
+        for (var j = 0; j < titleWords.length; j++)
+        {
+            if(lenCounter > lenOfLine)
+            {
+                nodetitle = nodetitle + "<br>";
+                lenCounter = 0;
+            }
+            nodetitle = nodetitle + titleWords[j] + " ";
+            lenCounter = lenCounter + titleWords[j].length;
+        }
 
         depthLevelNodes.push({
             id: ID,
@@ -1759,13 +1772,11 @@ function initNetwork()
     {
         params.event = "[original event]";
 
-
         var node = nodes.get(params.nodes);
         var issueID = node[0].id;
         var issueNode = findElement(nodeEdgeObject.nodes, "nodeid", issueID);
         if (typeof issueNode !== 'undefined')
         {
-
             currentIssue = issueNode.id;
             if (infoTabActive)
             {

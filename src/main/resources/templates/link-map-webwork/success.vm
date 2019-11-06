@@ -26,7 +26,7 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
     </div>
 
     <div class="text-container">
-        Version 1.1.14
+        Version 1.2.1
         <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback through
             the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
             this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>

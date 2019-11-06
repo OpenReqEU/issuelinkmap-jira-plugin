@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>openreq.qt.issuelinkmap-jira-plugin</groupId>
     <artifactId>issuelinkmap-jira-plugin</artifactId>
-    <version>1.1.14</version>
+    <version>1.2.1</version>
     <organization>
         <name>Qt Company</name>
         <url>http://www.openreq.eu/</url>
