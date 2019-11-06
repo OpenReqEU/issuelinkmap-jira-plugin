@@ -390,6 +390,7 @@
     background-color: white;
     display: none;
     overflow: hidden;
+    width: 100%;
     border: solid 1px lightgray;
 }
 

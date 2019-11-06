@@ -18,16 +18,13 @@ import java.util.logging.Logger;
 public class MillaService implements MillaApi
 {
     private final MillaResponseHandler responseHandler;
-
     private final RequestFactory requestFactory;
-
 
     @Inject
     public MillaService(@ComponentImport RequestFactory requestFactory) {
         this.requestFactory = requestFactory;
         this.responseHandler = new MillaResponseHandler(String.class);
     }
-
 
     // method to handle out-going rest-call to OpenReq infra in localhost
     @Override
