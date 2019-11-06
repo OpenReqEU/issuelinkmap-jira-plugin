@@ -202,17 +202,21 @@ AJS.toInit(function ()
         {
             try
             {
+                console.log("hi");
                 var xhr = new XMLHttpRequest();
 
                 var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=true";
                 xhr.open("GET", url, true);
-
+                console.log("whatup");
                 document.getElementById('ccResult').innerHTML = '<h5><font color=\"#0052CC\">Pending...</font></h5>';
                 document.getElementById('ccReleasesButton').innerHTML = "Searching for releases in link map...";
+                console.log("why not working?")
                 xhr.onreadystatechange = function ()
                 {
+
                     if (xhr.readyState === 4 && xhr.status === 200)
                     {
+
                         var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
                         var json = JSON.parse(jsonPart);
 
