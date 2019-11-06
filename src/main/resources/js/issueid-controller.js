@@ -289,14 +289,13 @@ AJS.toInit(function ()
 
     document.getElementById('filter-tab').onclick = function filterNodesTab()
     {
-        if (proposedViewActive)
-        {
-            nodes.remove(proposedNodeElements);
-            edges.remove(proposedEdgeElements);
-            proposedViewActive = false;
-        }
-        infoTabActive = false;
-
+        // if (proposedViewActive)
+        // {
+        //     nodes.remove(proposedNodeElements);
+        //     edges.remove(proposedEdgeElements);
+        //     proposedViewActive = false;
+        // }
+        // infoTabActive = false;
         filterNodes();
     };
 
