@@ -27,7 +27,7 @@ $webResourceManager.requireResource(
     </div>
 
     <div class="text-container">
-                <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback
+        <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback
             through
             the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
             this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>
@@ -43,46 +43,44 @@ $webResourceManager.requireResource(
         <h2>WP7 - Qt Trial</h2>
     </div>
 
-    <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" style="display:inline-block;">
-        <fieldset>
-            <div class="row">
-                <div class="col-4">
-                    <h5>Issue Key(s):</h5>
-                    <input type="text" name="issue" id="issue" required="required" width="200px"><br>
-                    <i>
-                        <small>Search for an issue key.<br>
+    <div class="col-10">
+        <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" style="display:inline-block;">
+            <fieldset>
+                <table style="border-collapse: collapse; text-align-all:left">
+
+                    <tr>
+                        <th>Issue Key</th>
+                        <th>Depth</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="issue" id="issue" required="required" width="200px"></td>
+                        <td><input type="number" name="depth" id="layerDepth" min="1" max="5" width="100px"></td>
+                        <td><input type="submit"
+                                   class="button search button-effect"
+                                   value="Search"></td>
+                    </tr>
+                    <tr>
+
+                    </tr>
+                    <td><i>
+                        <small>Enter an issue key.
                         </small>
                     </i>
-                </div>
-
-                <div class="col-4">
-                    <h5>Depth:</h5>
-                    <input type="number" name="depth" id="layerDepth" min="1" max="5" width="100px"><br>
-                    <i>
-                        <small>Enter a number between 1 and 5.<br>
+                    </td>
+                    <td><i>
+                        <small>Enter a number between 1 and 5.
                         </small>
                     </i>
-                </div>
-
-
-                <div class="col-2">
-                    <br>
-
-                    <input type="submit"
-                           class="button search button-effect"
-                           value="Search">
-                </div>
-
-                <div class="col-2">
-                    <br>
-                    <div class="loader" id="loader"></div>
-                </div>
-            </div>
-        </fieldset>
-    </form>
-
-
-    <br>
+                    </td>
+                    <td></td>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+    <div class="col-2">
+        <div class="loader" id="loader"></div>
+    </div>
     <div class="row">
         <div class="card">
             <div class="card-body">
@@ -115,8 +113,7 @@ $webResourceManager.requireResource(
                     Thus, some nodes might be orphaned with not apparent connection to the searched issue key. </p>
                 <h5 class="card-title">Link Detection</h5>
                 <p class="card-text">Use the link detection to find issues which might be related to the current
-                    selected issue. Attention: The accepted and rejected links are <strong>not</strong> automatically
-                    transferred to the Jira database.</p>
+                    selected issue.</p>
                 <h5 class="card-title">Consistency Checker</h5>
                 <p class="card-text">The Consistency Checker verifies the viability of the release plan of the issues
                     contained in the
@@ -137,8 +134,9 @@ $webResourceManager.requireResource(
                     <br>
                     If you like the prototype so far, feel free to check out the code <a target="_blank"
                                                                                          href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin">here</a>
-                    and contribute if you like to. Thank you.
+                    and contribute if you like to.
                 </p>
+                <h4 class="card-title">Thank you.</h4>
             </div>
         </div>
     </div>
