@@ -29,14 +29,18 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 
 <div class="topnav">
     <div class="link-container">
-        <a href="https://openreq.eu/"><img alt="or_logo"
-                                       src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
-                                       width="40px" height="40px"/></a>
-    <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
-    <a href="./LinkMapWebworkAction.jspa">Return to Info Page</a>
+        <a target="_blank" href="https://openreq.eu/" style="padding: 0"><img alt="or_logo"
+                                                                              src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
+                                                                              width="40px" height="40px"/></a>
+    ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
+    ##    <%--<a target="_blank" href="https://forum.qt.io/">Qt Forum</a>--%>
+    ##    <%--<a target="_blank" href="https://forms.gle/GQQhym7obLEss3bCA">Feedback</a>--%>
+        <a class="button-effect" href="./LinkMapWebworkAction.jspa">Return to Info Page</a>
+        <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
     </div>
     <div class="text-container">
-        <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback through
+        <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback
+            through
             the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
             this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>
     </div>
@@ -47,15 +51,8 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
                    style="margin-right: 20px">
             <input type="number" name="depth" id="depthInput" min="1" max="5" placeholder="Depth..."
                    style="margin-right: 20px">
+            <div class="loader" id="loader"></div>
         </form>
-    </div>
-</div>
-
-<div class="container-fluid" style="padding-left: 50px; padding-top: 30px">
-    <div class="row">
-        <p>
-            This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback through the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.
-        </p>
     </div>
 </div>
 

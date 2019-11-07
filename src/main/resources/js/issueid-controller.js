@@ -216,13 +216,8 @@ AJS.toInit(function ()
                         var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
                         var json = JSON.parse(jsonPart);
 
-                        console.log(jsonPart);
-                        console.log("Analysis only");
-                        console.log(json);
-
                         var releases = json.response[0].Releases;
                         var regsInReleases = "";
-                        console.log(releases);
                         for (var i = 0; i < releases.length; i++)
                         {
                             regsInReleases = regsInReleases + "<strong>Release " + releases[i].Release + "</strong><br>";
@@ -237,9 +232,8 @@ AJS.toInit(function ()
 
                         var ignoredRelList = "";
                         var relIgnored = json.response[0].RelationshipsIgnored;
-                        // console.log(relIgnored)
 
-                        if(relIgnored.length !== 0)
+                        if (relIgnored.length !== 0)
                         {
                             ignoredRelList = ignoredRelList + "<br>" +
                                 "<table style='width: 100%'><tr>\n" +
@@ -251,8 +245,7 @@ AJS.toInit(function ()
                                 ignoredRelList = ignoredRelList + "<tr><td>" + relIgnored[j].To + ", " + relIgnored[j].From + "</a></td><td>" + relIgnored[j].Type + "</td></tr>";
                             }
                             ignoredRelList = ignoredRelList + "</table>";
-                        }
-                        else
+                        } else
                         {
                             ignoredRelList = "<br>" + "There are no ignored links.";
                         }
@@ -955,7 +948,7 @@ function createDepthLevelNodes(nodeEdgeObject)
         var lenCounter = 0;
         for (var j = 0; j < titleWords.length; j++)
         {
-            if(lenCounter > lenOfLine)
+            if (lenCounter > lenOfLine)
             {
                 nodetitle = nodetitle + "<br>";
                 lenCounter = 0;
@@ -1241,13 +1234,13 @@ function proposedLinks()
                         for (var i = 0; i < proposedIssuesList.length; i++)
                         {
                             stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id + "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
-                                "<option value='REQUIRES'>dependency</option>" +
-                                "<option value='DUPLICATES'>duplicate</option>" +
-                                "<option value='DECOMPOSITION'>epic</option>" +
-                                "<option value='CONTRIBUTES'>relates</option>" +
-                                "<option value='REPLACES'>replacement</option>" +
-                                "<option value='DECOMPOSITION'>subtask</option>" +
-                                "<option value='REFINES'>work breakdown</option>" +
+                                "<option value='dependency'>dependency</option>" +
+                                "<option value='duplicate'>duplicate</option>" +
+                                "<option value='epic'>epic</option>" +
+                                "<option value='relates'>relates</option>" +
+                                "<option value='replacement'>replacement</option>" +
+                                "<option value='subtask'>subtask</option>" +
+                                "<option value='work breakdown'>work breakdown</option>" +
                                 "</select></div></td><td>"
                                 + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
                                 + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td></tr>";
@@ -1255,15 +1248,13 @@ function proposedLinks()
                         stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
                         document.getElementById('ddResult').innerHTML = stringList;
                     }
-                    console.log(proposedIssuesList);
                 }
-
             };
             xhr.send(null);
 
         } catch (err)
         {
-            document.getElementById('ddResult').innerHTML = "We are sorry, there was an error getting the proposed dependencies...";
+            document.getElementById('ddResult').innerHTML = "We are sorry, there was an error getting the proposed dependencies.";
             alert(err);
         }
     }
@@ -1350,6 +1341,16 @@ function registerClick(elem)
     }
 }
 
+var linktypeToOpenReqJSONPalette = {
+    'dependency': 'REQUIRES',
+    'duplicate': 'DUPLICATES',
+    'epic': 'DECOMPOSITION',
+    'relates': 'CONTRIBUTES',
+    'replacement': 'REPLACES',
+    'subtask': 'DECOMPOSITION',
+    'work breakdown': 'REFINES'
+};
+
 function sendLinkData()
 {
     var updatedProposedLinksJSON =
@@ -1378,13 +1379,8 @@ function sendLinkData()
             fromid: fromid,
             id: id,
             status: "PROPOSED",
-            toid: toid,
+            toid: toid
         });
-
-        // $('#issueInput').val(issueKey);
-        // $('#depthInput').val(depth);
-        // //
-        // document.forms["search-id"].submit();
     });
 
     for (var i = linkDetectionResponse.length - 1; i >= 0; i--)
@@ -1395,7 +1391,6 @@ function sendLinkData()
         var fromProject = fromID.substring(0, fromID.indexOf("-"));
         var toProject = toID.substring(0, toID.indexOf("-"));
 
-
         var index = Math.max(proposedIssueOrderLDR.indexOf(fromID), proposedIssueOrderLDR.indexOf(toID));
         if (index !== -1)
         {
@@ -1403,7 +1398,7 @@ function sendLinkData()
             {
                 if (linkDetectionResponse[index] !== "reject")
                 {
-                    updatedProposedLinksJSON.dependencies[i].dependency_type = linkDetectionResponse[index].toUpperCase();
+                    updatedProposedLinksJSON.dependencies[i].dependency_type = linktypeToOpenReqJSONPalette[linkDetectionResponse[index]];
                     updatedProposedLinksJSON.dependencies[i].status = "ACCEPTED";
                     updatedProposedLinksJSON.dependencies[i].description[0] = linkDetectionResponse[index];
 
@@ -1446,11 +1441,11 @@ function sendLinkData()
             }
         }
     }
+
     var updatedProposedLinksResponse = JSON.stringify(updatedProposedLinksJSON);
 
     try
     {
-
         var xhr = new XMLHttpRequest();
         var url = "../rest/issuesearch/1.0/updateProposedDependencies";
         xhr.open("POST", url, true);
@@ -1460,14 +1455,6 @@ function sendLinkData()
             if (xhr.readyState === 4 && xhr.status === 200)
             {
                 var response = xhr.responseText;
-                // if (projectsToUpdate.includes("QTBUG"))
-                // {
-                //     document.getElementById("ddPending").innerHTML += "<br><br>QTBUG is the largest project and will take a while to update. This can take up to 2 minutes. Thank you for your patience.";
-                // }
-                // for (var count = 0; count < projectsToUpdate.length; count++)
-                // {
-                //     sendProjectToMulperi(projectsToUpdate[count]);
-                // }
             }
         };
         // takes only the array out of the JSON
@@ -1487,32 +1474,6 @@ var proposedEdgeElements = [];
 var proposedNodesEdges = [];
 var proposedIssuesList = [];
 var numberOfProposedLinks = 0;
-
-//milla should update by itself
-// function sendProjectToMulperi(projectID)
-// {
-//     try {
-//         var xhr = new XMLHttpRequest();
-//         var url = "../rest/issuesearch/1.0/updateProposedDependencies";
-//         xhr.open("POST", url, true);
-//         xhr.setRequestHeader("Content-Type", "application/json");
-//         xhr.onreadystatechange = function ()
-// {
-//             if (xhr.readyState === 4 && xhr.status === 200)
-//             {
-//                 console.log(projectID + " done");
-//                 document.getElementById("ddPending").innerHTML = "The page will now reload.<br>If you have time to read this please reload the page manually.";
-//                 location.reload();
-//             }
-//         };
-//         xhr.send("");
-//     }
-//     catch
-//         (err)
-// {
-//         alert(err);
-//     }
-// }
 
 function filterNodes()
 {
@@ -1841,11 +1802,7 @@ function getInconsistencies()
             if (xhr.readyState === 4 && xhr.status === 200)
             {
                 var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
-                console.log(jsonPart);
                 var json = JSON.parse(jsonPart);
-
-                console.log("DIAGNOSIS");
-                console.log(json);
 
                 var relList = "";
 

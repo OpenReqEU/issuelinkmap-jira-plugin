@@ -27,19 +27,20 @@ $webResourceManager.requireResource(
     </div>
 
     <div class="text-container">
-        Version 1.2.2
-        <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback
+                <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback
             through
             the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
             this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>
     </div>
+
+    <div class="search-container">Version 1.2.3</div>
 
 </div>
 
 
 <div class="container" style="padding-top: 30px">
     <div class="row">
-        <h1>WP7 - Qt Trial</h1>
+        <h2>WP7 - Qt Trial</h2>
     </div>
 
     <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" style="display:inline-block;">
