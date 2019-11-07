@@ -95,48 +95,50 @@ to create the .jar needed to add the plug-in to your jira.
 ### How to use
 You can directly search for an issue [here](https://bugreports-test.qt.io/secure/LinkMapWebworkAction.jspa).
 
-![Search1](https://github.com/OpenReqEU/qthulhu/blob/master/pics/Search1.png)
+![Search1](https://github.com/OpenReqEU/issuelinkmap-jira-plugin/blob/version1.3/pics/Search1.png)
 
-for example Issue: QTWB-30 and layer 2.
+for example Issue: QTBUG-55604 and layer 2.
 
-![Search2](https://github.com/OpenReqEU/qthulhu/blob/master/pics/Search2.png)
+![Search2](https://github.com/OpenReqEU/issuelinkmap-jira-plugin/blob/version1.3/pics/Search2.png)
 
-which will then give you the LinkMap for issue QTWB-30 with layer 2.
+which will then give you the issue link map for issue QTBUG-55604 with layer 2.
 
-![LinkMapEx](https://github.com/OpenReqEU/qthulhu/blob/master/pics/ExampleLinkMap.png)
+![LinkMapEx](https://github.com/OpenReqEU/issuelinkmap-jira-plugin/blob/version1.3/pics/ExampleLinkMap.png)
 
-Alternatively, you can access the test instance of Qt's jira https://bugreports-test.qt.io/secure/Dashboard.jspa and search for an issue. On the view page you can scroll down Issue Links, underneath this you will find OpenReq Dependency Browser (old name, needs to be updated to OpenReq Link Map)
+Alternatively, you can access the test instance of Qt's jira https://bugreports-test.qt.io/secure/Dashboard.jspa and search for an issue. On the view page you can scroll down Issue Links, underneath this you will find OpenReq Issue Link Map.
 
-![Search3](https://github.com/OpenReqEU/qthulhu/blob/master/pics/Search3.png)
+![Search3](https://github.com/OpenReqEU/issuelinkmap-jira-plugin/blob/version1.3/pics/Search3.png)
 
 You then can use the node filter, to filter the link map for the status, type or priority. Per default, issues with status done are not shown.
 
-![Filter](https://github.com/OpenReqEU/qthulhu/blob/master/pics/Filter.png)
+![Filter](https://github.com/OpenReqEU/issuelinkmap-jira-plugin/blob/version1.3/pics/Filter.png)
 
-To check a release plan for inconsistencies in the issues and links, you can use the consistency checker. It searches the link map up to depth 5 for inconsistencies. It also lists all releases and the found inconsistencies.
+To check a release plan for inconsistencies in the issues and links, you can use the consistency checker. It searches the link map up to depth 5 for inconsistencies. It lists all releases and ignored links. If inconsistencies are found these can be shown by clicking "Find inconsistencies".
 
-![ConsistencyCheck](https://github.com/OpenReqEU/qthulhu/blob/master/pics/ConsistencyCheck.png)
+![ConsistencyCheck](https://github.com/OpenReqEU/issuelinkmap-jira-plugin/blob/version1.3/pics/ConsistencyCheck.png)
 
-The link detection searches for an issue potentially linked issues which are not linked in Jira. These missing links are then recommended and can be accepted or rejected by the users. Currently these changes are not written to the Jira database.
+The link detection searches for an issue potentially linked issues which are not linked in Jira. These missing links are then recommended and can be accepted or rejected by the users. 
 
-![LinkDetection](https://github.com/OpenReqEU/qthulhu/blob/master/pics/LinkDetection.png)
+![LinkDetection](https://github.com/OpenReqEU/issuelinkmap-jira-plugin/blob/version1.3/pics/LinkDetection.png)
 
 
 #### What does this application do?
 Visualising the link network, recommending missing links and checking the consistency of your release plans.
 
 ### What’s next?
-- Editing links on the fly
+- Bug hunting
+- Improving Consistency Checker UI
+- Editing links & issues on the fly
 
 ### Challenges
-Only the public issues are available. If a person has a Qt account, they should be able to see all the issues In the link map that they would be able to see in JIRA. Additionally, the ability to accept, reject and edit links need to be tied to the permisisons the user has in Jira.
+The ability to accept, reject and edit links need to be tied to the permisisons the user has in Jira.
 
 ### Technical structure
 ![techstructure](https://github.com/OpenReqEU/qthulhu/blob/master/pics/TechnicalStructure.png)
 The service sends a request (JIRA keys, e.g. “QTWB-30”) for data to milla and receives a JSON with the issue data. This data is then visualized.
 
 ## Notes for Developers
-I tried to comment most of the code to make it understandable.
+We tried to comment most of the code to make it understandable.
 The Java part just gets the data in a vis.js friendlier format. The javascript & HTML/CSS will get some more functionality in the next iterations.
 
 ## How to contribute
