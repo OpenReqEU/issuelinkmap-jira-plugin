@@ -532,6 +532,7 @@ select {
 th, td {
     text-align: left;
     vertical-align: top;
+    padding: 4px 10px;
 }
 
 /*Dropdown menu*/
@@ -569,6 +570,7 @@ th, td {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     font-size: 14px;
+    padding: 5px;
 }
 
 /* Show the dropdown menu on hover */

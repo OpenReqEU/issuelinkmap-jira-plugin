@@ -1549,7 +1549,6 @@ function filterNodes()
 
 function infoTab()
 {
-
     infoTabActive = true;
 
     if (proposedViewActive)
@@ -1598,6 +1597,7 @@ function infoTab()
 
     } else
     {
+        document.getElementById('infoTable').style.display = "block";
         //put the issues in the corressponding part of the website
         //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLink + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt JIRA</a>';
         document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';

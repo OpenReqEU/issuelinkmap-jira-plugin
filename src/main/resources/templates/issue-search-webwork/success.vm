@@ -487,63 +487,84 @@ $webResourceManager.requireResource(
                 <div class="tab-pane fade show active" id="info-box" role="tabpanel"
                      aria-labelledby="info-tab">
                     <h5 style="color: #0052cc" id="infoBoxHeading"></h5>
-                    <table style="border-collapse: collapse; text-align-all:left" id="infoTable">
-                        <tr>
-                            <td><strong>Summary</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueSummary"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Status</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueStatus"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Type</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueType"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Priority</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssuePrio"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Resolution</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueResolution"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Component</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueComponent"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Label</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueLabel"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Version</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueVersion"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Fix Version</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueFix"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Platform(s)</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssuePlatform"></p></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Environment</strong></td>
-                            <td></td>
-                            <td><p id="infoBoxIssueEnv"></p></td>
-                        </tr>
-                    </table>
+                ##                    <div id="infoTable">
+                ##                        <div class="col-4">
+                ##                            <div class="row"><strong>Summary</strong></div>
+                ##                            <div class="row"><strong>Status</strong></div>
+                ##                            <div class="row"><strong>Type</strong></div>
+                ##                            <div class="row"><strong>Priority</strong></div>
+                ##                            <div class="row"><strong>Resolution</strong></div>
+                ##                            <div class="row"><strong>Component</strong></div>
+                ##                            <div class="row"><strong>Label</strong></div>
+                ##                            <div class="row"><strong>Version</strong></div>
+                ##                            <div class="row"><strong>Fix Version</strong></div>
+                ##                            <div class="row"><strong>Platform(s)</strong></div>
+                ##                            <div class="row"><strong>Environment</strong></div>
+                ##                        </div>
+                ##                        <div class="col-8">
+                ##                            <div class="row"><p id="infoBoxIssueSummary"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssueStatus"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssueType"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssuePrio"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssueResolution"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssueComponent"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssueLabel"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssueVersion"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssueFix"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssuePlatform"></p></div>
+                ##                            <div class="row"><p id="infoBoxIssueEnv"></p></div>
+                ##                        </div>
+                ##                    </div>
+                    <div class="table-responsive">
+                        <table style="border-collapse: collapse; text-align-all:left; display: none"
+                               id="infoTable">
+                            <tr>
+                                <td><strong>Summary</strong></td>
+                                <td id="infoBoxIssueSummary"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Status</strong></td>
+                                <td id="infoBoxIssueStatus"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Type</strong></td>
+                                <td id="infoBoxIssueType"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Priority</strong></td>
+                                <td id="infoBoxIssuePrio"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resolution</strong></td>
+                                <td id="infoBoxIssueResolution"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Component</strong></td>
+                                <td id="infoBoxIssueComponent"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Label</strong></td>
+                                <td id="infoBoxIssueLabel"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Version</strong></td>
+                                <td id="infoBoxIssueVersion"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fix Version</strong></td>
+                                <td id="infoBoxIssueFix"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Platform(s)</strong></td>
+                                <td id="infoBoxIssuePlatform"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Environment</strong></td>
+                                <td id="infoBoxIssueEnv"></td>
+                            </tr>
+                        </table>
+                    </div>
+
                     <p id="infoOther"></p>
                     <br>
                     <div id="infoBoxIssueLink"></div>
