@@ -15,5 +15,4 @@ public class JiraRedirectionTest
 //        JiraRedirection jireRedirection = new JiraRedirection();
 //        System.out.print(jireRedirection.getContextMap(null, jiraHelper));
 ////        assertEquals("names do not match!", "myComponent",jireRedirection.getContextMap(null, null));
-    }
 }
