@@ -25,9 +25,9 @@ import com.atlassian.plugins.rest.common.security.AnonymousAllowed;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import java.util.ArrayList;
 
 import openreq.qt.qthulhu.data.NodeEdgeSetBuilder;
+import openreq.qt.qthulhu.rest.json.JiraChecked;
 
 @Path("")
 public class FisutankkiResource {
@@ -42,7 +42,8 @@ public class FisutankkiResource {
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getTransitiveClosureOfRequirement")
-    public Response getTransitiveClosure(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount") Integer layerCount) throws JqlParseException, SearchException, IOException, JSONException {
+    public Response getTransitiveClosure(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount") Integer layerCount) 
+            throws JqlParseException, SearchException, IOException, JSONException {
 
         Gson gson = new Gson();
         ObjectMapper mapper = new ObjectMapper();
@@ -95,7 +96,8 @@ public class FisutankkiResource {
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getTopProposedDependenciesOfRequirement")
-    public Response topProposed(@QueryParam("requirementId") List<String> requirementId, @QueryParam("maxResults") Integer maxResults) throws IOException, JqlParseException, SearchException, JSONException {
+    public Response topProposed(@QueryParam("requirementId") List<String> requirementId, @QueryParam("maxResults") Integer maxResults) 
+            throws IOException, JqlParseException, SearchException, JSONException {
 
         Gson gson = new Gson();
         String reqIdsString = "";
@@ -147,20 +149,22 @@ public class FisutankkiResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/updateProposedDependencies")
     public Response sendUpdatedDependencies(List<Dependency> dependencies) throws JqlParseException, SearchException, CreateException, IOException {
-        String response = "Jira response:\n" + jiraService.setAcceptedInJira(dependencies, ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
-
-        String urlTail = "/updateProposedDependencies";
-
-        dependencies.forEach((dep) -> {
-            dep.setDescription(new ArrayList<>());
-        });
+        JiraChecked results = jiraService.setAcceptedInJira(dependencies, ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser());
         
-        ObjectMapper mapper = new ObjectMapper();
-        String dependencyJson = mapper.writeValueAsString(dependencies);
+        String response = "Jira response:\n" + results.getResponse(); 
 
-        // Forward the call to OpenReq services in localhost
-        response += "\n\nMilla response:\n\n" + millaService.getResponseFromMilla(urlTail, dependencyJson, true);
-
+        dependencies = results.getChecked();
+        
+        if (dependencies.isEmpty()) {
+            response += "\n\nNo dependencies to send to Milla";
+        } else {  
+            String urlTail = "/updateProposedDependencies";
+            ObjectMapper mapper = new ObjectMapper();
+            String dependencyJson = mapper.writeValueAsString(dependencies);
+            // Forward the call to OpenReq services in localhost
+            response += "\n\nMilla response:\n\n" + millaService.getResponseFromMilla(urlTail, dependencyJson, true);
+        }
+        
         return Response.ok(response).build();
     }
 
@@ -168,7 +172,9 @@ public class FisutankkiResource {
     @AnonymousAllowed
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/getConsistencyCheckForRequirement")
-    public Response consistencyCheck(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount") Integer layerCount, @QueryParam("timeOut") Integer timeOut, @QueryParam("omitCrossProject") Boolean omitCrossProject, @QueryParam("analysisOnly") Boolean analysisOnly) throws IOException {
+    public Response consistencyCheck(@QueryParam("requirementId") List<String> requirementId, @QueryParam("layerCount") Integer layerCount, 
+            @QueryParam("timeOut") Integer timeOut, @QueryParam("omitCrossProject") Boolean omitCrossProject, 
+            @QueryParam("analysisOnly") Boolean analysisOnly) throws IOException {
 
         if (layerCount == null) {
             layerCount = 5;
@@ -190,7 +196,8 @@ public class FisutankkiResource {
             reqIdsString = reqIdsString + "&requirementId=" + id;
         }
 
-        String urlTail = "/getConsistencyCheckForRequirement?layerCount=" + layerCount + "&omitCrossProject=" + omitCrossProject + "&timeOut=" + timeOut + reqIdsString + "&analysisOnly=" + analysisOnly ;
+        String urlTail = "/getConsistencyCheckForRequirement?layerCount=" + layerCount + "&omitCrossProject=" + 
+                omitCrossProject + "&timeOut=" + timeOut + reqIdsString + "&analysisOnly=" + analysisOnly ;
 
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);

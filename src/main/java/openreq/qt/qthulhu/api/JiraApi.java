@@ -8,10 +8,11 @@ import openreq.qt.qthulhu.rest.json.Dependency;
 import openreq.qt.qthulhu.rest.json.Requirement;
 
 import java.util.List;
+import openreq.qt.qthulhu.rest.json.JiraChecked;
 
 public interface JiraApi
 {
     List<Requirement> filterRequirements(List<Requirement> requirements, ApplicationUser user) throws JqlParseException, SearchException;
     String rightsCheckGetResult(String issueId, ApplicationUser user) throws JqlParseException, SearchException;
-    String setAcceptedInJira(List<Dependency> dependencies, ApplicationUser user) throws JqlParseException, SearchException, CreateException;
+    JiraChecked setAcceptedInJira(List<Dependency> dependencies, ApplicationUser user) throws JqlParseException, SearchException, CreateException;
 }
