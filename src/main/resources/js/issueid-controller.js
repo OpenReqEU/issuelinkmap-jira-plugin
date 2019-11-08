@@ -1147,8 +1147,7 @@ function proposedLinks()
                         var positions;
                         if (issue === propLinksIssue)
                         {
-                            //  -1 because the currently selected issue is returned in the proposed issues
-                            positions = calculateProposedDepthOnePositions(j, proposedNodesEdges['nodes'].length - 1);
+                            positions = calculateProposedDepthOnePositions(j, proposedNodesEdges['nodes'].length);
                         } else
                         {
                             positions = calculateProposedOuterPositions(issueInfo, j);
@@ -1186,8 +1185,7 @@ function proposedLinks()
                         var edgearrow = arrowPaletteType[edgelabel];
                         var dependency_score = v['dependency_score'];
 
-                        if (!(checkNodesContains(fromID) && checkNodesContains(toID)))
-                        {
+                        if (!(checkNodesContains(fromID) && checkNodesContains(toID))) {
                             proposedEdgeElements.push({
                                 from: fromID,
                                 to: toID,
@@ -1197,15 +1195,14 @@ function proposedLinks()
                                 width: 2,
                                 dashes: true
                             });
+                            proposedSortingArray.push({
+                                fromID: fromID,
+                                fromName: fromName,
+                                toID: toID,
+                                toName: toName,
+                                score: dependency_score
+                            })
                         }
-                        proposedSortingArray.push({
-                            fromID: fromID,
-                            fromName: fromName,
-                            toID: toID,
-                            toName: toName,
-                            score: dependency_score
-                        })
-
                     });
 
                     sortProposed(proposedSortingArray);
