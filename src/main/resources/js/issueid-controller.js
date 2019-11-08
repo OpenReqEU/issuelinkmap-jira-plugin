@@ -1254,6 +1254,7 @@ function proposedLinks()
             alert(err);
         }
     }
+    network.fit();
 }
 
 function sortProposed(array)
