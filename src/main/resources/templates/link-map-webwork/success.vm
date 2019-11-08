@@ -1,4 +1,5 @@
-$webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources")
+$webResourceManager.requireResource(
+    "openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources")
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,120 +18,130 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
 <body>
 <div class="topnav">
     <div class="link-container">
-    <a target="_blank" href="https://openreq.eu/" style="padding: 0"><img alt="or_logo"
-                                                                          src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
-                                                                          width="40px" height="40px"/></a>
-##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
+        <a target="_blank" href="https://openreq.eu/" style="padding: 0"><img alt="or_logo"
+                                                                              src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/or_icon.png"
+                                                                              width="40px" height="40px"/></a>
+    ##    <a target="_blank" href="https://bugreports.qt.io/browse/">Qt's Jira</a>
 
-    <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
+        <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">Report a Bug</a>
     </div>
 
     <div class="text-container">
+<<<<<<< HEAD
         Version 1.2.2
         <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback through
+=======
+        <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback
+            through
+>>>>>>> 065d7cb252afbd46fe136cf0b843e8508899a21d
             the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
             this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>
     </div>
+
+    <div class="search-container">Version 1.3.4</div>
 
 </div>
 
 
 <div class="container" style="padding-top: 30px">
     <div class="row">
-        <h1>WP7 - Qt Trial</h1>
+        <h2>WP7 - Qt Trial</h2>
     </div>
 
-    <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" style="display:inline-block;">
-        <fieldset>
-            <div class="row">
-                <div class="col-4">
-                    <h5>Issue Key(s):</h5>
-                    <input type="text" name="issue" id="issue" required="required" width="200px"><br>
-                    <i>
-                        <small>Search for an issue key.<br>
+    <div class="col-10">
+        <form action="./IssueSearchWebworkAction.jspa" method="get" id="search-id" style="display:inline-block;">
+            <fieldset>
+                <table style="border-collapse: collapse; text-align-all:left">
+
+                    <tr>
+                        <th>Issue Key</th>
+                        <th>Depth</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="issue" id="issue" required="required" width="200px"></td>
+                        <td><input type="number" name="depth" id="layerDepth" min="1" max="5" width="100px"></td>
+                        <td><input type="submit"
+                                   class="button search button-effect"
+                                   value="Search"></td>
+                    </tr>
+                    <tr>
+
+                    </tr>
+                    <td><i>
+                        <small>Enter an issue key.
                         </small>
                     </i>
-                </div>
-
-                <div class="col-4">
-                    <h5>Depth:</h5>
-                    <input type="number" name="depth" id="layerDepth" min="1" max="5" width="100px"><br>
-                    <i>
-                        <small>Enter a number between 1 and 5.<br>
+                    </td>
+                    <td><i>
+                        <small>Enter a number between 1 and 5.
                         </small>
                     </i>
-                </div>
-
-
-                <div class="col-2">
-                    <br>
-
-                    <input type="submit"
-                           class="button search button-effect"
-                           value="Search">
-                </div>
-
-                <div class="col-2">
-                    <br>
-                    <div class="loader" id="loader"></div>
-                </div>
-            </div>
-        </fieldset>
-    </form>
-
-
-    <br>
+                    </td>
+                    <td></td>
+                </table>
+            </fieldset>
+        </form>
+    </div>
+    <div class="col-2">
+        <div class="loader" id="loader"></div>
+    </div>
     <div class="row">
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title">Info</h3>
-                <p class="card-text">This prototype visualizes the link between issues in Qt's public Jira, it also
-                    offers a feature to find missing links bewteen issues in Qt Jira and a feature to check the
-                    consistency of a
-                    release (fix version).<br>
-                    Typing in an issue key from <a
+                <p class="card-text">This prototype visualizes the link between issues in <a
+                        href="https://bugreports-test.qt.io/secure/Dashboard.jspa">Qt's Jira</a>, finds missing links
+                    between issues in Qt's Jira and checks the consistency of the release ("fix version" in the
+                    properties of Jira issues).<br>
+                    Searching for an issue key from <a
                             href="https://bugreports.qt.io/secure/BrowseProjects.jspa?selectedCategory=all&selectedProjectType=software">Qt's
-                        public JIRA</a> can show you its direct and indirect links to other issues.
+                        JIRA</a> shows you its direct and indirect links to other issues.
                     If you select an issue in the visualisation, you will see some issue information on the right
-                    side of the graph as well as a button which will redirect you to the JIRA page of that issue.
+                    side of the site as well as a button which will redirect you to the JIRA page of that issue.
+                    Double-clicking an issue moves that issue to the center of the issue link map.
                 </p>
-                <h5 class="card-title">Filtering</h5>
-                <p class="card-text">The visualized issues can be filtered depending on their status, type and priority.
-                    Currently, the default filter does not show issues which are already closed.
-                    Thus, some nodes might be orphaned with not appareant connection to the searched issue key. </p>
                 <h5 class="card-title">Issue Key</h5>
-                <p class="card-text">You can type in a single issue (f.e. <i>QTWB-30</i>).
-                    The service will then look up the corresponding issue in University of Helsinki's service milla and
-                    get the information about links and issues.</p>
+                <p class="card-text">Type in a single issue (e.g. <i>QTWB-30</i>).
+                    The service will then look up the corresponding issue in University of Helsinki's services and
+                    check if you are authorized to see the information of this issue.</p>
                 <h5 class="card-title">Depth</h5>
                 <p class="card-text">This service can show you direct (depth 1) and indirect links (depth 2-5).
                     Depth 2 are the links of issues that are directly connected to the searched issue, depth 3 are the
                     links of issues of depth 2 and so on, up until depth 5.
-                    If you do not specify a depth the default value is 1.
-                    While viewing the issue link map you can switch between the different depths.
+                    If you do not specify a depth the default value is 1, while viewing the issue link map you can
+                    switch between the different depths.
                 </p>
+                <h5 class="card-title">Filtering</h5>
+                <p class="card-text">The visualized issues can be filtered depending on their status, type and priority.
+                    Currently, the default filter does not show issues which are already done.
+                    Thus, some nodes might be orphaned with not apparent connection to the searched issue key. </p>
                 <h5 class="card-title">Link Detection</h5>
-                <p class="card-text">Use the link detection to find issues which might be related to the currently
-                    selected issue. Attention: The accepted and rejected links are <strong>not</strong> automatically
-                    transfered to the Jira database.</p>
+                <p class="card-text">Use the link detection to find issues which might be related to the current
+                    selected issue.</p>
                 <h5 class="card-title">Consistency Checker</h5>
-                <p class="card-text">The Consistency Checker verifies the viability of the release plan regarding the
-                    issue link map. For example if a feature is required by another one, it is not assigned to later
-                    release.</p>
+                <p class="card-text">The Consistency Checker verifies the viability of the release plan of the issues
+                    contained in the
+                    issue link map. E.g. if a feature is required by another one, it should not assigned to a later
+                    release.
+                    <br><strong>Attention:</strong> Links between issues of different projects are ignored in this
+                    checking process.
+                </p>
                 <h4 class="card-title">We appreciate your feedback!</h4>
                 <p class="card-text">
-
                     You can either leave a comment in the <a target="_blank"
                                                              href="https://forum.qt.io/category/60/openreq-issue-link-map-tool">Qt
                     Forum</a> or give feedback anonymously in this
                     <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9">form</a>.<br>
-                    Click <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">here</a> if you would
-                    like to report a bug.
+                    If you find a bug, please report it <a target="_blank"
+                                                           href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin/issues">here</a>,
+                    so we can fix it.
                     <br>
-                    Click <a target="_blank" href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin">here</a> if you would like to
-                    contribute.
+                    If you like the prototype so far, feel free to check out the code <a target="_blank"
+                                                                                         href="https://github.com/OpenReqEU/issuelinkmap-jira-plugin">here</a>
+                    and contribute if you like to.
                 </p>
-                </p>
+                <h4 class="card-title">Thank you.</h4>
             </div>
         </div>
     </div>

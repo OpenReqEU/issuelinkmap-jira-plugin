@@ -32,9 +32,9 @@
 }
 
 .yellow {
-     background: #ffd351;
-     color: #594200;
- }
+    background: #ffd351;
+    color: #594200;
+}
 
 .grey {
     background: #cecfd5;
@@ -78,6 +78,7 @@
     /*border-bottom-color: #2e3d54;*/
     /*height: 40px;*/
 }
+
 .topnav .text-container {
     float: left;
     display: inline-block;
@@ -265,10 +266,10 @@
 }
 
 .active, .button-effect:hover {
-     background-color: #0065FF;
-     transition: background-color .1s ease-out;
-     color: white;
- }
+    background-color: #0065FF;
+    transition: background-color .1s ease-out;
+    color: white;
+}
 
 .button-effect-accept:hover {
     background-color: #0052cc;
@@ -281,6 +282,7 @@
     transition: background-color .1s ease-out;
     color: white;
 }
+
 /*nav pill customization*/
 
 .nav-tabs a {
@@ -341,7 +343,6 @@
     visibility: visible;
     opacity: 1;
 }
-
 
 
 /*Spinning circle to indicate that the site is loading*/
@@ -531,18 +532,27 @@ select {
 th, td {
     text-align: left;
     vertical-align: top;
+    padding: 4px 10px;
 }
 
 /*Dropdown menu*/
 /* Style The Dropdown Button */
 .dropbtn {
-    background-color: #FFFFFF;
-    color: #172B4D;
-    padding: 4px;
+    /*padding: 4px;*/
     font-size: 14px;
     border: 1px;
     border-color: #172B4D;
     cursor: pointer;
+    background-color: #0052cc;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    /*text-align: center;*/
+    text-decoration: none;
+    display: inline-block;
+    /*border-radius: 4px;*/
+    vertical-align: baseline;
+    white-space: nowrap;
 }
 
 /* The container <div> - needed to position the dropdown content */
@@ -557,8 +567,10 @@ th, td {
     position: absolute;
     background-color: #ffffff;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    font-size: 14px;
+    padding: 5px;
 }
 
 /* Show the dropdown menu on hover */
@@ -568,5 +580,10 @@ th, td {
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-    background-color: #ffffff;
+    background-color: #0065FF;
+}
+
+.hr.dropdownline {
+    margin: 0.1em auto;
+    border-top: 1px solid #172B4D;
 }
