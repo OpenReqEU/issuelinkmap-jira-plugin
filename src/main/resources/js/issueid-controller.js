@@ -1158,6 +1158,7 @@ function proposedLinks()
                         {
                             proposedNodeElements.push({
                                 id: ID,
+                                key: nodekey,
                                 label: nodelabel,
                                 group: nodegroup,
                                 shape: 'ellipse',
@@ -1167,9 +1168,6 @@ function proposedLinks()
                                 x: positions.x,
                                 y: positions.y
                             });
-                            // proposedIssuesList.push({
-                            //     id: nodekey
-                            // })
                         }
                     });
 
@@ -1745,10 +1743,10 @@ function initNetwork()
             {
                 //proposedLinks() will only be called if the selected node is not a proposed one
                 var isAlreadyProposed = false;
-                $.each(proposedNodesEdges['nodes'], function (i, v)
+                $.each(proposedNodeElements, function (i, v)
                 {
                     //includes returns true if the values are the same and if currentIssue is "[v.id]-mock"
-                    if (currentIssue.includes(v.id))
+                    if (currentIssue.includes(v.key) || currentIssue === propLinksIssue)
                     {
                         isAlreadyProposed = true;
                     }
