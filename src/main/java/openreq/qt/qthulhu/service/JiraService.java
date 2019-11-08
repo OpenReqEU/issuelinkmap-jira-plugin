@@ -101,7 +101,7 @@ public class JiraService implements JiraApi{
     // Sets issue links in Jira for the dependencies accepted
     @Override
     public JiraChecked setAcceptedInJira(List<Dependency> dependencies, ApplicationUser user) throws JqlParseException, SearchException, CreateException {
-        String result = "";
+//        String result = "";
         List<Dependency> checked = new ArrayList<>();
 
         for (Dependency dep : dependencies) {
@@ -111,26 +111,29 @@ public class JiraService implements JiraApi{
                 SearchResults results = ss.search(user, conditionQuery, PagerFilter.getUnlimitedFilter());
                 if (results.getIssues().size()==2) {
                     checked.add(dep);
-                    if (dep.getStatus().toLowerCase().equals("accepted")) {
-                        Issue fromIssue = results.getIssues().get(0);
-                        Issue toIssue = results.getIssues().get(1);
-                        String type = dep.getDescription().get(0);
-                        String typeCapitalized = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
-                        Collection<IssueLinkType> issueTypes = iltm.getIssueLinkTypesByName(typeCapitalized);
-                        if (issueTypes.size()>0) {
-                            Long typeId = issueTypes.iterator().next().getId();
-                            ilm.createIssueLink(fromIssue.getId(), toIssue.getId(), typeId, 1L, user);
-                            result += "\nAdded issue link from " + dep.getFromid() + " to " + dep.getToid()
-                                    + " with type " + typeCapitalized + " (type id = " + typeId + ")";
-                        }
-                    }
+//                    if (dep.getStatus().toLowerCase().equals("accepted")) {
+//                        Issue fromIssue = results.getIssues().get(0);
+//                        Issue toIssue = results.getIssues().get(1);
+//                        String type = dep.getDescription().get(0);
+//                        String typeCapitalized = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
+//                        Collection<IssueLinkType> issueTypes = iltm.getIssueLinkTypesByName(typeCapitalized);
+//                        if (issueTypes.size()>0) {
+//                            Long typeId = issueTypes.iterator().next().getId();
+//                            ilm.createIssueLink(fromIssue.getId(), toIssue.getId(), typeId, 1L, user);
+//                            result += "\nAdded issue link from " + dep.getFromid() + " to " + dep.getToid()
+//                                    + " with type " + typeCapitalized + " (type id = " + typeId + ")";
+//                        }
+//                    }
                 }
             }
         }
 
-        if (result.isEmpty()) {
-            result = "No changes made";
-        }
+//        if (result.isEmpty()) {
+//            result = "No changes made";
+//        }
+
+        String result = "Jira link adding disabled in this version";
+
         JiraChecked results = new JiraChecked(checked, result);
         return results;
     }
