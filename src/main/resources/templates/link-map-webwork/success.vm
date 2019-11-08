@@ -27,13 +27,8 @@ $webResourceManager.requireResource(
     </div>
 
     <div class="text-container">
-<<<<<<< HEAD
-        Version 1.2.2
-        <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback through
-=======
+
         <strong>This is a prototype of the <a href="https://openreq.eu/"> OpenReq project</a>, please give feedback
-            through
->>>>>>> 065d7cb252afbd46fe136cf0b843e8508899a21d
             the <a target="_blank" href="https://forum.qt.io/category/60/openreq-issue-link-map-tool"> Qt Forum </a> or
             this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>
     </div>
