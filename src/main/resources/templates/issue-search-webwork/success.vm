@@ -451,8 +451,8 @@ $webResourceManager.requireResource(
                                 <br>
                                 <span>
                                     <label>
-                                        <input name="Link Type" type="checkbox" checked="checked" value="SUB-TASK"/>
-                                        Sub-Task
+                                        <input name="Link Type" type="checkbox" checked="checked" value="SUBTASK"/>
+                                        SubTask
                                     </label>
                                 </span>
                                 <br>

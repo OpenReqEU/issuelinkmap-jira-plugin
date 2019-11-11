@@ -322,11 +322,6 @@ AJS.toInit(function ()
         toggle(this);
     };
 
-    document.getElementById('filter-search').onclick = function ()
-    {
-        filterNodes();
-    };
-
     //eventlistener for accordion tabs (ConsistencCechk)
     acc = document.getElementsByClassName("accordion");
     for (var i = 0; i < acc.length; i++)
@@ -530,6 +525,7 @@ function isFiltered(status, type, priority, id)
     // below the "edge-filtering" is taking place
     else
     {
+        var label;
         var index = [];
         for (var i = 0; i < 6; i++)
         {
@@ -546,7 +542,8 @@ function isFiltered(status, type, priority, id)
                         {
                             index = getIndexInAll(allEdges[i][k].to);
                             //index is undefined if the node was already filtered out
-                            if ((typeof index === "undefined") || (allNodesArray[index[0]][index[1]].level <= depth))
+                            //index[0] is the depth of the node
+                            if ((typeof index === "undefined") || (index[0] <= depth))
                             {
                                 return false;
                             }
@@ -555,7 +552,8 @@ function isFiltered(status, type, priority, id)
                         {
                             index = getIndexInAll(allEdges[i][k].from);
                             //index is undefined if the node was already filtered out
-                            if ((typeof index === "undefined") || (allNodesArray[index[0]][index[1]].level <= depth))
+                            //index[0] is the depth of the node
+                            if ((typeof index === "undefined") || (index[0] <= depth))
                             {
                                 return false;
                             }
@@ -1519,7 +1517,6 @@ var numberOfProposedLinks = 0;
 function filterNodes()
 {
     filterArray = getCheckedCheckboxes();
-
     $.each(filteredNodes, function (i, v)
     {
         allNodesArray[v.level].push(v);
