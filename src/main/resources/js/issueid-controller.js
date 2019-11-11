@@ -1270,7 +1270,8 @@ function proposedLinks()
                         var rejectBtn = "<button class='button reject button-effect-reject' role='radio' onclick=\"registerClick(this)\" id=";
                         for (var i = 0; i < proposedIssuesList.length; i++)
                         {
-                            stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id + "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
+                            stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id +
+                                // "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
                                 // "<option value='dependency'>dependency</option>" +
                                 // "<option value='duplicate'>duplicate</option>" +
                                 // "<option value='epic'>epic</option>" +
