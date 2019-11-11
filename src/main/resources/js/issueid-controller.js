@@ -1261,9 +1261,9 @@ function proposedLinks()
                         var stringList = '<h5><font color=\"#0052CC\">Proposed Links of ' + currentIssue + "</font></h5>" +
                             "<table style='width: 100%'><tr>\n" +
                             "<th>Issue Key</th>" +
-                            "<th>Link type</th>" +
-                            "<th>Accept</th>" +
-                            "<th>Reject</th>" +
+                            // "<th>Link type</th>" +
+                            // "<th>Accept</th>" +
+                            // "<th>Reject</th>" +
                             "</tr>";
                         var selectionList = '<div class="custom-select">';
                         var acceptBtn = "<button class='button accept button-effect-accept' role='radio' onclick=\"registerClick(this)\" id=";
@@ -1271,18 +1271,19 @@ function proposedLinks()
                         for (var i = 0; i < proposedIssuesList.length; i++)
                         {
                             stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id + "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
-                                "<option value='dependency'>dependency</option>" +
-                                "<option value='duplicate'>duplicate</option>" +
-                                "<option value='epic'>epic</option>" +
-                                "<option value='relates'>relates</option>" +
-                                "<option value='replacement'>replacement</option>" +
-                                "<option value='subtask'>subtask</option>" +
-                                "<option value='work breakdown'>work breakdown</option>" +
-                                "</select></div></td><td>"
-                                + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
-                                + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td></tr>";
+                                // "<option value='dependency'>dependency</option>" +
+                                // "<option value='duplicate'>duplicate</option>" +
+                                // "<option value='epic'>epic</option>" +
+                                // "<option value='relates'>relates</option>" +
+                                // "<option value='replacement'>replacement</option>" +
+                                // "<option value='subtask'>subtask</option>" +
+                                // "<option value='work breakdown'>work breakdown</option>" +
+                                // "</select></div></td><td>"
+                                // + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
+                                // + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td>" +
+                                "</tr>";
                         }
-                        stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
+                        // stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
                         document.getElementById('ddResult').innerHTML = stringList;
                     }
                 }

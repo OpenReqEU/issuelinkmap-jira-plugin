@@ -83,6 +83,8 @@ $webResourceManager.requireResource(
     <div class="row">
         <div class="card">
             <div class="card-body">
+                <p class="card-text">Please use Chrome or Firefox with this plug-in, it is not tested on Microsoft Edge.
+                    Thus there might be some problems encountered when using Edge.</p>
                 <h3 class="card-title">Info</h3>
                 <p class="card-text">This prototype visualizes the link between issues in <a
                         href="https://bugreports-test.qt.io/secure/Dashboard.jspa">Qt's Jira</a>, finds missing links
@@ -112,7 +114,8 @@ $webResourceManager.requireResource(
                     Thus, some nodes might be orphaned with not apparent connection to the searched issue key. </p>
                 <h5 class="card-title">Link Detection</h5>
                 <p class="card-text">Use the link detection to find issues which might be related to the current
-                    selected issue.</p>
+                    selected issue.
+                    <br><strong>Attention:</strong> Currently the adding of recommended links from this plug-in is disabled. Only a list of recommended links will be shown.</p>
                 <h5 class="card-title">Consistency Checker</h5>
                 <p class="card-text">The Consistency Checker verifies the viability of the release plan of the issues
                     contained in the
