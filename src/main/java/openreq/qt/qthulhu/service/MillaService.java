@@ -5,11 +5,11 @@ import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.net.Request;
 import com.atlassian.sal.api.net.RequestFactory;
 import com.atlassian.sal.api.net.ResponseException;
+import openreq.qt.qthulhu.api.MillaApi;
+import openreq.qt.qthulhu.rest.MillaResponseHandler;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import openreq.qt.qthulhu.api.MillaApi;
-import openreq.qt.qthulhu.rest.MillaResponseHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
