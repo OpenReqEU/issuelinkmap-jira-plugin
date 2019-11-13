@@ -1297,7 +1297,10 @@ function proposedLinks()
             alert(err);
         }
     }
-    network.fit();
+    setTimeout(function ()
+    {
+        network.fit();
+        }, 1000);
 }
 
 function sortProposed(array)
@@ -1545,6 +1548,11 @@ function filterNodes()
     for (var i = 0; i <= depth; i++)
     {
         nodes.add(allNodesArray[i]);
+    }
+    if (proposedViewActive) {
+        currentIssue = propLinksIssue;
+        proposedViewActive = false;
+        proposedLinks();
     }
 }
 
