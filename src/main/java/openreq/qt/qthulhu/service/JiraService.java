@@ -17,6 +17,8 @@ import com.atlassian.jira.jql.parser.JqlParseException;
 import com.atlassian.jira.jql.parser.JqlQueryParser;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.bean.PagerFilter;
+import com.atlassian.jira.security.PermissionManager;
+import com.atlassian.jira.security.plugin.ProjectPermissionKey;
 import com.atlassian.plugin.spring.scanner.annotation.export.ExportAsService;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.query.Query;
@@ -40,18 +42,21 @@ import openreq.qt.qthulhu.rest.json.JiraChecked;
 public class JiraService implements JiraApi{
 
     private final JqlQueryParser parser;
-    private final SearchService ss;
-    private final IssueLinkManager ilm;
-    private final IssueLinkTypeManager iltm;
+    private final SearchService searchService;
+    private final IssueLinkManager issueLinkManager;
+    private final IssueLinkTypeManager issueLinkTypeManager;
+    private final PermissionManager permissionManager;
+    private final ProjectPermissionKey issueEditPermission = new ProjectPermissionKey("EDIT_ISSUES");
 
     @Inject
     public JiraService(@ComponentImport JqlQueryParser jqlQueryParser,
                        @ComponentImport SearchService searchService, @ComponentImport IssueLinkManager issueLinkManager,
-                       @ComponentImport IssueLinkTypeManager issueLinkTypeManager) {
+                       @ComponentImport IssueLinkTypeManager issueLinkTypeManager, @ComponentImport PermissionManager permissionManager) {
         this.parser = jqlQueryParser;
-        this.ss = searchService;
-        this.ilm = issueLinkManager;
-        this.iltm = issueLinkTypeManager;
+        this.searchService = searchService;
+        this.issueLinkManager = issueLinkManager;
+        this.issueLinkTypeManager = issueLinkTypeManager;
+        this.permissionManager = permissionManager;
     }
     
     @Override
@@ -81,7 +86,7 @@ public class JiraService implements JiraApi{
         String query = "id = " + reqId;
         Query conditionQuery = parser.parseQuery(query);
 
-        SearchResults results = ss.search(user, conditionQuery, PagerFilter.getUnlimitedFilter());
+        SearchResults results = searchService.search(user, conditionQuery, PagerFilter.getUnlimitedFilter());
 
         return results.getTotal()>0;
     }
@@ -91,7 +96,7 @@ public class JiraService implements JiraApi{
     public String rightsCheckGetResult(String issueId, ApplicationUser user) throws JqlParseException, SearchException {
         String query = "id = " + issueId;
         Query conditionQuery = parser.parseQuery(query);
-        SearchResults results = ss.search(user, conditionQuery, PagerFilter.getUnlimitedFilter());
+        SearchResults results = searchService.search(user, conditionQuery, PagerFilter.getUnlimitedFilter());
 
         return results.getTotal() + " for user " + user;
     }
@@ -108,22 +113,24 @@ public class JiraService implements JiraApi{
             if (dep.getStatus()!=null && (dep.getStatus().toLowerCase().equals("accepted") || dep.getStatus().toLowerCase().equals("rejected") )) {
                 String query = "id = " + dep.getFromid() + " or id = " + dep.getToid();
                 Query conditionQuery = parser.parseQuery(query);
-                SearchResults results = ss.search(user, conditionQuery, PagerFilter.getUnlimitedFilter());
-                if (results.getIssues().size()==2) {
-                    checked.add(dep);
-//                    if (dep.getStatus().toLowerCase().equals("accepted")) {
-//                        Issue fromIssue = results.getIssues().get(0);
-//                        Issue toIssue = results.getIssues().get(1);
+
+                SearchResults results = searchService.search(user, conditionQuery, PagerFilter.getUnlimitedFilter());
+                if (results.getIssues().size()==2) {  
+                    Issue fromIssue = results.getIssues().get(0);
+                    Issue toIssue = results.getIssues().get(1);
+                    if (permissionManager.hasPermission(issueEditPermission, fromIssue, user) && 
+                            permissionManager.hasPermission(issueEditPermission, toIssue, user)) {
+                        checked.add(dep);
 //                        String type = dep.getDescription().get(0);
 //                        String typeCapitalized = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
-//                        Collection<IssueLinkType> issueTypes = iltm.getIssueLinkTypesByName(typeCapitalized);
-//                        if (issueTypes.size()>0) {
+//                        Collection<IssueLinkType> issueTypes = issueLinkTypeManager.getIssueLinkTypesByName(typeCapitalized);
+//                        if (dep.getStatus().toLowerCase().equals("accepted") && issueTypes.size()>0) {
 //                            Long typeId = issueTypes.iterator().next().getId();
-//                            ilm.createIssueLink(fromIssue.getId(), toIssue.getId(), typeId, 1L, user);
+//                            issueLinkManager.createIssueLink(fromIssue.getId(), toIssue.getId(), typeId, 1L, user);
 //                            result += "\nAdded issue link from " + dep.getFromid() + " to " + dep.getToid()
 //                                    + " with type " + typeCapitalized + " (type id = " + typeId + ")";
 //                        }
-//                    }
+                    }
                 }
             }
         }

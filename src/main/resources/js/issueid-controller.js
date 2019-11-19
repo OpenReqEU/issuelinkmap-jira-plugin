@@ -69,6 +69,7 @@ AJS.toInit(function ()
             edges.remove(depth5Edges);
             edges.remove(depth2Edges);
         }
+        filterNodes();
         network.fit();
         updateDepthButtons();
     };
@@ -90,6 +91,7 @@ AJS.toInit(function ()
         {
             add2layer();
         }
+        filterNodes();
         network.fit();
         updateDepthButtons();
     };
@@ -114,6 +116,7 @@ AJS.toInit(function ()
         {
             add3layer();
         }
+        filterNodes();
         network.fit();
         updateDepthButtons();
     };
@@ -142,6 +145,7 @@ AJS.toInit(function ()
         {
             add4layer();
         }
+        filterNodes();
         network.fit();
         updateDepthButtons();
     };
@@ -172,6 +176,7 @@ AJS.toInit(function ()
         {
             add5layer();
         }
+        filterNodes();
         network.fit();
         updateDepthButtons();
     };
@@ -294,33 +299,27 @@ AJS.toInit(function ()
 
     document.getElementById('todos-toggle').onclick = function ()
     {
-        //toggle(document.getElementById('todos-toggle'));
         toggle(this);
     };
     document.getElementById('done-toggle').onclick = function ()
     {
-        //toggle(document.getElementById('done-toggle'));
         toggle(this);
     };
     document.getElementById('all-toggle').onclick = function ()
     {
-        //toggleAll(document.getElementById('all-toggle'));
         toggleAll(this);
     };
     document.getElementById('type-toggle').onclick = function ()
     {
-        //toggle(document.getElementById('type-toggle'));
+        toggle(this);
+    };
+    document.getElementById('link-type-toggle').onclick = function ()
+    {
         toggle(this);
     };
     document.getElementById('prio-toggle').onclick = function ()
     {
-        //toggle(document.getElementById('prio-toggle'));
         toggle(this);
-    };
-
-    document.getElementById('filter-search').onclick = function ()
-    {
-        filterNodes();
     };
 
     //eventlistener for accordion tabs (ConsistencCechk)
@@ -489,7 +488,6 @@ function findProposed(status, type)
 
 function getCheckedCheckboxes()
 {
-    //var checkboxes = document.querySelectorAll('input[name="' + checkboxName + 'Status"]:checked'), values = [];
     var checkboxes = document.querySelectorAll(':checked'), values = [];
     Array.prototype.forEach.call(checkboxes, function (el)
     {
@@ -510,16 +508,62 @@ function toggle(source)
 
 function toggleAll(source)
 {
-    var types = ["ToDoStatus", "ProgStatus", "StuckStatus", "DoneStatus", "Status"];
+    var types = ["ToDoStatus", "ProgStatus", "DoneStatus", "Status"];
     for (var i = 0; i < types.length; i++)
     {
         toggle({name: types[i], checked: source.checked});
     }
 }
 
-function isFiltered(status, type, priority)
+function isFiltered(status, type, priority, id)
 {
-    return !(filterArray.includes(status) && filterArray.includes(type) && filterArray.includes(priority));
+    if(!(filterArray.includes(status) && filterArray.includes(type) && filterArray.includes(priority)))
+    {
+        return true;
+    }
+    //else is entered when the above filtering would leave the node in
+    // below the "edge-filtering" is taking place
+    else
+    {
+        var label;
+        var index = [];
+        for (var i = 0; i < 6; i++)
+        {
+            for (var k = 0; k < allEdges[i].length; k++)
+            {
+                //only looks at edges that touch the given node (id)
+                if ((allEdges[i][k].from === id || allEdges[i][k].to === id))
+                {
+                    //if the edge has a label and it is in the selected Link Types it won't be filtered out
+                    if ((typeof allEdges[i][k].label === "undefined") || (filterArray.includes(allEdges[i][k].label.toUpperCase())))
+                    {
+                        //the node now has a valid edge, but it is only shown when that edge is on level <= depth
+                        if (allEdges[i][k].from === id)
+                        {
+                            index = getIndexInAll(allEdges[i][k].to);
+                            //index is undefined if the node was already filtered out
+                            //index[0] is the depth of the node
+                            if ((typeof index === "undefined") || (index[0] <= depth))
+                            {
+                                return false;
+                            }
+                        }
+                        else if (allEdges[i][k].to === id)
+                        {
+                            index = getIndexInAll(allEdges[i][k].from);
+                            //index is undefined if the node was already filtered out
+                            //index[0] is the depth of the node
+                            if ((typeof index === "undefined") || (index[0] <= depth))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }
 
 /**
@@ -676,7 +720,6 @@ function calculateProposedOuterPositions(issueInfo, j)
     {// j == odd
         angleDiff *= -1;
     }
-    j++;
     var direction = getDirectionByAngle(allNodesArray[index[0]][index[1]].angle + angleDiff);
 
     var coord_x = (distances[issueInfo.depth] + 120) * direction.x;
@@ -1184,24 +1227,22 @@ function proposedLinks()
                         var edgearrow = arrowPaletteType[edgelabel];
                         var dependency_score = v['dependency_score'];
 
-                        //if (!(checkNodesContains(fromID) && checkNodesContains(toID))) {
-                            proposedEdgeElements.push({
-                                from: fromID,
-                                to: toID,
-                                arrows: edgearrow,
-                                label: "proposed",
-                                color: {color: '#53586b', inherit: false},
-                                width: 2,
-                                dashes: true
-                            });
-                            proposedSortingArray.push({
-                                fromID: fromID,
-                                fromName: fromName,
-                                toID: toID,
-                                toName: toName,
-                                score: dependency_score
-                            })
-                        //}
+                        proposedEdgeElements.push({
+                            from: fromID,
+                            to: toID,
+                            arrows: edgearrow,
+                            label: "proposed",
+                            color: {color: '#53586b', inherit: false},
+                            width: 2,
+                            dashes: true
+                        });
+                        proposedSortingArray.push({
+                            fromID: fromID,
+                            fromName: fromName,
+                            toID: toID,
+                            toName: toName,
+                            score: dependency_score
+                        });
                     });
 
                     sortProposed(proposedSortingArray);
@@ -1220,28 +1261,30 @@ function proposedLinks()
                         var stringList = '<h5><font color=\"#0052CC\">Proposed Links of ' + currentIssue + "</font></h5>" +
                             "<table style='width: 100%'><tr>\n" +
                             "<th>Issue Key</th>" +
-                            "<th>Link type</th>" +
-                            "<th>Accept</th>" +
-                            "<th>Reject</th>" +
+                            // "<th>Link type</th>" +
+                            // "<th>Accept</th>" +
+                            // "<th>Reject</th>" +
                             "</tr>";
                         var selectionList = '<div class="custom-select">';
                         var acceptBtn = "<button class='button accept button-effect-accept' role='radio' onclick=\"registerClick(this)\" id=";
                         var rejectBtn = "<button class='button reject button-effect-reject' role='radio' onclick=\"registerClick(this)\" id=";
                         for (var i = 0; i < proposedIssuesList.length; i++)
                         {
-                            stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id + "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
-                                "<option value='dependency'>dependency</option>" +
-                                "<option value='duplicate'>duplicate</option>" +
-                                "<option value='epic'>epic</option>" +
-                                "<option value='relates'>relates</option>" +
-                                "<option value='replacement'>replacement</option>" +
-                                "<option value='subtask'>subtask</option>" +
-                                "<option value='work breakdown'>work breakdown</option>" +
-                                "</select></div></td><td>"
-                                + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
-                                + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td></tr>";
+                            stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id +
+                                // "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
+                                // "<option value='dependency'>dependency</option>" +
+                                // "<option value='duplicate'>duplicate</option>" +
+                                // "<option value='epic'>epic</option>" +
+                                // "<option value='relates'>relates</option>" +
+                                // "<option value='replacement'>replacement</option>" +
+                                // "<option value='subtask'>subtask</option>" +
+                                // "<option value='work breakdown'>work breakdown</option>" +
+                                // "</select></div></td><td>"
+                                // + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
+                                // + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td>" +
+                                "</tr>";
                         }
-                        stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
+                        // stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
                         document.getElementById('ddResult').innerHTML = stringList;
                     }
                 }
@@ -1254,7 +1297,10 @@ function proposedLinks()
             alert(err);
         }
     }
-    network.fit();
+    setTimeout(function ()
+    {
+        network.fit();
+        }, 1000);
 }
 
 function sortProposed(array)
@@ -1476,7 +1522,6 @@ var numberOfProposedLinks = 0;
 function filterNodes()
 {
     filterArray = getCheckedCheckboxes();
-
     $.each(filteredNodes, function (i, v)
     {
         allNodesArray[v.level].push(v);
@@ -1488,7 +1533,7 @@ function filterNodes()
         {
             // if the current node has a status that should not be shown it will be
             // spliced out of allNodesArray and pushed into filteredNodes
-            if (isFiltered(allNodesArray[j][i].status, allNodesArray[j][i].type, allNodesArray[j][i].priority) && allNodesArray[j][i].level !== 0)
+            if (isFiltered(allNodesArray[j][i].status, allNodesArray[j][i].type, allNodesArray[j][i].priority, allNodesArray[j][i].id) && allNodesArray[j][i].level !== 0)
             {
                 filteredNodes.push(allNodesArray[j].splice(i, 1)[0]);
                 i--;
@@ -1503,6 +1548,11 @@ function filterNodes()
     for (var i = 0; i <= depth; i++)
     {
         nodes.add(allNodesArray[i]);
+    }
+    if (proposedViewActive) {
+        currentIssue = propLinksIssue;
+        proposedViewActive = false;
+        proposedLinks();
     }
 }
 

@@ -389,14 +389,14 @@ $webResourceManager.requireResource(
                                 <hr class="dropdownline">
                                 <span>
                                     <label>
-                                        <input name="Status" type="checkbox" checked="checked" value="confidential"/>
+                                        <input name="Priority" type="checkbox" checked="checked" value="confidential"/>
                                         <i>Confidential</i>
                                     </label>
                                 </span>
                                 <br>
                                 <span>
                                     <label>
-                                        <input name="Status" type="checkbox" checked="checked" value="not in database"/>
+                                        <input name="Priority" type="checkbox" checked="checked" value="not in database"/>
                                         <i>Not in database</i>
                                     </label>
                                 </span>
@@ -405,6 +405,75 @@ $webResourceManager.requireResource(
                                     <label>
                                         <input id="prio-toggle" name="Priority" type="checkbox" checked="checked"/>
                                         <strong> Toggle All Priorities </strong>
+                                    </label>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="dropdown">
+                            <button class="dropbtn">Link Type<i class="fa fa-caret-down"></i></button>
+                            <div class="dropdown-content">
+                                <span>
+                                    <label>
+                                        <input name="Link Type" type="checkbox" checked="checked" value="DEPENDENCY"/>
+                                        Dependency
+                                    </label>
+                                </span>
+                                <br>
+                                <span>
+                                    <label>
+                                        <input name="Link Type" type="checkbox" checked="checked" value="DUPLICATE"/>
+                                        Duplicate
+                                    </label>
+                                </span>
+                                <br>
+                                <span>
+                                    <label>
+                                        <input name="Link Type" type="checkbox" checked="checked" value="EPIC"/>
+                                        Epic
+                                    </label>
+                                </span>
+                                <br>
+                                <span>
+                                    <label>
+                                        <input name="Link Type" type="checkbox" checked="checked" value="RELATES"/>
+                                        Relates
+                                    </label>
+
+                                </span>
+                                <br>
+                                <span>
+                                    <label>
+                                        <input name="Link Type" type="checkbox" checked="checked" value="REPLACES"/>
+                                        Replaces
+                                    </label>
+                                </span>
+                                <br>
+                                <span>
+                                    <label>
+                                        <input name="Link Type" type="checkbox" checked="checked" value="SUBTASK"/>
+                                        SubTask
+                                    </label>
+                                </span>
+                                <br>
+                                <span>
+                                    <label>
+                                        <input name="Link Type" type="checkbox" checked="checked" value="TEST"/>
+                                        Test
+                                    </label>
+                                </span>
+                                <br>
+                                <span>
+                                    <label>
+                                        <input name="Link Type" type="checkbox" checked="checked" value="WORK BREAKDOWN"/>
+                                        Work Breakdown
+                                    </label>
+                                </span>
+                                <hr class="dropdownline">
+                                <span>
+                                    <label>
+                                        <input id="link-type-toggle" name="Link Type" type="checkbox" checked="checked"/>
+                                        <strong>All Link Types</strong>
                                     </label>
                                 </span>
                             </div>
