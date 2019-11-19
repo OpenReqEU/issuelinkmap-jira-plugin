@@ -245,6 +245,16 @@
                         <format>html</format>
                         <format>xml</format>
                     </formats>
+
+                    <instrumentation>
+                        <excludes>
+                            <exclude>com/**/*.class</exclude>
+                            <exclude>openreq/qt/qthulhu/rest/*.class</exclude>
+                            <exclude>openreq/qt/qthulhu/rest/json/*.class</exclude>
+                            <exclude>openreq/qt/qthulhu/service/*.class</exclude>
+                            <exclude>openreq/qt/test/**/*.class</exclude>
+                        </excludes>
+                    </instrumentation>
                 </configuration>
             </plugin>
 
