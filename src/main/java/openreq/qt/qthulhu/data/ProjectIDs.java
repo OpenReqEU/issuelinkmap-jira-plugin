@@ -9,97 +9,157 @@ public class ProjectIDs
     //TODO: 90% sure this should be ENUM
     //TODO: Add private projects (or find a better way to get all ids, maybe use API) or a hashmap?
 
-    /**
-     * QBS 10620
-     * QTBUG 10510
-     * QT3DS 11540
-     * AUTOSUITE 11440
-     * QTJIRA 10530
-     * QTCREATORBUG 10512
-     * QDS 11740
-     * PYSIDE 10840
-     * QTIFW 10630
-     * QTMOBILITY 10540
-     * QTPLAYGROUND 10841
-     * QTWEBSITE 10550
-     * QTQAINFRA 10600
-     * QTCOMPONENTS 10570
-     * QSR 11741
-     * QTSOLBUG 10513
-     * QTVSADDINBUG 10580
-     * QTWB 11441
-     * QTWEBKIT 10531
-     * QTSYSADM 10940
-     */
     //constructor for Sonarqube
-    private ProjectIDs ()
+    private ProjectIDs()
     {
 
     }
+
     public static int getProjectID(String project)
     {
         int id;
         switch (project)
         {
+            case "QCE":
+                id = 10;
+                break;
+            case "BOUL":
+                id = 11;
+                break;
+            case "CAP":
+                id = 12;
+                break;
+            case "COIN":
+                id = 12;
+                break;
+            case "CON":
+                id = 13;
+                break;
+            case "DEMO":
+                id = 14;
+                break;
+            case "HARM":
+                id = 15;
+                break;
+            case "MC":
+                id = 16;
+                break;
+            case "QTSDK":
+                id = 17;
+                break;
+            case "PAD":
+                id = 18;
+                break;
+            case "PASE":
+                id = 19;
+                break;
             case "QBS":
-                id = 10620;
+                id = 20;
                 break;
             case "QTBUG":
-                id = 10510;
+                id = 21;
                 break;
             case "QT3DS":
-                id = 11540;
+                id = 22;
+                break;
+            case "QTAUTO":
+                id = 23;
                 break;
             case "AUTOSUITE":
-                id = 11440;
+                id = 24;
                 break;
             case "QTJIRA":
-                id = 10530;
+                id = 25;
+                break;
+            case "QTBI":
+                id = 26;
                 break;
             case "QTCREATORBUG":
-                id = 10512;
+                id = 27;
                 break;
             case "QDS":
-                id = 11740;
+                id = 28;
+                break;
+            case "QTEBIKE":
+                id = 29;
                 break;
             case "PYSIDE":
-                id = 10840;
+                id = 30;
                 break;
             case "QTIFW":
-                id = 10630;
+                id = 31;
+                break;
+            case "QTJAMBUG":
+                id = 32;
+                break;
+            case "QTM":
+                id = 33;
                 break;
             case "QTMOBILITY":
-                id = 10540;
+                id = 34;
+                break;
+            case "QTMODULARIZATION":
+                id = 35;
+                break;
+            case "QTONPI":
+                id = 36;
                 break;
             case "QTPLAYGROUND":
-                id = 10841;
+                id = 37;
+                break;
+            case "QTPMO":
+                id = 38;
+                break;
+            case "QTPROJCLA":
+                id = 39;
                 break;
             case "QTWEBSITE":
-                id = 10550;
+                id = 40;
                 break;
             case "QTQAINFRA":
-                id = 10600;
+                id = 41;
                 break;
             case "QTCOMPONENTS":
-                id = 10570;
+                id = 42;
+                break;
+            case "QTPM":
+                id = 43;
                 break;
             case "QSR":
-                id = 11741;
+                id = 44;
+                break;
+            case "QS":
+                id = 45;
                 break;
             case "QTSOLBUG":
-                id = 10513;
+                id = 46;
+                break;
+            case "QTSIM":
+                id = 47;
                 break;
             case "QTVSADDINBUG":
-                id = 10580;
+                id = 48;
                 break;
             case "QTWB":
-                id = 11441;
+                id = 49;
                 break;
             case "QTWEBKIT":
-                id = 10531;
+                id = 50;
                 break;
             case "QTSYSADM":
-                id = 10940;
+                id = 51;
+                break;
+            case "QTRD":
+                id = 52;
+                break;
+            case "SIIL":
+                id = 53;
+                break;
+            case "TIETO":
+                id = 54;
+                break;
+            case "UL":
+                id = 55;
                 break;
             default:
                 id = 10000;
