@@ -30,139 +30,139 @@ public class ProjectIDs
                 id = 12;
                 break;
             case "COIN":
-                id = 12;
-                break;
-            case "CON":
                 id = 13;
                 break;
-            case "DEMO":
+            case "CON":
                 id = 14;
                 break;
-            case "HARM":
+            case "DEMO":
                 id = 15;
                 break;
-            case "MC":
+            case "HARM":
                 id = 16;
                 break;
-            case "QTSDK":
+            case "MC":
                 id = 17;
                 break;
-            case "PAD":
+            case "QTSDK":
                 id = 18;
                 break;
-            case "PASE":
+            case "PAD":
                 id = 19;
                 break;
-            case "QBS":
+            case "PASE":
                 id = 20;
                 break;
-            case "QTBUG":
+            case "QBS":
                 id = 21;
                 break;
-            case "QT3DS":
+            case "QTBUG":
                 id = 22;
                 break;
-            case "QTAUTO":
+            case "QT3DS":
                 id = 23;
                 break;
-            case "AUTOSUITE":
+            case "QTAUTO":
                 id = 24;
                 break;
-            case "QTJIRA":
+            case "AUTOSUITE":
                 id = 25;
                 break;
-            case "QTBI":
+            case "QTJIRA":
                 id = 26;
                 break;
-            case "QTCREATORBUG":
+            case "QTBI":
                 id = 27;
                 break;
-            case "QDS":
+            case "QTCREATORBUG":
                 id = 28;
                 break;
-            case "QTEBIKE":
+            case "QDS":
                 id = 29;
                 break;
-            case "PYSIDE":
+            case "QTEBIKE":
                 id = 30;
                 break;
-            case "QTIFW":
+            case "PYSIDE":
                 id = 31;
                 break;
-            case "QTJAMBUG":
+            case "QTIFW":
                 id = 32;
                 break;
-            case "QTM":
+            case "QTJAMBUG":
                 id = 33;
                 break;
-            case "QTMOBILITY":
+            case "QTM":
                 id = 34;
                 break;
-            case "QTMODULARIZATION":
+            case "QTMOBILITY":
                 id = 35;
                 break;
-            case "QTONPI":
+            case "QTMODULARIZATION":
                 id = 36;
                 break;
-            case "QTPLAYGROUND":
+            case "QTONPI":
                 id = 37;
                 break;
-            case "QTPMO":
+            case "QTPLAYGROUND":
                 id = 38;
                 break;
-            case "QTPROJCLA":
+            case "QTPMO":
                 id = 39;
                 break;
-            case "QTWEBSITE":
+            case "QTPROJCLA":
                 id = 40;
                 break;
-            case "QTQAINFRA":
+            case "QTWEBSITE":
                 id = 41;
                 break;
-            case "QTCOMPONENTS":
+            case "QTQAINFRA":
                 id = 42;
                 break;
-            case "QTPM":
+            case "QTCOMPONENTS":
                 id = 43;
                 break;
-            case "QSR":
+            case "QTPM":
                 id = 44;
                 break;
-            case "QS":
+            case "QSR":
                 id = 45;
                 break;
-            case "QTSOLBUG":
+            case "QS":
                 id = 46;
                 break;
-            case "QTSIM":
+            case "QTSOLBUG":
                 id = 47;
                 break;
-            case "QTVSADDINBUG":
+            case "QTSIM":
                 id = 48;
                 break;
-            case "QTWB":
+            case "QTVSADDINBUG":
                 id = 49;
                 break;
-            case "QTWEBKIT":
+            case "QTWB":
                 id = 50;
                 break;
-            case "QTSYSADM":
+            case "QTWEBKIT":
                 id = 51;
                 break;
-            case "QTRD":
+            case "QTSYSADM":
                 id = 52;
                 break;
-            case "SIIL":
+            case "QTRD":
                 id = 53;
                 break;
-            case "TIETO":
+            case "SIIL":
                 id = 54;
                 break;
-            case "UL":
+            case "TIETO":
                 id = 55;
                 break;
+            case "UL":
+                id = 56;
+                break;
             default:
-                id = 10000;
+                id = 99;
         }
         return id;
     }
