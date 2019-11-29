@@ -4,54 +4,51 @@ AJS.toInit(function ()
 {
     $(document).ready(function ()
     {
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        issue = url.searchParams.get("issue").toUpperCase();
-        var depthParam = url.searchParams.get("depth");
-        if ((depthParam === null) || (depthParam === ""))
-        {
-            depth = 1;
-        } else
-        {
-            depth = parseInt(depthParam, 10)
-        }
-        document.getElementById('issue-headline').innerText = "Issue Links of " + issue;
-        callTransitiveClosure();
-        initNodesEdges();
-        infoTab();
-        calculatePositions();
-        nodes.add(allNodesArray[0]);
-        nodes.add(allNodesArray[1]);
-        edges.add(depth0Edges);
-        edges.add(depth1Edges);
-        updateDepthButtons();
-        if (depth >= 2)
-        {
-            add2layer()
-        }
-        if (depth >= 3)
-        {
-            add3layer();
-        }
-        if (depth >= 4)
-        {
-            add4layer();
-        }
-        if (depth === 5)
-        {
-            add5layer();
-        }
-        filterNodes();
-        initNetwork();
-        resizeCanvas();
-        $(window).resize(function ()
-        {
+        try {
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            issue = url.searchParams.get("issue").toUpperCase();
+            var depthParam = url.searchParams.get("depth");
+            if ((depthParam === null) || (depthParam === "")) {
+                depth = 1;
+            } else {
+                depth = parseInt(depthParam, 10)
+            }
+            document.getElementById('issue-headline').innerText = "Issue Links of " + issue;
+            callTransitiveClosure();
+            initNodesEdges();
+            infoTab();
+            calculatePositions();
+            nodes.add(allNodesArray[0]);
+            nodes.add(allNodesArray[1]);
+            edges.add(depth0Edges);
+            edges.add(depth1Edges);
+            updateDepthButtons();
+            if (depth >= 2) {
+                add2layer()
+            }
+            if (depth >= 3) {
+                add3layer();
+            }
+            if (depth >= 4) {
+                add4layer();
+            }
+            if (depth === 5) {
+                add5layer();
+            }
+            filterNodes();
+            initNetwork();
             resizeCanvas();
-        });
-        setTimeout(function ()
-        {
-            network.fit();
-        }, 1000);
+            $(window).resize(function () {
+                resizeCanvas();
+            });
+            setTimeout(function () {
+                network.fit();
+            }, 1000);
+            }
+            catch (err) {
+                location.href = "./ErrorPageAction.jspa?error=" + err;
+            }
     });
 
     document.getElementById('depth-1-btn').onclick = function depth1()
@@ -287,13 +284,6 @@ AJS.toInit(function ()
 
     document.getElementById('filter-tab').onclick = function filterNodesTab()
     {
-        // if (proposedViewActive)
-        // {
-        //     nodes.remove(proposedNodeElements);
-        //     edges.remove(proposedEdgeElements);
-        //     proposedViewActive = false;
-        // }
-        // infoTabActive = false;
         filterNodes();
     };
 
@@ -363,7 +353,6 @@ var filteredNodes = [];
 var filterArray = [];
 var distances = [240, 240, 240, 240, 240];
 var deprDistance = 240;
-var maxNodesPerLayer;
 var priorityArray = ["P0: Blocker", "P1: Critical", "P2: Important", "P3: Somewhat important", "P4: Low", "P5: Not important", "", "Not Evaluated"];
 
 
@@ -537,23 +526,22 @@ function isFiltered(status, type, priority, id)
                     //if the edge has a label and it is in the selected Link Types it won't be filtered out
                     if ((typeof allEdges[i][k].label === "undefined") || (filterArray.includes(allEdges[i][k].label.toUpperCase())))
                     {
+                        var node;
                         //the node now has a valid edge, but it is only shown when that edge is on level <= depth
                         if (allEdges[i][k].from === id)
                         {
-                            index = getIndexInAll(allEdges[i][k].to);
-                            //index is undefined if the node was already filtered out
-                            //index[0] is the depth of the node
-                            if ((typeof index === "undefined") || (index[0] <= depth))
+                            node = findInAllNodes(allEdges[i][k].to);
+                            //node is undefined if the node was already filtered out
+                            if ((typeof node === "undefined") || (node.level <= depth))
                             {
                                 return false;
                             }
                         }
                         else if (allEdges[i][k].to === id)
                         {
-                            index = getIndexInAll(allEdges[i][k].from);
-                            //index is undefined if the node was already filtered out
-                            //index[0] is the depth of the node
-                            if ((typeof index === "undefined") || (index[0] <= depth))
+                            node = findInAllNodes(allEdges[i][k].from);
+                            //node is undefined if the node was already filtered out
+                            if ((typeof node === "undefined") || (node.level <= depth))
                             {
                                 return false;
                             }
@@ -579,7 +567,6 @@ function calculatePositions()
         {
             deprDistance *= Math.sqrt(allNodesArray[1].length / 12);
         }
-        maxNodesPerLayer = 1;
         // the one element with depth 0 is in the center
         allNodesArray[0][0].x = 0;
         allNodesArray[0][0].y = 0;
@@ -588,6 +575,27 @@ function calculatePositions()
         allNodesArray[0][0].heightConstraint = 60;
         allNodesArray[0][0].widthConstraint = 135;
         allNodesArray[0][0].font = {multi: true, size: 24};
+
+        posArray[0][0] = allNodesArray[0][0];
+
+        //TODO
+        //new position idea to avoid overlaps
+        //loop from layer 4 to 1 to calculate sum of outgoing nodes
+        for (var i = allNodesArray.length - 1 ; i > 0; i--)
+        {
+            for (var j = 0; j < allNodesArray[i].length; j++)
+            {
+                allNodesArray[i][j].connectionsOut = findConnectedNodesOuterUnique(allNodesArray[i][j]);
+                allNodesArray[i][j].amountConnectionsOut = allNodesArray[i][j].connectionsOut.length;
+
+                var sum = 1;
+                for (var k = 0; k < allNodesArray[i][j].amountConnectionsOut; k++)
+                {
+                    sum += allNodesArray[i][j].connectionsOut[k].sumConnectionsOut;
+                }
+                allNodesArray[i][j].sumConnectionsOut = sum;
+            }
+        }
         // allNodesArray[1] is layer one and surrounds the center
         for (var i = 0; i < allNodesArray[1].length; i++)
         {
@@ -600,14 +608,14 @@ function calculatePositions()
     }
 }
 
+
 function positionsDepthOne(maxElements, currentElement)
 {
     var angle = 360 / maxElements;
     var direction;
     var resultingAngle;
-    maxNodesPerLayer = Math.max(maxNodesPerLayer, allNodesArray[1].length);
-    // increasing the radius by 16 roughly increases circumference by 100
-    distances[1] = Math.max(allNodesArray[1].length * 16, 240);
+    // increasing the radius by 20 roughly increases circumference by 125
+    distances[1] = Math.max(allNodesArray[1].length * 20, 240);
 
     // if depth 1 has only one element it will be displayed below the center
     if (maxElements === 1)
@@ -633,48 +641,127 @@ function positionsDepthOne(maxElements, currentElement)
         direction = getDirectionByAngle(45 + (angle * currentElement));
         resultingAngle = 45 + angle * currentElement;
     }
-    // allNodesArray[1][currentElement].x = distances[1] * direction.x;
-    // allNodesArray[1][currentElement].y = distances[1] * direction.y;
+    allNodesArray[1][currentElement].x = distances[1] * direction.x;
+    allNodesArray[1][currentElement].y = distances[1] * direction.y;
 
-    allNodesArray[1][currentElement].x = deprDistance * direction.x;
-    allNodesArray[1][currentElement].y = deprDistance * direction.y;
     allNodesArray[1][currentElement].angle = resultingAngle;
+    posArray[1][currentElement] = allNodesArray[1][currentElement];
 }
 
 function positionsOuterRings(depth)
 {
     var connectionsOut = [];
-    var index;
     var direction;
     var angleDiff;
-
-    // increasing the radius by 16 roughly increases circumference by 100
-    distances[depth] = Math.max(allNodesArray[depth].length * 16, distances[depth - 1] + 240);
-
-    maxNodesPerLayer = Math.max(maxNodesPerLayer, allNodesArray[depth].length);
+    var index;
+    var startIndex;
+    var justFill = (allNodesArray[depth].length > (10 * depth));
+    // increasing the radius by 20 roughly increases circumference by 125
+    distances[depth] = Math.max(allNodesArray[depth].length * 20, distances[depth - 1] + 240);
+    //the node with the most outgoing connections is put first in array
+    var maxAmount = -1;
+    var indexOfMax;
+    for (var i = 0; i < allNodesArray[depth - 1].length; i++)
+    {
+        var amount = allNodesArray[depth - 1][i].amountConnectionsOut;
+        if (amount > maxAmount)
+        {
+            maxAmount = amount;
+            indexOfMax = i;
+        }
+    }
+    var tmp = allNodesArray[depth - 1].splice(indexOfMax, 1);
+    allNodesArray[depth - 1].unshift(tmp[0]);
 
     for (var i = 0; i < allNodesArray[depth - 1].length; i++)
     {
-        connectionsOut = findConnectedNodesOuter(allNodesArray[depth - 1][i]);
-        allNodesArray[depth - 1][i].connections = connectionsOut;
-        for (var j = 0; j < connectionsOut.length; j++)
+        connectionsOut = allNodesArray[depth - 1][i].connectionsOut;
+        var arrayLength;
+        if (justFill)
         {
-            index = getIndexInAll(connectionsOut[j]);
-            angleDiff = Math.min(15, 360 / allNodesArray[depth].length);
-            angleDiff *= Math.ceil(j / 2);
+            angleDiff = 360 / allNodesArray[depth].length;
+        }
+        else
+        {
+            //TODO see if reasonable value
+            arrayLength = depth * 10;
+            angleDiff = 360/arrayLength;
 
-            if (j % 2)
-            {// j == odd
-                angleDiff *= -1;
+            var sourceAngle = allNodesArray[depth - 1][i].angle;
+            while (sourceAngle < 0)
+            {
+                sourceAngle += 360;
             }
-            direction = getDirectionByAngle(allNodesArray[depth - 1][i].angle + angleDiff);
+            sourceAngle = sourceAngle % 360;
+            startIndex = Math.floor(sourceAngle/360 * arrayLength);
+            var free;
+            var errorIndex;
+            var loopCount = 0;
+            //check if the desired array slots are free, if not check what is already taken
+            do {
+                free = true;
+                for (var k = 0; k < connectionsOut.length; k++)
+                {
+                    var shiftedIndex = k + startIndex - connectionsOut.length / 2;
+                    if (shiftedIndex < 0)
+                    {
+                        shiftedIndex += arrayLength;
+                    } else if (shiftedIndex >= arrayLength)
+                    {
+                        shiftedIndex -= arrayLength;
+                    }
+                    if (typeof posArray[depth][shiftedIndex] !== "undefined")
+                    {
+                        free = false;
+                        errorIndex = shiftedIndex;
+                    }
+                }
+                if (!free)
+                {
+                    startIndex = errorIndex + 1 + connectionsOut.length / 2;
+                }
+                loopCount++;
+                if (loopCount > arrayLength)
+                {
+                    console.log("WARNING: infinite loop - can't find empty space for nodes");
+                    break;
+                }
+            } while (!free);
+        }
+        var offset;
+        for (var j = 0; j < allNodesArray[depth - 1][i].amountConnectionsOut; j++)
+        {
+            if (justFill)
+            {
+                posArray[depth].push(connectionsOut[j]);
+                if (i === 0)
+                {
+                    offset = angleDiff * (connectionsOut.length / 2);
+                }
+                index = posArray[depth].indexOf(connectionsOut[j]);
+                direction = getDirectionByAngle(index * angleDiff - offset);
+            }
+            else
+            {
+                offset = 0;
+                var insertIndex = j + startIndex - connectionsOut.length / 2;
+                if (insertIndex < 0)
+                {
+                    insertIndex += arrayLength;
+                }
+                else if (insertIndex >= arrayLength)
+                {
+                    insertIndex -= arrayLength;
+                }
+                posArray[depth][insertIndex] = connectionsOut[j];
 
-            // allNodesArray[index[0]][index[1]].x = distances[depth]  * direction.x;
-            // allNodesArray[index[0]][index[1]].y = distances[depth] * direction.y;
+                index = insertIndex;
+                direction = getDirectionByAngle(index * angleDiff);
+            }
 
-            allNodesArray[index[0]][index[1]].x = deprDistance * depth * direction.x;
-            allNodesArray[index[0]][index[1]].y = deprDistance * depth * direction.y;
-            allNodesArray[index[0]][index[1]].angle = allNodesArray[depth - 1][i].angle + angleDiff;
+            connectionsOut[j].x = distances[depth]  * direction.x;
+            connectionsOut[j].y = distances[depth] * direction.y;
+            connectionsOut[j].angle = index * angleDiff - offset;
         }
     }
 }
@@ -713,14 +800,14 @@ function calculateProposedDepthOnePositions(j, maxElements)
 //calculates positions for proposed issues if the selected issue is not layer 0
 function calculateProposedOuterPositions(issueInfo, j)
 {
-    var index = getIndexInAll(issueInfo.nodeid);
+    var node = findInAllNodes(issueInfo.nodeid);
     var angleDiff = Math.min(15, 360 / proposedNodesEdges['nodes'].length);
     angleDiff *= Math.ceil(j / 2);
     if (j % 2)
     {// j == odd
         angleDiff *= -1;
     }
-    var direction = getDirectionByAngle(allNodesArray[index[0]][index[1]].angle + angleDiff);
+    var direction = getDirectionByAngle(node.angle + angleDiff);
 
     var coord_x = (distances[issueInfo.depth] + 120) * direction.x;
     var coord_y = (distances[issueInfo.depth] + 120) * direction.y;
@@ -742,34 +829,58 @@ function getAngleByRelativePosition(fromPoint, point)
     return Math.atan2(dx, dy) * 180 / Math.PI;
 }
 
+//nodes can only be associated with one "source" node TODO
 function findConnectedNodesOuter(paraElem)
 {
-    var connections = findConnectedNodes(paraElem.id);
+    var connections = findConnectedNodes(paraElem);
     var result = [];
     var elem;
     for (var i = 0; i < connections.length; i++)
     {
-        elem = findInAllNodes(connections[i]);
+        elem = connections[i];
         if ((typeof elem !== "undefined") && (paraElem.level === elem.level - 1))
         {
-            result.push(elem.id)
+            result.push(elem);
         }
     }
     return result;
 }
 
-function findConnectedNodes(id)
+function findConnectedNodesOuterUnique(paraElem)
+{
+    var connections = findConnectedNodes(paraElem);
+    var result = [];
+    var elem;
+    for (var i = 0; i < connections.length; i++)
+    {
+        elem = connections[i];
+        if ((typeof elem !== "undefined") && (paraElem.level === elem.level - 1) && (elem.claimedAsOuter !== true))
+        {
+            result.push(elem);
+            elem.claimedAsOuter = true;
+        }
+    }
+    return result;
+}
+
+function findConnectedNodes(paraElem)
 {
     var result = [];
+    var resultID = [];
+    var node;
     for (var i = 0; i < allEdges[0].length; i++)
     {
-        if ((id === allEdges[0][i].from) && !result.includes(allEdges[0][i].to))
+        if ((paraElem.id === allEdges[0][i].from) && !resultID.includes(allEdges[0][i].to))
         {
-            result.push(allEdges[0][i].to);
+            resultID.push(allEdges[0][i].to);
+            node = findInAllNodes(allEdges[0][i].to);
+            result.push(node);
         }
-        if ((id === allEdges[0][i].to) && !result.includes(allEdges[0][i].from))
+        else if ((paraElem.id === allEdges[0][i].to) && !resultID.includes(allEdges[0][i].from))
         {
-            result.push(allEdges[0][i].from);
+            resultID.push(allEdges[0][i].from);
+            node = findInAllNodes(allEdges[0][i].from);
+            result.push(node);
         }
     }
     return result;
@@ -1048,6 +1159,14 @@ function createDepthLevelEdges(nodeEdgeObject)
     return depthLevelEdges;
 }
 
+
+var posArray = [];
+posArray[0] = [];
+posArray[1] = [];
+posArray[2] = [];
+posArray[3] = [];
+posArray[4] = [];
+posArray[5] = [];
 var allNodesArray;
 var depth0Edges;
 var depth1Edges;
@@ -1541,7 +1660,7 @@ function filterNodes()
         }
     }
     // after splicing all filtered nodes out of allNodesArray calculate position will create a circle out of the remaining nodes
-    calculatePositions();
+    //calculatePositions();
     // nodes is cleared
     nodes.clear();
     // and refilled with the correct nodes
@@ -1577,6 +1696,10 @@ function infoTab()
     if (infoType === "issue")
     {
         infoType = "suggestion"
+    }
+    else if (infoType === "user_story")
+    {
+        infoType = "user-story";
     }
     var infoStatus = issueInfo.status;
     //var infoDescription = issueInfo.issueDescription;

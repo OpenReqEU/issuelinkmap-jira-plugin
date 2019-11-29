@@ -60,9 +60,7 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
     <div class="row">
         <div class="col-8">
             <h3>Sorry, I could not find the page you were looking for.</h3>
-            <h5>Searched issue key </h5>
-            <h5 id="issue_placeholder"></h5>
-            <h5> does not exist or access to it is limited, please check that you wrote the issue key correctly.</h5>
+            <h5 id="error_placeholder"></h5>
             <h3>Thank you.</h3>
             <a href="./LinkMapWebworkAction.jspa" class="button button-effect">&#171 Go to Info Page</a>
         </div>
