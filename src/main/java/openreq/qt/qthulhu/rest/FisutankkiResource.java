@@ -96,24 +96,27 @@ public class FisutankkiResource {
     @AnonymousAllowed
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/getTopProposedDependenciesOfRequirement")
-    public Response topProposed(@QueryParam("requirementId") List<String> requirementId, @QueryParam("maxResults") Integer maxResults) 
-            throws IOException, JqlParseException, SearchException, JSONException {
+    public Response topProposed(@QueryParam("requirementId") List<String> requirementId, @QueryParam("maxResults") Integer maxResults, 
+            @QueryParam("additionalParams") String additionalParams) throws IOException, JqlParseException, SearchException, JSONException {
 
-        Gson gson = new Gson();
         String reqIdsString = "";
         String issue = "";
-
-        if (maxResults == null) {
-            maxResults = 0;
-        }
 
         for (String id : requirementId) {
             reqIdsString = reqIdsString + "&requirementId=" + id;
             //usually the list contains only one issue
             issue = id;
         }
+        
+        if (maxResults == null) {
+            maxResults = 0;
+        }
 
-        String urlTail = "/getTopProposedDependenciesOfRequirement?maxResults=" + maxResults + reqIdsString;
+        if (additionalParams==null) {
+            additionalParams = "";
+        }
+        
+        String urlTail = "/getTopProposedDependenciesOfRequirement?maxResults=" + maxResults + reqIdsString + additionalParams;
 
         // Forward the call to OpenReq services in localhost
         String response = millaService.getResponseFromMilla(urlTail, "", false);
@@ -123,9 +126,10 @@ public class FisutankkiResource {
         }
 
         MillaResponse proposedDependencies;
+        Gson gson = new Gson();
+        ObjectMapper mapper = new ObjectMapper();
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
             proposedDependencies = mapper.readValue(response, MillaResponse.class);
         } catch (IOException e) {
             JSONObject error = new JSONObject();
