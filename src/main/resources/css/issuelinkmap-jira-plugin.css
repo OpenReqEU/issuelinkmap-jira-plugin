@@ -312,9 +312,14 @@
     border-radius: 0;
 }
 
+.nav-item {
+    position: relative;
+    display: inline-block;
+}
 .nav-item .tooltiptext {
     visibility: hidden;
-    width: 80%;
+    width: 280px;
+    margin-left: -100px;
     background-color: #272727;
     color: #fff;
     text-align: center;
