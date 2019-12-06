@@ -633,6 +633,10 @@ $webResourceManager.requireResource(
                                 <td><strong>Environment</strong></td>
                                 <td id="infoBoxIssueEnv"></td>
                             </tr>
+                            <tr>
+                                <td><strong>Links</strong></td>
+                                <td id="infoBoxIssueCon"></td>
+                            </tr>
                         </table>
                     </div>
 

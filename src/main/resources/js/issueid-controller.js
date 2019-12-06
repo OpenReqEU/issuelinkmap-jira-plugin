@@ -1742,6 +1742,11 @@ function infoTab()
             infoType = "not specified"
         }
     }
+    var infoConnectionsAmount = findConnectedNodes(findInAllNodes(issueInfo.nodeid)).length;
+    if (infoConnectionsAmount === 0)
+    {
+        infoConnectionsAmount = "<strong>This Node has no links.</strong>";
+    }
     document.getElementById('infoBoxHeading').innerHTML = "".concat(currentIssue);
     if (infoResolution === "confidential")
     {
@@ -1764,6 +1769,7 @@ function infoTab()
         document.getElementById('infoBoxIssueSummary').innerHTML = infoTitle;
         document.getElementById('infoBoxIssueResolution').innerHTML = infoResolution;
         document.getElementById('infoBoxIssueEnv').innerHTML = infoEnvironment;
+        document.getElementById('infoBoxIssueCon').innerHTML = "" + infoConnectionsAmount;
         document.getElementById('infoBoxIssueComponent').innerHTML = infoComponent;
         document.getElementById('infoBoxIssueLabel').innerHTML = infoLabel;
         document.getElementById('infoBoxIssueVersion').innerHTML = infoVersion;
