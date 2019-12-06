@@ -371,9 +371,6 @@ function callTransitiveClosure()
         xhr.open("GET", url, false);
         xhr.onreadystatechange = function ()
         {
-            console.log("readyState: " + xhr.readyState);
-            console.log("status: " + xhr.status);
-
             if (xhr.readyState === 4 /* && xhr.status === 200 */)
             {
                 if (xhr.status === 200)
@@ -1932,8 +1929,8 @@ function initNetwork()
     {
         params.event = "[original event]";
 
-        var node = nodes.get(params.nodes);
-        var issueID = node[0].id;
+        var node = nodes.get(params.nodes)[0];
+        var issueID = node.id;
         var issueNode = findElement(nodeEdgeObject.nodes, "nodeid", issueID);
         if (typeof issueNode !== 'undefined')
         {
@@ -1976,10 +1973,36 @@ function initNetwork()
                 var issueKey = issueNode.id;
                 $('#issueInput').val(issueKey);
                 $('#depthInput').val(depth);
-                //
                 buildURL();
                 document.forms["search-id"].submit();
             }
+        }
+    });
+
+    //dragging reloads the info tab for the dragged node
+    network.on("dragStart", function (params)
+    {
+        var node = nodes.get(params.nodes)[0];
+        if (typeof node !== "undefined")
+        {
+            var issueNode = findElement(nodeEdgeObject.nodes, "nodeid", node.id);
+            currentIssue = issueNode.id;
+            if (infoTabActive) {
+                infoTab();
+            }
+        }
+    });
+
+    //after dragging a node the new positions will be saved
+    network.on("dragEnd", function (params)
+    {
+        var node = nodes.get(params.nodes)[0];
+        if (typeof node !== "undefined")
+        {
+            var nodeInArray = findInAllNodes(node.id);
+            var positions = network.getPositions(node.id);
+            nodeInArray.x = positions[node.id].x;
+            nodeInArray.y = positions[node.id].y;
         }
     });
 }
