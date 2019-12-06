@@ -4,7 +4,7 @@ AJS.toInit(function ()
 {
     $(document).ready(function ()
     {
-        try {
+        // try {
             var url_string = window.location.href;
             var url = new URL(url_string);
             issue = url.searchParams.get("issue").toUpperCase();
@@ -36,19 +36,16 @@ AJS.toInit(function ()
             if (depth === 5) {
                 add5layer();
             }
-            filterNodes();
             initNetwork();
+            filterNodes();
             resizeCanvas();
             $(window).resize(function () {
                 resizeCanvas();
             });
-            setTimeout(function () {
-                network.fit();
-            }, 1000);
-            }
-            catch (err) {
-                location.href = "./ErrorPageAction.jspa?error=" + err;
-            }
+            // }
+            // catch (err) {
+            //     location.href = "./ErrorPageAction.jspa?error=" + err;
+            // }
     });
 
     document.getElementById('depth-1-btn').onclick = function depth1()
@@ -67,7 +64,6 @@ AJS.toInit(function ()
             edges.remove(depth2Edges);
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -89,7 +85,6 @@ AJS.toInit(function ()
             add2layer();
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -114,7 +109,6 @@ AJS.toInit(function ()
             add3layer();
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -143,7 +137,6 @@ AJS.toInit(function ()
             add4layer();
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -174,7 +167,6 @@ AJS.toInit(function ()
             add5layer();
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -576,25 +568,34 @@ function calculatePositions()
         allNodesArray[0][0].widthConstraint = 135;
         allNodesArray[0][0].font = {multi: true, size: 24};
 
-        posArray[0][0] = allNodesArray[0][0];
 
-        //TODO
         //new position idea to avoid overlaps
-        //loop from layer 4 to 1 to calculate sum of outgoing nodes
+        //loop from layer 5 to 1 to calculate sum of outgoing nodes
         for (var i = allNodesArray.length - 1 ; i > 0; i--)
         {
+            var maxAmount = -1;
+            var amount;
+            var indexOfMax;
             for (var j = 0; j < allNodesArray[i].length; j++)
             {
                 allNodesArray[i][j].connectionsOut = findConnectedNodesOuterUnique(allNodesArray[i][j]);
-                allNodesArray[i][j].amountConnectionsOut = allNodesArray[i][j].connectionsOut.length;
+                allNodesArray[i][j].amountConnectionsOut = amount = allNodesArray[i][j].connectionsOut.length;
 
                 var sum = 1;
-                for (var k = 0; k < allNodesArray[i][j].amountConnectionsOut; k++)
+                for (var k = 0; k < amount; k++)
                 {
                     sum += allNodesArray[i][j].connectionsOut[k].sumConnectionsOut;
                 }
                 allNodesArray[i][j].sumConnectionsOut = sum;
+                if (amount > maxAmount)
+                {
+                    maxAmount = amount;
+                    indexOfMax = j;
+                }
             }
+            //the node with the most outgoing connections is put first in array
+            var tmp = allNodesArray[i].splice(indexOfMax, 1);
+            allNodesArray[i].unshift(tmp[0]);
         }
         // allNodesArray[1] is layer one and surrounds the center
         for (var i = 0; i < allNodesArray[1].length; i++)
@@ -645,7 +646,6 @@ function positionsDepthOne(maxElements, currentElement)
     allNodesArray[1][currentElement].y = distances[1] * direction.y;
 
     allNodesArray[1][currentElement].angle = resultingAngle;
-    posArray[1][currentElement] = allNodesArray[1][currentElement];
 }
 
 function positionsOuterRings(depth)
@@ -655,35 +655,28 @@ function positionsOuterRings(depth)
     var angleDiff;
     var index;
     var startIndex;
-    var justFill = (allNodesArray[depth].length > (10 * depth));
+    // justFill is a boolean; true means there are so many nodes on this layer that they will be placed next to eachother without gaps
+    // false means the nodes will be roughly in the direction of their inner connected node, this makes more sense if the layer is not too full
+    // "+ 5" is used because the not-just-filling algorithm works best with empty spaces
+    var justFill = (allNodesArray[depth].length + 5> (10 * depth));
     // increasing the radius by 20 roughly increases circumference by 125
     distances[depth] = Math.max(allNodesArray[depth].length * 20, distances[depth - 1] + 240);
-    //the node with the most outgoing connections is put first in array
-    var maxAmount = -1;
-    var indexOfMax;
-    for (var i = 0; i < allNodesArray[depth - 1].length; i++)
-    {
-        var amount = allNodesArray[depth - 1][i].amountConnectionsOut;
-        if (amount > maxAmount)
-        {
-            maxAmount = amount;
-            indexOfMax = i;
-        }
-    }
-    var tmp = allNodesArray[depth - 1].splice(indexOfMax, 1);
-    allNodesArray[depth - 1].unshift(tmp[0]);
 
-    for (var i = 0; i < allNodesArray[depth - 1].length; i++)
+    // iterate over all nodes of the layer below
+    for (i = 0; i < allNodesArray[depth - 1].length; i++)
     {
+        //and get their outer connected nodes to keep them together
         connectionsOut = allNodesArray[depth - 1][i].connectionsOut;
         var arrayLength;
         if (justFill)
         {
+            // all nodes will be placed evenly on a circle
             angleDiff = 360 / allNodesArray[depth].length;
         }
         else
         {
-            //TODO see if reasonable value
+            // here we assume that there will be empty slots, the angle is dependent on the layer
+            // if we calculated the angle as above (for justFill = true) the circle would be very loose
             arrayLength = depth * 10;
             angleDiff = 360/arrayLength;
 
@@ -693,16 +686,20 @@ function positionsOuterRings(depth)
                 sourceAngle += 360;
             }
             sourceAngle = sourceAngle % 360;
+            // making sure the angle is at least 0 and at most 359 so that we get a valid index
             startIndex = Math.floor(sourceAngle/360 * arrayLength);
             var free;
             var errorIndex;
             var loopCount = 0;
-            //check if the desired array slots are free, if not check what is already taken
+            // check if the desired array slots are free, if not check what is already taken
+            // this shifts the position counter clockwise until there is empty space
+            // due to the sorting by amount of connections and positions being given counter clockwise looking for space clockwise should be useless
+            // in theory we could land in an infinite loop, but due to sorting it's highly unlikely
             do {
                 free = true;
                 for (var k = 0; k < connectionsOut.length; k++)
                 {
-                    var shiftedIndex = k + startIndex - connectionsOut.length / 2;
+                    var shiftedIndex = Math.floor(k + startIndex - connectionsOut.length / 2);
                     if (shiftedIndex < 0)
                     {
                         shiftedIndex += arrayLength;
@@ -718,10 +715,13 @@ function positionsOuterRings(depth)
                 }
                 if (!free)
                 {
-                    startIndex = errorIndex + 1 + connectionsOut.length / 2;
+                    startIndex = Math.floor(errorIndex + 1 + connectionsOut.length / 2);
                 }
                 loopCount++;
-                if (loopCount > arrayLength)
+                // if this would lead to an infinite loop, we jump out with break. this will ruin the positioning tho
+                // may be improved to properly handle this case
+                // hasn't happened for any node yet
+                if (loopCount > arrayLength * 2)
                 {
                     console.log("WARNING: infinite loop - can't find empty space for nodes");
                     break;
@@ -729,22 +729,24 @@ function positionsOuterRings(depth)
             } while (!free);
         }
         var offset;
+        if (i === 0)
+        {
+            // this offset is used in case of justFill === true and calculated once per layer
+            // it will shift the positions in a way that the first pushed nodes in posArray will be in the direction of the connected inner node
+            offset = allNodesArray[depth - 1][0].angle - angleDiff * (connectionsOut.length / 2);
+        }
         for (var j = 0; j < allNodesArray[depth - 1][i].amountConnectionsOut; j++)
         {
             if (justFill)
             {
                 posArray[depth].push(connectionsOut[j]);
-                if (i === 0)
-                {
-                    offset = angleDiff * (connectionsOut.length / 2);
-                }
                 index = posArray[depth].indexOf(connectionsOut[j]);
-                direction = getDirectionByAngle(index * angleDiff - offset);
+                direction = getDirectionByAngle(index * angleDiff + offset);
             }
             else
             {
                 offset = 0;
-                var insertIndex = j + startIndex - connectionsOut.length / 2;
+                var insertIndex = Math.floor(j + startIndex - connectionsOut.length / 2);
                 if (insertIndex < 0)
                 {
                     insertIndex += arrayLength;
@@ -761,8 +763,27 @@ function positionsOuterRings(depth)
 
             connectionsOut[j].x = distances[depth]  * direction.x;
             connectionsOut[j].y = distances[depth] * direction.y;
-            connectionsOut[j].angle = index * angleDiff - offset;
+            connectionsOut[j].angle = index * angleDiff + offset;
         }
+    }
+    if (justFill)
+    {
+        //allNodesArray will be overwritten with the sorted position array
+        allNodesArray[depth] = posArray[depth];
+    }
+    else
+    {
+        var tmp = [];
+        for (var i = arrayLength - 1; i >= 0; i--)
+        {
+            // if justFill === false there might be empty entries in the array
+            if (typeof posArray[depth][i] !== "undefined")
+            {
+                tmp.unshift(posArray[depth][i]);
+            }
+        }
+        //allNodesArray will be overwritten with the sorted position array
+        allNodesArray[depth] = tmp;
     }
 }
 
@@ -822,14 +843,7 @@ function getDirectionByAngle(angle)
     return direction;
 }
 
-function getAngleByRelativePosition(fromPoint, point)
-{
-    var dx = point.x - fromPoint.x;
-    var dy = point.y - fromPoint.y;
-    return Math.atan2(dx, dy) * 180 / Math.PI;
-}
-
-//nodes can only be associated with one "source" node TODO
+//not used at the moment
 function findConnectedNodesOuter(paraElem)
 {
     var connections = findConnectedNodes(paraElem);
@@ -854,14 +868,18 @@ function findConnectedNodesOuterUnique(paraElem)
     for (var i = 0; i < connections.length; i++)
     {
         elem = connections[i];
-        if ((typeof elem !== "undefined") && (paraElem.level === elem.level - 1) && (elem.claimedAsOuter !== true))
+        if ((typeof elem !== "undefined") && (paraElem.level === elem.level - 1) && !elem.claimedAsOuter)
         {
             result.push(elem);
             elem.claimedAsOuter = true;
         }
     }
+    result.sort(function (a, b) {
+        return b.amountConnectionsOut - a.amountConnectionsOut;
+    });
     return result;
 }
+
 
 function findConnectedNodes(paraElem)
 {
@@ -1161,8 +1179,6 @@ function createDepthLevelEdges(nodeEdgeObject)
 
 
 var posArray = [];
-posArray[0] = [];
-posArray[1] = [];
 posArray[2] = [];
 posArray[3] = [];
 posArray[4] = [];
@@ -1673,6 +1689,7 @@ function filterNodes()
         proposedViewActive = false;
         proposedLinks();
     }
+    network.fit();
 }
 
 function infoTab()
@@ -1894,8 +1911,6 @@ function initNetwork()
         network.setOptions({physics: false});
     });
 
-    //     network.fit();
-    // });
 
     //interact with network
     //if a node is selected display information in infobox
