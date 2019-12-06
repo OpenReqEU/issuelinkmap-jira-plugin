@@ -371,20 +371,27 @@ function callTransitiveClosure()
         xhr.open("GET", url, false);
         xhr.onreadystatechange = function ()
         {
-            if (xhr.readyState === 4 && xhr.status === 200)
+            console.log("readyState: " + xhr.readyState);
+            console.log("status: " + xhr.status);
+
+            if (xhr.readyState === 4 /* && xhr.status === 200 */)
             {
-                nodeEdgeObject = JSON.parse(xhr.responseText);
-                max_depth = nodeEdgeObject.max_depth;
-                if (max_depth < depth)
+                if (xhr.status === 200)
                 {
-                    depth = max_depth;
+                    nodeEdgeObject = JSON.parse(xhr.responseText);
+                    max_depth = nodeEdgeObject.max_depth;
+                    if (max_depth < depth) {
+                        depth = max_depth;
+                    }
+                    if (typeof (nodeEdgeObject['0']['nodes']['0']) === "undefined") {
+                        window.location.replace('./ErrorPageAction.jspa?issue=' + issue);
+                    } else {
+                        currentIssue = nodeEdgeObject['0']['nodes']['0']['id'];
+                    }
                 }
-                if (typeof (nodeEdgeObject['0']['nodes']['0']) === "undefined")
+                else
                 {
-                    window.location.replace('./ErrorPageAction.jspa?issue=' + issue)
-                } else
-                {
-                    currentIssue = nodeEdgeObject['0']['nodes']['0']['id'];
+                    window.location.replace('./ErrorPageAction.jspa?issue=' + issue);
                 }
             }
         };
@@ -593,9 +600,12 @@ function calculatePositions()
                     indexOfMax = j;
                 }
             }
-            //the node with the most outgoing connections is put first in array
-            var tmp = allNodesArray[i].splice(indexOfMax, 1);
-            allNodesArray[i].unshift(tmp[0]);
+            if (typeof indexOfMax !== "undefined")
+            {
+                //the node with the most outgoing connections is put first in array
+                var tmp = allNodesArray[i].splice(indexOfMax, 1);
+                allNodesArray[i].unshift(tmp[0]);
+            }
         }
         // allNodesArray[1] is layer one and surrounds the center
         for (var i = 0; i < allNodesArray[1].length; i++)
@@ -1675,8 +1685,6 @@ function filterNodes()
             }
         }
     }
-    // after splicing all filtered nodes out of allNodesArray calculate position will create a circle out of the remaining nodes
-    //calculatePositions();
     // nodes is cleared
     nodes.clear();
     // and refilled with the correct nodes
