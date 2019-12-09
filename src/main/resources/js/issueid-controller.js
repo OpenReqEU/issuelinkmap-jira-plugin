@@ -1794,7 +1794,7 @@ function initNetwork()
 
     //specify options such as physics
     var options = {
-        //size of the network
+        // size of the network
         // autoResize: true,
         // height: '1000px',
         // width: '80%',
@@ -1986,9 +1986,13 @@ function initNetwork()
         if (typeof node !== "undefined")
         {
             var issueNode = findElement(nodeEdgeObject.nodes, "nodeid", node.id);
-            currentIssue = issueNode.id;
-            if (infoTabActive) {
-                infoTab();
+            // issueNode is undefined if you click a proposed node
+            if (typeof issueNode !== "undefined")
+            {
+                currentIssue = issueNode.id;
+                if (infoTabActive) {
+                    infoTab();
+                }
             }
         }
     });
@@ -2000,9 +2004,12 @@ function initNetwork()
         if (typeof node !== "undefined")
         {
             var nodeInArray = findInAllNodes(node.id);
-            var positions = network.getPositions(node.id);
-            nodeInArray.x = positions[node.id].x;
-            nodeInArray.y = positions[node.id].y;
+            if (typeof nodeInArray !== "undefined")
+            {
+                var positions = network.getPositions(node.id);
+                nodeInArray.x = positions[node.id].x;
+                nodeInArray.y = positions[node.id].y;
+            }
         }
     });
 }
