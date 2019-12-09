@@ -1802,53 +1802,100 @@ function initNetwork()
         //TODO: There must be an easier way to create these groups
         "groups": {
             "yellow": {
-                color: {background: '#ffd351', border: 'none'},
+                color: {background: '#ffd351', border: '#666666', highlight: {
+                        border: '#666666',
+                        background: '#FFE69E'
+                    },
+                },
                 borderWidth: 0,
+                borderWidthSelected: 2,
                 font: {color: '#594200', multi: 'html', size: 14}
             },
             "green": {
-                color: {background: '#14882c', border: 'none'},
+                color: {
+                    background: '#14882c', border: '#666666', highlight: {
+                        //border: '#666666',
+                        background: '#1ECB42'
+                    },
+                },
                 borderWidth: 0,
+                borderWidthSelected: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "blue": {
-                color: {background: '#4a6685', border: 'none'},
+                color: {
+                    background: '#4a6685', border: '#666666', highlight: {
+                        border: '#666666',
+                        background: '#6D8CAE'
+                    },
+                },
                 borderWidth: 0,
+                borderWidthSelected: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "red": {
-                color: {background: '#ce0000', border: 'none'},
+                color: {
+                    background: '#ce0000', border: '#666666', highlight: {
+                        border: '#666666',
+                        background: '#FF1C1C'
+                    },
+                },
                 borderWidth: 0,
+                borderWidthSelected: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "unknown": {
                 color: {background: '#cecfd5', border: '#09102b'},
-                borderWidth: 0,
+                borderWidth: 2,
                 font: {color: 'black', multi: 'html', size: 14}
             },
             "yellow_center": {
-                color: {background: '#ffd351', border: 'none'},
+                color: {
+                    background: '#ffd351', border: 'none', highlight: {
+                        border: '#666666',
+                        background: '#FFE69E'
+                    },
+                },
                 borderWidth: 0,
+                borderWidthSelected: 4,
                 font: {color: '#594200', multi: 'html', size: 20}
             },
             "green_center": {
-                color: {background: '#14882c', border: 'none'},
+                color: {
+                    background: '#14882c', border: '#666666', highlight: {
+                        border: '#666666',
+                        background: '#1ECB42'
+                    },
+                },
                 borderWidth: 0,
+                borderWidthSelected: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "blue_center": {
-                color: {background: '#4a6685', border: 'none'},
+                color: {
+                    background: '#4a6685', border: '#666666', highlight: {
+                        border: '#666666',
+                        background: '#6D8CAE'
+                    },
+                },
                 borderWidth: 0,
+                borderWidthSelected: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "red_center": {
-                color: {background: '#ce0000', border: 'none'},
+                color: {
+                    background: '#ce0000', border: '#666666', highlight: {
+                        border: '#666666',
+                        background: '#FF1C1C'
+                    },
+                },
                 borderWidth: 0,
+                borderWidthSelected: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "unknown_center": {
                 color: {background: '#cecfd5', border: '#09102b'},
-                borderWidth: 0,
+                borderWidth: 4,
                 font: {color: 'black', multi: 'html', size: 20}
             }
         },
