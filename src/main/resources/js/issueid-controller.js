@@ -4,7 +4,7 @@ AJS.toInit(function ()
 {
     $(document).ready(function ()
     {
-         try {
+         // try {
             var url_string = window.location.href;
             var url = new URL(url_string);
             issue = url.searchParams.get("issue").toUpperCase();
@@ -14,7 +14,7 @@ AJS.toInit(function ()
             } else {
                 depth = parseInt(depthParam, 10)
             }
-            document.getElementById('issue-headline').innerText = "Issue Links of " + issue;
+            document.getElementById('issue-headline').innerHTML = 'Issue Links of <a href=\"../browse/' + issue + '\" target=\"_blank\">' + issue + '</a>';
             callTransitiveClosure();
             initNodesEdges();
             infoTab();
@@ -42,10 +42,10 @@ AJS.toInit(function ()
             $(window).resize(function () {
                 resizeCanvas();
             });
-         }
-         catch (err) {
-             location.href = "./ErrorPageAction.jspa?error=" + err;
-         }
+         // }
+         // catch (err) {
+         //     location.href = "./ErrorPageAction.jspa?error=" + err;
+         // }
     });
 
     document.getElementById('depth-1-btn').onclick = function depth1()
@@ -1400,7 +1400,7 @@ function proposedLinks()
                         document.getElementById('ddResult').innerHTML = '<h5><font color="#0052CC">No proposed links for issue ' + currentIssue + '.</font></h5>';
                     } else
                     {
-                        var stringList = '<h5><font color=\"#0052CC\">Proposed Links of ' + currentIssue + "</font></h5>" +
+                        var stringList = '<h5><font color=\"#0052CC\">Proposed Links of <a href=\"../browse/' + currentIssue + '\" target=\"_blank\">' + currentIssue + '</a></font></h5>' +
                             "<table style='width: 100%'><tr>\n" +
                             "<th>Issue Key</th>" +
                             "<th>Link type</th>" +
@@ -1415,7 +1415,7 @@ function proposedLinks()
                             stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id +
                                 "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
                                 "<option value='dependency'>dependency</option>" +
-                                "<option value='duplicate'>duplicate</option>" +
+                                "<option value='duplicate' selected='selected'>duplicate</option>" +
                                 "<option value='epic'>epic</option>" +
                                 "<option value='relates'>relates</option>" +
                                 "<option value='replacement'>replacement</option>" +
@@ -1744,7 +1744,7 @@ function infoTab()
     {
         infoConnectionsAmount = "<strong>This Node has no links.</strong>";
     }
-    document.getElementById('infoBoxHeading').innerHTML = "".concat(currentIssue);
+    document.getElementById('infoBoxHeading').innerHTML = '<a href=\"../browse/' + currentIssue + '\" target=\"_blank\">' + currentIssue + '</a>';
     if (infoResolution === "confidential")
     {
         document.getElementById("infoOther").innerHTML = "This issue is confidential, you might not be logged into Jira or have the permissions to see it.";
@@ -1759,7 +1759,7 @@ function infoTab()
         document.getElementById('infoTable').style.display = "block";
         //put the issues in the corressponding part of the website
         //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLink + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt JIRA</a>';
-        document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';
+        //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';
         document.getElementById('infoBoxIssueStatus').innerHTML = infoStatus;
         document.getElementById('infoBoxIssueType').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/' + infoType + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(titleCase(infoType));
         document.getElementById('infoBoxIssuePrio').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/' + issueInfo.priority + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoPriority);
@@ -1802,95 +1802,89 @@ function initNetwork()
         //TODO: There must be an easier way to create these groups
         "groups": {
             "yellow": {
-                color: {background: '#ffd351', border: '#666666', highlight: {
+                color: {background: '#ffd351', border: '#FFFFFF', highlight: {
                         border: '#666666',
                         background: '#FFE69E'
                     },
                 },
-                borderWidth: 0,
-                borderWidthSelected: 2,
+                borderWidth: 2,
                 font: {color: '#594200', multi: 'html', size: 14}
             },
             "green": {
                 color: {
-                    background: '#14882c', border: '#666666', highlight: {
-                        //border: '#666666',
+                    background: '#14882c', border: '#FFFFFF', highlight: {
+                        border: '#666666',
                         background: '#1ECB42'
                     },
                 },
-                borderWidth: 0,
-                borderWidthSelected: 2,
+                borderWidth: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "blue": {
                 color: {
-                    background: '#4a6685', border: '#666666', highlight: {
+                    background: '#4a6685', border: '#FFFFFF', highlight: {
                         border: '#666666',
                         background: '#6D8CAE'
                     },
                 },
-                borderWidth: 0,
-                borderWidthSelected: 2,
+                borderWidth: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "red": {
                 color: {
-                    background: '#ce0000', border: '#666666', highlight: {
+                    background: '#ce0000', border: '#FFFFFF', highlight: {
                         border: '#666666',
                         background: '#FF1C1C'
                     },
                 },
-                borderWidth: 0,
-                borderWidthSelected: 2,
+                borderWidth: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "unknown": {
-                color: {background: '#cecfd5', border: '#09102b'},
+                color: {
+                    background: '#cecfd5', border: '#09102b',
+                },
                 borderWidth: 2,
                 font: {color: 'black', multi: 'html', size: 14}
             },
             "yellow_center": {
                 color: {
-                    background: '#ffd351', border: 'none', highlight: {
+                    background: '#ffd351', border: '#FFFFFF', highlight: {
                         border: '#666666',
                         background: '#FFE69E'
                     },
                 },
-                borderWidth: 0,
-                borderWidthSelected: 4,
+                borderWidth: 4,
                 font: {color: '#594200', multi: 'html', size: 20}
             },
             "green_center": {
                 color: {
-                    background: '#14882c', border: '#666666', highlight: {
+                    background: '#14882c', border: '#FFFFFF', highlight: {
                         border: '#666666',
                         background: '#1ECB42'
                     },
                 },
-                borderWidth: 0,
-                borderWidthSelected: 4,
+                borderWidth: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "blue_center": {
                 color: {
-                    background: '#4a6685', border: '#666666', highlight: {
+                    background: '#4a6685', border: '#FFFFFF', highlight: {
                         border: '#666666',
                         background: '#6D8CAE'
                     },
                 },
-                borderWidth: 0,
-                borderWidthSelected: 4,
+                borderWidth: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "red_center": {
                 color: {
-                    background: '#ce0000', border: '#666666', highlight: {
+                    background: '#ce0000', border: '#FFFFFF', highlight: {
                         border: '#666666',
                         background: '#FF1C1C'
                     },
                 },
-                borderWidth: 0,
-                borderWidthSelected: 4,
+                borderWidth: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "unknown_center": {
