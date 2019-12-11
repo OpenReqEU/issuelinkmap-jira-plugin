@@ -4,7 +4,7 @@ AJS.toInit(function ()
 {
     $(document).ready(function ()
     {
-         // try {
+         try {
             var url_string = window.location.href;
             var url = new URL(url_string);
             issue = url.searchParams.get("issue").toUpperCase();
@@ -42,10 +42,10 @@ AJS.toInit(function ()
             $(window).resize(function () {
                 resizeCanvas();
             });
-         // }
-         // catch (err) {
-         //     location.href = "./ErrorPageAction.jspa?error=" + err;
-         // }
+         }
+         catch (err) {
+             location.href = "./ErrorPageAction.jspa?error=" + err;
+         }
     });
 
     document.getElementById('depth-1-btn').onclick = function depth1()
