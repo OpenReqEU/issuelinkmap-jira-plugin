@@ -9,7 +9,7 @@ AJS.toInit(function ()
             var url = new URL(url_string);
             issue = url.searchParams.get("issue").toUpperCase();
             var depthParam = url.searchParams.get("depth");
-            if ((depthParam === null) || (depthParam === "")) {
+            if ((typeof depthParam === "undefined") || (depthParam === null) || (depthParam === "") ) {
                 depth = 1;
             } else {
                 depth = parseInt(depthParam, 10)
@@ -2013,7 +2013,7 @@ function initNetwork()
             {
                 var issueKey = issueNode.id;
                 $('#issueInput').val(issueKey);
-                $('#depthInput').val(depth);
+                // $('#depthInput').val(depth);
                 buildURL();
                 document.forms["search-id"].submit();
             }

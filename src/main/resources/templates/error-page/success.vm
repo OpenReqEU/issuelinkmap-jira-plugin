@@ -49,8 +49,8 @@ $webResourceManager.requireResource("openreq.qt.issuelinkmap-jira-plugin.issueli
             <button type="submit"><em class="fa fa-search" style="color: #deebff;"></em></button>
             <input type="text" name="issue" id="issueInput" required="required" placeholder="Issue Key..."
                    style="margin-right: 20px">
-            <input type="number" name="depth" id="depthInput" min="1" max="5" placeholder="Depth..."
-                   style="margin-right: 20px">
+##            <input type="number" name="depth" id="depthInput" min="1" max="5" placeholder="Depth..."
+##                   style="margin-right: 20px">
             <div class="loader" id="loader"></div>
         </form>
     </div>
