@@ -39,6 +39,9 @@ AJS.toInit(function ()
             initNetwork();
             filterNodes();
             resizeCanvas();
+            setTimeout(function(){
+                network.fit();
+            }, 1000);
             $(window).resize(function () {
                 resizeCanvas();
             });
@@ -198,7 +201,7 @@ AJS.toInit(function ()
             {
                 var xhr = new XMLHttpRequest();
 
-                var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=true";
+                var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=false";
                 xhr.open("GET", url, true);
 
                 document.getElementById('ccResult').innerHTML = '<h5><font color=\"#0052CC\">Pending...</font></h5>';
@@ -251,7 +254,7 @@ AJS.toInit(function ()
                         } else
                         {
                             ccMessage = ccMessage.concat("<h5><font color=\"#CC0000\">Release plan is inconsistent.</font></h5>");
-                            document.getElementById('ccInconsistencisBtn').style.display = "inline-block";
+                            // document.getElementById('ccInconsistencisBtn').style.display = "inline-block";
                         }
                         document.getElementById('ccResult').innerHTML = "<br>".concat(ccMessage).concat("<br>");
                         document.getElementById('ccReleases').innerHTML = "<br>".concat(regsInReleases).concat("<br>");
@@ -260,6 +263,31 @@ AJS.toInit(function ()
                         document.getElementById("ccRelIgnored").style.display = "inline-block";
                         document.getElementById("ccRelIgnoredButton").style.display = "inline-block";
                         document.getElementById('ccRelIgnored').innerHTML = ignoredRelList;
+
+                        var relList = "";
+
+                        var relInc = json.response[0].RelationshipsInconsistent;
+                        relList = relList + "<br>" +
+                            "<table style='width: 100%'><tr>\n" +
+                            // "<th>Issue Keys</th>" +
+                            // "<th>Link type</th>" +
+                            "<th>From Issue</th>" +
+                            "<th>Link Type</th>" +
+                            "<th>To Issue</th>" +
+                            "</tr>";
+                        for (var i = 0; i < relInc.length; i++)
+                        {
+                            // relList = relList + "<tr><td>" + relInc[i].To + ", " + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td></tr>";
+                            // relList = relList + "<tr><td>" + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td><td>" + relInc[i].To + "</td></tr>";
+                            relList = relList + '<tr><td><a href=\"../browse/' + relInc[i].From + '\" target=\"_blank\">' + relInc[i].From + '</a></td><td>'
+                                + relInc[i].Type + '<td><a href=\"../browse/' + relInc[i].To + '\" target=\"_blank\">' + relInc[i].To + '</a></td></tr>';
+                        }
+                        relList = relList + "</table>";
+                        document.getElementById("ccRelInc").style.display = "inline-block";
+                        document.getElementById("ccRelIncButton").style.display = "inline-block";
+                        document.getElementById('ccRelInc').innerHTML = relList;
+                        document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
+                        // document.getElementById('ccInconsistencisBtn').style.display = "none";
 
                         consistencyChecked = true;
                     }
@@ -339,6 +367,7 @@ var depth;
 var max_depth;
 var nodeEdgeObject;
 var currentIssue;
+var proposedAmount = 5;
 
 var helpNodeSet = [];
 var filteredNodes = [];
@@ -429,6 +458,11 @@ function findInAllNodes(id)
             return elem;
         }
     }
+}
+function newProposedAmount() {
+    proposedAmount = document.getElementById("proposedResults").value;
+    proposedAmount = Math.min(proposedAmount, proposedIssuesList.length)
+    fillProposedHTML();
 }
 
 function getIndexInAll(id)
@@ -829,7 +863,7 @@ function calculateProposedDepthOnePositions(j, maxElements)
 function calculateProposedOuterPositions(issueInfo, j)
 {
     var node = findInAllNodes(issueInfo.nodeid);
-    var angleDiff = Math.min(15, 360 / proposedNodesEdges['nodes'].length);
+    var angleDiff = Math.min(10, 360 / proposedNodesEdges['nodes'].length);
     angleDiff *= Math.ceil(j / 2);
     if (j % 2)
     {// j == odd
@@ -1114,20 +1148,12 @@ function createDepthLevelNodes(nodeEdgeObject)
         } else
             nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n not specified");
         var nodetitle = "";
-        // if (nodename.toString().length > 20)
-        // {
-        //     nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("...\n");
-        // } else
-        // {
-        //     nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("\n");
-        // }
-        //blub
         var lenOfLine = 20;
         var titleWords = nodename.toString().split(" ");
         var lenCounter = 0;
         for (var j = 0; j < titleWords.length; j++)
         {
-            if (lenCounter > lenOfLine)
+            if (lenCounter >= lenOfLine)
             {
                 nodetitle = nodetitle + "<br>";
                 lenCounter = 0;
@@ -1259,7 +1285,7 @@ function proposedLinks()
 
 
             var xhr = new XMLHttpRequest();
-            var url = "../rest/issuesearch/1.0/getTopProposedDependenciesOfRequirement?requirementId=" + currentIssue + "&maxResults=" + "5";
+            var url = "../rest/issuesearch/1.0/getTopProposedDependenciesOfRequirement?requirementId=" + currentIssue + "&maxResults=" + "1000";
 
             xhr.open("GET", url, true);
 
@@ -1321,12 +1347,18 @@ function proposedLinks()
                         } else
                             nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n not specified");
                         var nodetitle = "";
-                        if (nodename.toString().length > 20)
+                        var lenOfLine = 20;
+                        var titleWords = nodename.toString().split(" ");
+                        var lenCounter = 0;
+                        for (var k = 0; k < titleWords.length; k++)
                         {
-                            nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("...\n");
-                        } else
-                        {
-                            nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("\n")
+                            if (lenCounter >= lenOfLine)
+                            {
+                                nodetitle = nodetitle + "<br>";
+                                lenCounter = 0;
+                            }
+                            nodetitle = nodetitle + titleWords[k] + " ";
+                            lenCounter = lenCounter + titleWords[k].length;
                         }
 
                         //calculate positions for the proposed issue
@@ -1395,40 +1427,9 @@ function proposedLinks()
                     edges.add(proposedEdgeElements);
 
                     proposedViewActive = true;
-                    if (proposedIssuesList.length === 0)
-                    {
-                        document.getElementById('ddResult').innerHTML = '<h5><font color="#0052CC">No proposed links for issue ' + currentIssue + '.</font></h5>';
-                    } else
-                    {
-                        var stringList = '<h5><font color=\"#0052CC\">Proposed Links of <a href=\"../browse/' + currentIssue + '\" target=\"_blank\">' + currentIssue + '</a></font></h5>' +
-                            "<table style='width: 100%'><tr>\n" +
-                            "<th>Issue Key</th>" +
-                            "<th>Link type</th>" +
-                            "<th>Accept</th>" +
-                            "<th>Reject</th>" +
-                            "</tr>";
-                        var selectionList = '<div class="custom-select">';
-                        var acceptBtn = "<button class='button accept button-effect-accept' role='radio' onclick=\"registerClick(this)\" id=";
-                        var rejectBtn = "<button class='button reject button-effect-reject' role='radio' onclick=\"registerClick(this)\" id=";
-                        for (var i = 0; i < proposedIssuesList.length; i++)
-                        {
-                            stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id +
-                                "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
-                                "<option value='dependency'>dependency</option>" +
-                                "<option value='duplicate' selected='selected'>duplicate</option>" +
-                                "<option value='epic'>epic</option>" +
-                                "<option value='relates'>relates</option>" +
-                                "<option value='replacement'>replacement</option>" +
-                                "<option value='subtask'>subtask</option>" +
-                                "<option value='work breakdown'>work breakdown</option>" +
-                                "</select></div></td><td>"
-                                + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
-                                + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td>" +
-                                "</tr>";
-                        }
-                        stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
-                        document.getElementById('ddResult').innerHTML = stringList;
-                    }
+                    document.getElementById("ddAmountResults").innerHTML = "<input type='number' name='results' id='proposedResults' min='1' max='" + proposedIssuesList.length + "' value='5' placeholder='# of links' style='margin-right: 20px' onchange='newProposedAmount();'>";
+                    fillProposedHTML();
+
                 }
             };
             xhr.send(null);
@@ -1443,6 +1444,51 @@ function proposedLinks()
     {
         network.fit();
         }, 1000);
+}
+
+function fillProposedHTML()
+{
+    if (proposedIssuesList.length === 0)
+    {
+        document.getElementById('ddResult').innerHTML = '<h5><font color="#0052CC">No proposed links for issue <a href=\"../browse/' + currentIssue + '\" target=\"_blank\">' + currentIssue + '</a>.</font></h5>';
+    } else
+    {
+        var stringList = '<h5><font color=\"#0052CC\">Proposed Links of <a href=\"../browse/' + currentIssue + '\" target=\"_blank\">' + currentIssue + '</a></font></h5>' +
+            "<table style='width: 100%'><tr>\n" +
+            "<th>Issue Key</th>" +
+            "<th>Link type</th>" +
+            "<th>Accept</th>" +
+            "<th>Reject</th>" +
+            "</tr>";
+        var selectionList = '<div class="custom-select">';
+        var acceptBtn = "<button class='button accept button-effect-accept' role='radio' onclick=\"registerClick(this)\" id=";
+        var rejectBtn = "<button class='button reject button-effect-reject' role='radio' onclick=\"registerClick(this)\" id=";
+        for (var i = 0; i < proposedAmount; i++)
+        {
+            var title = "No title found";
+            var node = findElement(proposedNodeElements, "key", proposedIssuesList[i].id);
+            if (typeof node !== "undefined")
+            {
+                title = node.title;
+            }
+            stringList = stringList + "<tr><td class='hoverable-text'><a href='../browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id +
+                "<span class='tooltiptext-left'>" + title + "</span>" +
+                "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
+                "<option value='dependency'>dependency</option>" +
+                "<option value='duplicate' selected='selected'>duplicate</option>" +
+                "<option value='epic'>epic</option>" +
+                "<option value='relates'>relates</option>" +
+                "<option value='replacement'>replacement</option>" +
+                "<option value='subtask'>subtask</option>" +
+                "<option value='work breakdown'>work breakdown</option>" +
+                "</select></div></td><td>"
+                + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
+                + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td>" +
+                "</tr>";
+        }
+        stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
+        document.getElementById('ddResult').innerHTML = stringList;
+    }
 }
 
 function sortProposed(array)
@@ -2080,12 +2126,18 @@ function getInconsistencies()
                 var relInc = json.response[0].RelationshipsInconsistent;
                 relList = relList + "<br>" +
                     "<table style='width: 100%'><tr>\n" +
-                    "<th>Issue Keys</th>" +
-                    "<th>Link type</th>" +
+                    // "<th>Issue Keys</th>" +
+                    // "<th>Link type</th>" +
+                    "<th>From Issue</th>" +
+                    "<th>Link Type</th>" +
+                    "<th>To Issue</th>" +
                     "</tr>";
                 for (var i = 0; i < relInc.length; i++)
                 {
-                    relList = relList + "<tr><td>" + relInc[i].To + ", " + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td></tr>";
+                    // relList = relList + "<tr><td>" + relInc[i].To + ", " + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td></tr>";
+                    // relList = relList + "<tr><td>" + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td><td>" + relInc[i].To + "</td></tr>";
+                    relList = relList + '<tr><td><a href=\"../browse/' + relInc[i].From + '\" target=\"_blank\">' + relInc[i].From + '</a></td><td>'
+                        + relInc[i].Type + '<td><a href=\"../browse/' + relInc[i].To + '\" target=\"_blank\">' + relInc[i].To + '</a></td></tr>';
                 }
                 relList = relList + "</table>";
                 document.getElementById("ccRelInc").style.display = "inline-block";

@@ -311,20 +311,6 @@ $webResourceManager.requireResource(
                                     </label>
                                 </span>
                                 <hr class="dropdownline">
-##                                <span>
-##                                    <label>
-##                                        <input name="Status" type="checkbox" checked="checked" value="confidential"/>
-##                                        <i>Confidential</i>
-##                                    </label>
-##                                </span>
-##                                <br>
-##                                <span>
-##                                    <label>
-##                                        <input name="Status" type="checkbox" checked="checked" value="not in database"/>
-##                                        <i>Not in database</i>
-##                                    </label>
-##                                </span>
-##                                <hr class="dropdownline">
                                 <span>
                                     <label>
                                         <input id="all-toggle" type="checkbox" checked="checked"/>
@@ -389,20 +375,6 @@ $webResourceManager.requireResource(
                                     </label>
                                 </span>
                                 <hr class="dropdownline">
-##                                <span>
-##                                    <label>
-##                                        <input name="Priority" type="checkbox" checked="checked" value="confidential"/>
-##                                        <i>Confidential</i>
-##                                    </label>
-##                                </span>
-##                                <br>
-##                                <span>
-##                                    <label>
-##                                        <input name="Priority" type="checkbox" checked="checked" value="not in database"/>
-##                                        <i>Not in database</i>
-##                                    </label>
-##                                </span>
-##                                <hr class="dropdownline">
                                 <span>
                                     <label>
                                         <input id="prio-toggle" name="Priority" type="checkbox" checked="checked"/>
@@ -481,8 +453,6 @@ $webResourceManager.requireResource(
                             </div>
                         </div>
 
-                    ##                        <input id="filter-search" type="button" class="button search button-effect"
-                    ##                               value="Apply filter"/>
                     </div>
                     <p id="filterOptions"></p>
                 </div>
@@ -607,6 +577,7 @@ $webResourceManager.requireResource(
                     <br>
                 </div>
                 <div class="tab-pane fade" id="sd-box" role="tabpanel" aria-labelledby="sd-tab">
+                    <p id="ddAmountResults"></p>
                     <p id="ddResult"></p>
                     <p id="ddInfo">Any accepted or rejected links are currently NOT written into the jira database, but are saved in an intermediate database for evaluation.</p>
                     <p id="ddPending"></p>
@@ -616,12 +587,12 @@ $webResourceManager.requireResource(
                         <div class="col-8">
                             <div id="ccResult"></div>
                         </div>
-                        <div class="col-4">
-                            <button class='button button-effect' onclick='getInconsistencies()'
-                                    id='ccInconsistencisBtn'
-                                    style="display: none;">Get inconsistencies
-                            </button>
-                        </div>
+##                        <div class="col-4">
+##                            <button class='button button-effect' onclick='getInconsistencies()'
+##                                    id='ccInconsistencisBtn'
+##                                    style="display: none;">Get inconsistencies
+##                            </button>
+##                        </div>
                     </div>
                     <div class="row">
                         <button class="accordion" id="ccRelIncButton" style="display: none">Inconsistent releases

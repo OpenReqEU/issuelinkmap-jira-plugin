@@ -349,6 +349,34 @@
     opacity: 1;
 }
 
+.hoverable-text {
+    position: relative;
+    display: inline-block;
+}
+
+.hoverable-text .tooltiptext-left {
+    visibility: hidden;
+    /*width: 100%;*/
+    /*margin-left: -50%;*/
+    background-color: #272727;
+    color: #fff;
+    text-align: center;
+    border-radius: 0;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    /*bottom: 100%;*/
+    /*left: 50%;*/
+    top: -5px;
+    right: 105%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.hoverable-text:hover .tooltiptextleft {
+    visibility: visible;
+    opacity: 1;
+}
 
 /*Spinning circle to indicate that the site is loading*/
 
