@@ -12,7 +12,7 @@ AJS.toInit(function ()
             if ((typeof depthParam === "undefined") || (depthParam === null) || (depthParam === "") ) {
                 depth = 1;
             } else {
-                depth = parseInt(depthParam, 10)
+                depth = parseInt(depthParam, 10);
                 depth = Math.max(depth, 1);
                 depth = Math.min(depth, 5);
             }
@@ -220,13 +220,45 @@ AJS.toInit(function ()
                         for (var i = 0; i < releases.length; i++)
                         {
                             regsInReleases = regsInReleases + "<strong>Release " + releases[i].Release + "</strong><br>";
-                            for (var k = 0; k < releases[i].RequirementsAssigned.length - 1; k++)
+                            for (var k = 0; k < releases[i].RequirementsAssigned.length; k++)
                             {
+                                // to get the title we need to find our issue in allNodesArray
+                                // findInAllNodes expects an ID (e.g. 5030) but we only got the key (QTWB-30)
+                                // we look in nodeEdgeObjects for our key to get the id, to get the issue in allNodesArray
+                                // to get the title. make sure that we get valid nodes in return
+                                var title = "No title found";
                                 var key = releases[i].RequirementsAssigned[k];
-                                regsInReleases = regsInReleases + "<p style='display:inline' onmouseover='highlightRequirement(\"" + key + "\");'>" + key + "</p>, ";
+                                var nodeObject = findElement(nodeEdgeObject.nodes, "id", key);
+                                if (typeof nodeObject !== "undefined")
+                                {
+                                    var node = findInAllNodes(nodeObject.nodeid);
+                                    if (typeof node !== "undefined")
+                                    {
+                                        title = node.title;
+                                    }
+                                    else
+                                    {
+                                        // the node might be filtered at the moment
+                                        // we still want its title
+                                        node = findElement(filteredNodes, "id", nodeObject.nodeid);
+                                        if (typeof node !== "undefined")
+                                        {
+                                            title = node.title;
+                                        }
+                                    }
+                                }
+                                if (k < releases[i].RequirementsAssigned.length - 1)
+                                {
+                                    regsInReleases = regsInReleases + "<p class='hoverable-text' style='display:inline' onmouseover='highlightRequirement(\"" + key + "\");'>" +
+                                        key + "<span class='tooltiptext-top'>" + title + "</span></p>, ";
+                                }
+                                else
+                                {
+                                    // no ", " for last key but "<br>" is added
+                                    regsInReleases = regsInReleases + "<p class='hoverable-text' style='display:inline' onmouseover='highlightRequirement(\"" + key + "\");'>" +
+                                        key + "<span class='tooltiptext-top'>" + title + "</span></p><br>";
+                                }
                             }
-                            var lastkey = releases[i].RequirementsAssigned[releases[i].RequirementsAssigned.length - 1]
-                            regsInReleases = regsInReleases + "<p style='display:inline' onmouseover='highlightRequirement(\"" + lastKey + "\");'>" + lastKey + "</p>, <br>"
                         }
                         var ccMessage = "";
 
@@ -270,23 +302,29 @@ AJS.toInit(function ()
                         var relList = "";
 
                         var relInc = json.response[0].RelationshipsInconsistent;
-                        relList = relList + "<br>" +
-                            "<table style='width: 100%'><tr>\n" +
-                            "<th>From Issue</th>" +
-                            "<th>Link Type</th>" +
-                            "<th>To Issue</th>" +
-                            "</tr>";
-                        for (var i = 0; i < relInc.length; i++)
+                        if (relInc.length === 0)
                         {
-                            relList = relList + '<tr><td><a href=\"../browse/' + relInc[i].From + '\" target=\"_blank\">' + relInc[i].From + '</a></td><td>'
-                                + relInc[i].Type + '<td><a href=\"../browse/' + relInc[i].To + '\" target=\"_blank\">' + relInc[i].To + '</a></td></tr>';
+                            document.getElementById("ccRelIncButton").style.display = "none";
                         }
-                        relList = relList + "</table>";
-                        document.getElementById("ccRelInc").style.display = "inline-block";
-                        document.getElementById("ccRelIncButton").style.display = "inline-block";
-                        document.getElementById('ccRelInc').innerHTML = relList;
-                        document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
-
+                        else
+                        {
+                            relList = relList + "<br>" +
+                                "<table style='width: 100%'><tr>\n" +
+                                "<th>From Issue</th>" +
+                                "<th>Link Type</th>" +
+                                "<th>To Issue</th>" +
+                                "</tr>";
+                            for (i = 0; i < relInc.length; i++)
+                            {
+                                relList = relList + '<tr><td><a href=\"../browse/' + relInc[i].From + '\" target=\"_blank\">' + relInc[i].From + '</a></td><td>'
+                                    + relInc[i].Type + '<td><a href=\"../browse/' + relInc[i].To + '\" target=\"_blank\">' + relInc[i].To + '</a></td></tr>';
+                            }
+                            relList = relList + "</table>";
+                            document.getElementById("ccRelInc").style.display = "inline-block";
+                            document.getElementById("ccRelIncButton").style.display = "inline-block";
+                            document.getElementById('ccRelInc').innerHTML = relList;
+                            document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
+                        }
                         consistencyChecked = true;
                     }
                 };
@@ -469,7 +507,7 @@ function highlightRequirement(key)
     {
         // focus sets the highlighted node in the center
         // works good for smaller maps but when you hover a lot of IDs it looks epilepsy inducing
-        //network.focus(issueNode.nodeid);
+        // network.focus(issueNode.nodeid);
         network.selectNodes([issueNode.nodeid]);
         selectANodeWithID(key);
     }
@@ -635,11 +673,11 @@ function calculatePositions()
             }
         }
         // allNodesArray[1] is layer one and surrounds the center
-        for (var i = 0; i < allNodesArray[1].length; i++)
+        for (i = 0; i < allNodesArray[1].length; i++)
         {
             positionsDepthOne(allNodesArray[1].length, i);
         }
-        for (var i = 2; i <= max_depth; i++)
+        for (i = 2; i <= max_depth; i++)
         {
             positionsOuterRings(i);
         }
@@ -772,7 +810,7 @@ function positionsOuterRings(depth)
             // it will shift the positions in a way that the first pushed nodes in posArray will be in the direction of the connected inner node
             offset = allNodesArray[depth - 1][0].angle - angleDiff * (connectionsOut.length / 2);
         }
-        for (var j = 0; j < allNodesArray[depth - 1][i].amountConnectionsOut; j++)
+        for (var j = 0; j < connectionsOut.length; j++)
         {
             if (justFill)
             {
