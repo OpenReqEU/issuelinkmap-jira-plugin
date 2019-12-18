@@ -4,7 +4,7 @@ AJS.toInit(function ()
 {
     $(document).ready(function ()
     {
-         try {
+         // try {
             var url_string = window.location.href;
             var url = new URL(url_string);
             issue = url.searchParams.get("issue").toUpperCase();
@@ -13,6 +13,8 @@ AJS.toInit(function ()
                 depth = 1;
             } else {
                 depth = parseInt(depthParam, 10)
+                depth = Math.max(depth, 1);
+                depth = Math.min(depth, 5);
             }
             document.getElementById('issue-headline').innerHTML = 'Issue Links of <a href=\"../browse/' + issue + '\" target=\"_blank\">' + issue + '</a>';
             callTransitiveClosure();
@@ -45,10 +47,10 @@ AJS.toInit(function ()
             $(window).resize(function () {
                 resizeCanvas();
             });
-         }
-         catch (err) {
-             location.href = "./ErrorPageAction.jspa?error=" + err;
-         }
+         // }
+         // catch (err) {
+         //     location.href = "./ErrorPageAction.jspa?error=" + err;
+         // }
     });
 
     document.getElementById('depth-1-btn').onclick = function depth1()
@@ -220,10 +222,11 @@ AJS.toInit(function ()
                             regsInReleases = regsInReleases + "<strong>Release " + releases[i].Release + "</strong><br>";
                             for (var k = 0; k < releases[i].RequirementsAssigned.length - 1; k++)
                             {
-                                regsInReleases = regsInReleases + releases[i].RequirementsAssigned[k] + ", "
+                                var key = releases[i].RequirementsAssigned[k];
+                                regsInReleases = regsInReleases + "<p style='display:inline' onmouseover='highlightRequirement(\"" + key + "\");'>" + key + "</p>, ";
                             }
-
-                            regsInReleases = regsInReleases + releases[i].RequirementsAssigned[releases[i].RequirementsAssigned.length - 1] + "<br>"
+                            var lastkey = releases[i].RequirementsAssigned[releases[i].RequirementsAssigned.length - 1]
+                            regsInReleases = regsInReleases + "<p style='display:inline' onmouseover='highlightRequirement(\"" + lastKey + "\");'>" + lastKey + "</p>, <br>"
                         }
                         var ccMessage = "";
 
@@ -269,16 +272,12 @@ AJS.toInit(function ()
                         var relInc = json.response[0].RelationshipsInconsistent;
                         relList = relList + "<br>" +
                             "<table style='width: 100%'><tr>\n" +
-                            // "<th>Issue Keys</th>" +
-                            // "<th>Link type</th>" +
                             "<th>From Issue</th>" +
                             "<th>Link Type</th>" +
                             "<th>To Issue</th>" +
                             "</tr>";
                         for (var i = 0; i < relInc.length; i++)
                         {
-                            // relList = relList + "<tr><td>" + relInc[i].To + ", " + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td></tr>";
-                            // relList = relList + "<tr><td>" + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td><td>" + relInc[i].To + "</td></tr>";
                             relList = relList + '<tr><td><a href=\"../browse/' + relInc[i].From + '\" target=\"_blank\">' + relInc[i].From + '</a></td><td>'
                                 + relInc[i].Type + '<td><a href=\"../browse/' + relInc[i].To + '\" target=\"_blank\">' + relInc[i].To + '</a></td></tr>';
                         }
@@ -287,7 +286,6 @@ AJS.toInit(function ()
                         document.getElementById("ccRelIncButton").style.display = "inline-block";
                         document.getElementById('ccRelInc').innerHTML = relList;
                         document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
-                        // document.getElementById('ccInconsistencisBtn').style.display = "none";
 
                         consistencyChecked = true;
                     }
@@ -461,21 +459,19 @@ function findInAllNodes(id)
 }
 function newProposedAmount() {
     proposedAmount = document.getElementById("proposedResults").value;
-    proposedAmount = Math.min(proposedAmount, proposedIssuesList.length)
     fillProposedHTML();
 }
 
-function getIndexInAll(id)
+function highlightRequirement(key)
 {
-    for (var i = 0; i <= 5; i++)
+    var issueNode = findElement(nodeEdgeObject.nodes, "id", key);
+    if (nodes.get(issueNode.nodeid) !== null)
     {
-        for (var j = 0; j < allNodesArray[i].length; j++)
-        {
-            if (allNodesArray[i][j].id === id)
-            {
-                return [i, j];
-            }
-        }
+        // focus sets the highlighted node in the center
+        // works good for smaller maps but when you hover a lot of IDs it looks epilepsy inducing
+        //network.focus(issueNode.nodeid);
+        network.selectNodes([issueNode.nodeid]);
+        selectANodeWithID(key);
     }
 }
 
@@ -1427,7 +1423,7 @@ function proposedLinks()
                     edges.add(proposedEdgeElements);
 
                     proposedViewActive = true;
-                    document.getElementById("ddAmountResults").innerHTML = "<input type='number' name='results' id='proposedResults' min='1' max='" + proposedIssuesList.length + "' value='5' placeholder='# of links' style='margin-right: 20px' onchange='newProposedAmount();'>";
+                    document.getElementById("ddAmountResults").innerHTML = "<input type='number' name='results' id='proposedResults' min='1' max='" + proposedIssuesList.length + "' placeholder='# of links' style='margin-right: 20px' onchange='newProposedAmount();'>";
                     fillProposedHTML();
 
                 }
@@ -1463,6 +1459,8 @@ function fillProposedHTML()
         var selectionList = '<div class="custom-select">';
         var acceptBtn = "<button class='button accept button-effect-accept' role='radio' onclick=\"registerClick(this)\" id=";
         var rejectBtn = "<button class='button reject button-effect-reject' role='radio' onclick=\"registerClick(this)\" id=";
+
+        proposedAmount = Math.min(proposedAmount, proposedIssuesList.length);
         for (var i = 0; i < proposedAmount; i++)
         {
             var title = "No title found";
@@ -1984,20 +1982,6 @@ function initNetwork()
                 'enabled': true,
                 "iterations": 1000,
                 "updateInterval": 25
-                // "minVelocity": 50,
-                // // "repulsion": {
-                // //     "nodeDistance": 150
-                // // },
-                // "barnesHut":
-                //     {
-                //         "avoidOverlap": 1
-                //     },
-                // "stabilization": {
-                //     "enabled": true,
-                //     "iterations": 50, // maximum number of iteration to stabilize
-                //     "updateInterval": 1,
-                //     "onlyDynamicEdges": false,
-                //     "fit": true
             }
         }
     };
@@ -2012,9 +1996,8 @@ function initNetwork()
 
     //interact with network
     //if a node is selected display information in infobox
-    network.on("selectNode", function (params)
-    {
-        params.event = "[original event]";
+    network.on("selectNode", function (params){
+        //params.event = "[original event]";
 
         var node = nodes.get(params.nodes)[0];
         var issueID = node.id;
@@ -2045,6 +2028,8 @@ function initNetwork()
             }
         }
     });
+
+
 
     //doubleclicking searches for the clicked issue
     network.on("doubleClick", function (params)
@@ -2101,60 +2086,37 @@ function initNetwork()
     });
 }
 
+function selectANodeWithID(id)
+{
+    currentIssue = id;
+    if (infoTabActive)
+    {
+        infoTab();
+    }
+    if (proposedViewActive)
+    {
+        //proposedLinks() will only be called if the selected node is not a proposed one
+        var isAlreadyProposed = false;
+        $.each(proposedNodeElements, function (i, v)
+        {
+            //includes returns true if the values are the same and if currentIssue is "[v.id]-mock"
+            if (currentIssue.includes(v.key) || currentIssue === propLinksIssue)
+            {
+                isAlreadyProposed = true;
+            }
+        });
+        if (!isAlreadyProposed)
+        {
+            proposedLinks();
+        }
+    }
+}
+
 function resizeCanvas()
 {
     $('#issueLinkMap').height($(document).height() * 0.70)
 }
 
-function getInconsistencies()
-{
-    try
-    {
-        var xhr = new XMLHttpRequest();
-
-        var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=false";
-        xhr.open("GET", url, true);
-        xhr.onreadystatechange = function ()
-        {
-            if (xhr.readyState === 4 && xhr.status === 200)
-            {
-                var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
-                var json = JSON.parse(jsonPart);
-
-                var relList = "";
-
-                var relInc = json.response[0].RelationshipsInconsistent;
-                relList = relList + "<br>" +
-                    "<table style='width: 100%'><tr>\n" +
-                    // "<th>Issue Keys</th>" +
-                    // "<th>Link type</th>" +
-                    "<th>From Issue</th>" +
-                    "<th>Link Type</th>" +
-                    "<th>To Issue</th>" +
-                    "</tr>";
-                for (var i = 0; i < relInc.length; i++)
-                {
-                    // relList = relList + "<tr><td>" + relInc[i].To + ", " + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td></tr>";
-                    // relList = relList + "<tr><td>" + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td><td>" + relInc[i].To + "</td></tr>";
-                    relList = relList + '<tr><td><a href=\"../browse/' + relInc[i].From + '\" target=\"_blank\">' + relInc[i].From + '</a></td><td>'
-                        + relInc[i].Type + '<td><a href=\"../browse/' + relInc[i].To + '\" target=\"_blank\">' + relInc[i].To + '</a></td></tr>';
-                }
-                relList = relList + "</table>";
-                document.getElementById("ccRelInc").style.display = "inline-block";
-                document.getElementById("ccRelIncButton").style.display = "inline-block";
-                document.getElementById('ccRelInc').innerHTML = relList;
-                document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
-                document.getElementById('ccInconsistencisBtn').style.display = "none";
-            }
-        };
-
-        xhr.send(null);
-    } catch (err)
-    {
-        alert(err);
-        document.getElementById('ccResult').innerHTML = "there was an error...";
-    }
-}
 
 function titleCase(str)
 {
