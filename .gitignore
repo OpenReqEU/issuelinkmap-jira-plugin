@@ -32,6 +32,8 @@ target/*
 #target/maven-status
 #target/surefire-reports
 #target/test-classes
+
+#To include sonarqube necessary file
 !./target/site/cobertura/coverage.xml
 
 # CMake
