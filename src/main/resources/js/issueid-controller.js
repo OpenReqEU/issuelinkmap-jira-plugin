@@ -4,54 +4,53 @@ AJS.toInit(function ()
 {
     $(document).ready(function ()
     {
-        var url_string = window.location.href;
-        var url = new URL(url_string);
-        issue = url.searchParams.get("issue").toUpperCase();
-        var depthParam = url.searchParams.get("depth");
-        if ((depthParam === null) || (depthParam === ""))
-        {
-            depth = 1;
-        } else
-        {
-            depth = parseInt(depthParam, 10)
-        }
-        document.getElementById('issue-headline').innerText = "Issue Links of " + issue;
-        callTransitiveClosure();
-        initNodesEdges();
-        infoTab();
-        calculatePositions();
-        nodes.add(allNodesArray[0]);
-        nodes.add(allNodesArray[1]);
-        edges.add(depth0Edges);
-        edges.add(depth1Edges);
-        updateDepthButtons();
-        if (depth >= 2)
-        {
-            add2layer()
-        }
-        if (depth >= 3)
-        {
-            add3layer();
-        }
-        if (depth >= 4)
-        {
-            add4layer();
-        }
-        if (depth === 5)
-        {
-            add5layer();
-        }
-        filterNodes();
-        initNetwork();
-        resizeCanvas();
-        $(window).resize(function ()
-        {
+          try {
+            var url_string = window.location.href;
+            var url = new URL(url_string);
+            issue = url.searchParams.get("issue").toUpperCase();
+            var depthParam = url.searchParams.get("depth");
+            if ((typeof depthParam === "undefined") || (depthParam === null) || (depthParam === "") ) {
+                depth = 1;
+            } else {
+                depth = parseInt(depthParam, 10);
+                depth = Math.max(depth, 1);
+                depth = Math.min(depth, 5);
+            }
+            document.getElementById('issue-headline').innerHTML = 'Issue Links of <a href=\"../browse/' + issue + '\" target=\"_blank\">' + issue + '</a>';
+            callTransitiveClosure();
+            initNodesEdges();
+            infoTab();
+            calculatePositions();
+            nodes.add(allNodesArray[0]);
+            nodes.add(allNodesArray[1]);
+            edges.add(depth0Edges);
+            edges.add(depth1Edges);
+            updateDepthButtons();
+            if (depth >= 2) {
+                add2layer()
+            }
+            if (depth >= 3) {
+                add3layer();
+            }
+            if (depth >= 4) {
+                add4layer();
+            }
+            if (depth === 5) {
+                add5layer();
+            }
+            initNetwork();
+            filterNodes();
             resizeCanvas();
-        });
-        setTimeout(function ()
-        {
-            network.fit();
-        }, 1000);
+            setTimeout(function(){
+                network.fit();
+            }, 1000);
+            $(window).resize(function () {
+                resizeCanvas();
+            });
+         }
+         catch (err) {
+             location.href = "./ErrorPageAction.jspa?error=" + err;
+         }
     });
 
     document.getElementById('depth-1-btn').onclick = function depth1()
@@ -70,7 +69,6 @@ AJS.toInit(function ()
             edges.remove(depth2Edges);
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -92,7 +90,6 @@ AJS.toInit(function ()
             add2layer();
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -117,7 +114,6 @@ AJS.toInit(function ()
             add3layer();
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -146,7 +142,6 @@ AJS.toInit(function ()
             add4layer();
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -177,7 +172,6 @@ AJS.toInit(function ()
             add5layer();
         }
         filterNodes();
-        network.fit();
         updateDepthButtons();
     };
 
@@ -209,7 +203,7 @@ AJS.toInit(function ()
             {
                 var xhr = new XMLHttpRequest();
 
-                var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=true";
+                var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=false";
                 xhr.open("GET", url, true);
 
                 document.getElementById('ccResult').innerHTML = '<h5><font color=\"#0052CC\">Pending...</font></h5>';
@@ -226,12 +220,45 @@ AJS.toInit(function ()
                         for (var i = 0; i < releases.length; i++)
                         {
                             regsInReleases = regsInReleases + "<strong>Release " + releases[i].Release + "</strong><br>";
-                            for (var k = 0; k < releases[i].RequirementsAssigned.length - 1; k++)
+                            for (var k = 0; k < releases[i].RequirementsAssigned.length; k++)
                             {
-                                regsInReleases = regsInReleases + releases[i].RequirementsAssigned[k] + ", "
+                                // to get the title we need to find our issue in allNodesArray
+                                // findInAllNodes expects an ID (e.g. 5030) but we only got the key (QTWB-30)
+                                // we look in nodeEdgeObjects for our key to get the id, to get the issue in allNodesArray
+                                // to get the title. make sure that we get valid nodes in return
+                                var title = "No title found";
+                                var key = releases[i].RequirementsAssigned[k];
+                                var nodeObject = findElement(nodeEdgeObject.nodes, "id", key);
+                                if (typeof nodeObject !== "undefined")
+                                {
+                                    var node = findInAllNodes(nodeObject.nodeid);
+                                    if (typeof node !== "undefined")
+                                    {
+                                        title = node.title;
+                                    }
+                                    else
+                                    {
+                                        // the node might be filtered at the moment
+                                        // we still want its title
+                                        node = findElement(filteredNodes, "id", nodeObject.nodeid);
+                                        if (typeof node !== "undefined")
+                                        {
+                                            title = node.title;
+                                        }
+                                    }
+                                }
+                                if (k < releases[i].RequirementsAssigned.length - 1)
+                                {
+                                    regsInReleases = regsInReleases + "<p class='hoverable-text' style='display:inline' onmouseover='highlightRequirement(\"" + key + "\");'>" +
+                                        key + "<span class='tooltiptext-top'>" + title + "</span></p>, ";
+                                }
+                                else
+                                {
+                                    // no ", " for last key but "<br>" is added
+                                    regsInReleases = regsInReleases + "<p class='hoverable-text' style='display:inline' onmouseover='highlightRequirement(\"" + key + "\");'>" +
+                                        key + "<span class='tooltiptext-top'>" + title + "</span></p><br>";
+                                }
                             }
-
-                            regsInReleases = regsInReleases + releases[i].RequirementsAssigned[releases[i].RequirementsAssigned.length - 1] + "<br>"
                         }
                         var ccMessage = "";
 
@@ -262,7 +289,7 @@ AJS.toInit(function ()
                         } else
                         {
                             ccMessage = ccMessage.concat("<h5><font color=\"#CC0000\">Release plan is inconsistent.</font></h5>");
-                            document.getElementById('ccInconsistencisBtn').style.display = "inline-block";
+                            // document.getElementById('ccInconsistencisBtn').style.display = "inline-block";
                         }
                         document.getElementById('ccResult').innerHTML = "<br>".concat(ccMessage).concat("<br>");
                         document.getElementById('ccReleases').innerHTML = "<br>".concat(regsInReleases).concat("<br>");
@@ -272,6 +299,32 @@ AJS.toInit(function ()
                         document.getElementById("ccRelIgnoredButton").style.display = "inline-block";
                         document.getElementById('ccRelIgnored').innerHTML = ignoredRelList;
 
+                        var relList = "";
+
+                        var relInc = json.response[0].RelationshipsInconsistent;
+                        if (relInc.length === 0)
+                        {
+                            document.getElementById("ccRelIncButton").style.display = "none";
+                        }
+                        else
+                        {
+                            relList = relList + "<br>" +
+                                "<table style='width: 100%'><tr>\n" +
+                                "<th>From Issue</th>" +
+                                "<th>Link Type</th>" +
+                                "<th>To Issue</th>" +
+                                "</tr>";
+                            for (i = 0; i < relInc.length; i++)
+                            {
+                                relList = relList + '<tr><td><a href=\"../browse/' + relInc[i].From + '\" target=\"_blank\">' + relInc[i].From + '</a></td><td>'
+                                    + relInc[i].Type + '<td><a href=\"../browse/' + relInc[i].To + '\" target=\"_blank\">' + relInc[i].To + '</a></td></tr>';
+                            }
+                            relList = relList + "</table>";
+                            document.getElementById("ccRelInc").style.display = "inline-block";
+                            document.getElementById("ccRelIncButton").style.display = "inline-block";
+                            document.getElementById('ccRelInc').innerHTML = relList;
+                            document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
+                        }
                         consistencyChecked = true;
                     }
                 };
@@ -287,13 +340,6 @@ AJS.toInit(function ()
 
     document.getElementById('filter-tab').onclick = function filterNodesTab()
     {
-        // if (proposedViewActive)
-        // {
-        //     nodes.remove(proposedNodeElements);
-        //     edges.remove(proposedEdgeElements);
-        //     proposedViewActive = false;
-        // }
-        // infoTabActive = false;
         filterNodes();
     };
 
@@ -357,13 +403,13 @@ var depth;
 var max_depth;
 var nodeEdgeObject;
 var currentIssue;
+var proposedAmount = 5;
 
 var helpNodeSet = [];
 var filteredNodes = [];
 var filterArray = [];
 var distances = [240, 240, 240, 240, 240];
 var deprDistance = 240;
-var maxNodesPerLayer;
 var priorityArray = ["P0: Blocker", "P1: Critical", "P2: Important", "P3: Somewhat important", "P4: Low", "P5: Not important", "", "Not Evaluated"];
 
 
@@ -390,20 +436,24 @@ function callTransitiveClosure()
         xhr.open("GET", url, false);
         xhr.onreadystatechange = function ()
         {
-            if (xhr.readyState === 4 && xhr.status === 200)
+            if (xhr.readyState === 4 /* && xhr.status === 200 */)
             {
-                nodeEdgeObject = JSON.parse(xhr.responseText);
-                max_depth = nodeEdgeObject.max_depth;
-                if (max_depth < depth)
+                if (xhr.status === 200)
                 {
-                    depth = max_depth;
+                    nodeEdgeObject = JSON.parse(xhr.responseText);
+                    max_depth = nodeEdgeObject.max_depth;
+                    if (max_depth < depth) {
+                        depth = max_depth;
+                    }
+                    if (typeof (nodeEdgeObject['0']['nodes']['0']) === "undefined") {
+                        window.location.replace('./ErrorPageAction.jspa?issue=' + issue);
+                    } else {
+                        currentIssue = nodeEdgeObject['0']['nodes']['0']['id'];
+                    }
                 }
-                if (typeof (nodeEdgeObject['0']['nodes']['0']) === "undefined")
+                else
                 {
-                    window.location.replace('./ErrorPageAction.jspa?issue=' + issue)
-                } else
-                {
-                    currentIssue = nodeEdgeObject['0']['nodes']['0']['id'];
+                    window.location.replace('./ErrorPageAction.jspa?issue=' + issue);
                 }
             }
         };
@@ -445,18 +495,21 @@ function findInAllNodes(id)
         }
     }
 }
+function newProposedAmount() {
+    proposedAmount = document.getElementById("proposedResults").value;
+    fillProposedHTML();
+}
 
-function getIndexInAll(id)
+function highlightRequirement(key)
 {
-    for (var i = 0; i <= 5; i++)
+    var issueNode = findElement(nodeEdgeObject.nodes, "id", key);
+    if (nodes.get(issueNode.nodeid) !== null)
     {
-        for (var j = 0; j < allNodesArray[i].length; j++)
-        {
-            if (allNodesArray[i][j].id === id)
-            {
-                return [i, j];
-            }
-        }
+        // focus sets the highlighted node in the center
+        // works good for smaller maps but when you hover a lot of IDs it looks epilepsy inducing
+        // network.focus(issueNode.nodeid);
+        network.selectNodes([issueNode.nodeid]);
+        selectANodeWithID(key);
     }
 }
 
@@ -537,23 +590,22 @@ function isFiltered(status, type, priority, id)
                     //if the edge has a label and it is in the selected Link Types it won't be filtered out
                     if ((typeof allEdges[i][k].label === "undefined") || (filterArray.includes(allEdges[i][k].label.toUpperCase())))
                     {
+                        var node;
                         //the node now has a valid edge, but it is only shown when that edge is on level <= depth
                         if (allEdges[i][k].from === id)
                         {
-                            index = getIndexInAll(allEdges[i][k].to);
-                            //index is undefined if the node was already filtered out
-                            //index[0] is the depth of the node
-                            if ((typeof index === "undefined") || (index[0] <= depth))
+                            node = findInAllNodes(allEdges[i][k].to);
+                            //node is undefined if the node was already filtered out
+                            if ((typeof node === "undefined") || (node.level <= depth))
                             {
                                 return false;
                             }
                         }
                         else if (allEdges[i][k].to === id)
                         {
-                            index = getIndexInAll(allEdges[i][k].from);
-                            //index is undefined if the node was already filtered out
-                            //index[0] is the depth of the node
-                            if ((typeof index === "undefined") || (index[0] <= depth))
+                            node = findInAllNodes(allEdges[i][k].from);
+                            //node is undefined if the node was already filtered out
+                            if ((typeof node === "undefined") || (node.level <= depth))
                             {
                                 return false;
                             }
@@ -579,7 +631,6 @@ function calculatePositions()
         {
             deprDistance *= Math.sqrt(allNodesArray[1].length / 12);
         }
-        maxNodesPerLayer = 1;
         // the one element with depth 0 is in the center
         allNodesArray[0][0].x = 0;
         allNodesArray[0][0].y = 0;
@@ -588,26 +639,59 @@ function calculatePositions()
         allNodesArray[0][0].heightConstraint = 60;
         allNodesArray[0][0].widthConstraint = 135;
         allNodesArray[0][0].font = {multi: true, size: 24};
+
+
+        //new position idea to avoid overlaps
+        //loop from layer 5 to 1 to calculate sum of outgoing nodes
+        for (var i = allNodesArray.length - 1 ; i > 0; i--)
+        {
+            var maxAmount = -1;
+            var amount;
+            var indexOfMax;
+            for (var j = 0; j < allNodesArray[i].length; j++)
+            {
+                allNodesArray[i][j].connectionsOut = findConnectedNodesOuterUnique(allNodesArray[i][j]);
+                allNodesArray[i][j].amountConnectionsOut = amount = allNodesArray[i][j].connectionsOut.length;
+
+                var sum = 1;
+                for (var k = 0; k < amount; k++)
+                {
+                    sum += allNodesArray[i][j].connectionsOut[k].sumConnectionsOut;
+                }
+                allNodesArray[i][j].sumConnectionsOut = sum;
+                if (amount > maxAmount)
+                {
+                    maxAmount = amount;
+                    indexOfMax = j;
+                }
+            }
+            if (typeof indexOfMax !== "undefined")
+            {
+                //the node with the most outgoing connections is put first in array
+                var tmp = allNodesArray[i].splice(indexOfMax, 1);
+                allNodesArray[i].unshift(tmp[0]);
+            }
+        }
         // allNodesArray[1] is layer one and surrounds the center
-        for (var i = 0; i < allNodesArray[1].length; i++)
+        for (i = 0; i < allNodesArray[1].length; i++)
         {
             positionsDepthOne(allNodesArray[1].length, i);
         }
-        for (var i = 2; i <= max_depth; i++)
+        for (i = 2; i <= max_depth; i++)
         {
             positionsOuterRings(i);
         }
     }
 }
 
+
 function positionsDepthOne(maxElements, currentElement)
 {
     var angle = 360 / maxElements;
     var direction;
     var resultingAngle;
-    maxNodesPerLayer = Math.max(maxNodesPerLayer, allNodesArray[1].length);
-    // increasing the radius by 16 roughly increases circumference by 100
-    distances[1] = Math.max(allNodesArray[1].length * 16, 240);
+    // increasing the radius by 20 roughly increases circumference by 125
+    distances[1] = Math.max(allNodesArray[1].length * 20, 240);
 
     // if depth 1 has only one element it will be displayed below the center
     if (maxElements === 1)
@@ -633,49 +717,148 @@ function positionsDepthOne(maxElements, currentElement)
         direction = getDirectionByAngle(45 + (angle * currentElement));
         resultingAngle = 45 + angle * currentElement;
     }
-    // allNodesArray[1][currentElement].x = distances[1] * direction.x;
-    // allNodesArray[1][currentElement].y = distances[1] * direction.y;
+    allNodesArray[1][currentElement].x = distances[1] * direction.x;
+    allNodesArray[1][currentElement].y = distances[1] * direction.y;
 
-    allNodesArray[1][currentElement].x = deprDistance * direction.x;
-    allNodesArray[1][currentElement].y = deprDistance * direction.y;
     allNodesArray[1][currentElement].angle = resultingAngle;
 }
 
 function positionsOuterRings(depth)
 {
     var connectionsOut = [];
-    var index;
     var direction;
     var angleDiff;
+    var index;
+    var startIndex;
+    // justFill is a boolean; true means there are so many nodes on this layer that they will be placed next to eachother without gaps
+    // false means the nodes will be roughly in the direction of their inner connected node, this makes more sense if the layer is not too full
+    // "+ 5" is used because the not-just-filling algorithm works best with empty spaces
+    var justFill = (allNodesArray[depth].length + 5> (10 * depth));
+    // increasing the radius by 20 roughly increases circumference by 125
+    distances[depth] = Math.max(allNodesArray[depth].length * 20, distances[depth - 1] + 240);
 
-    // increasing the radius by 16 roughly increases circumference by 100
-    distances[depth] = Math.max(allNodesArray[depth].length * 16, distances[depth - 1] + 240);
-
-    maxNodesPerLayer = Math.max(maxNodesPerLayer, allNodesArray[depth].length);
-
-    for (var i = 0; i < allNodesArray[depth - 1].length; i++)
+    // iterate over all nodes of the layer below
+    for (i = 0; i < allNodesArray[depth - 1].length; i++)
     {
-        connectionsOut = findConnectedNodesOuter(allNodesArray[depth - 1][i]);
-        allNodesArray[depth - 1][i].connections = connectionsOut;
+        //and get their outer connected nodes to keep them together
+        connectionsOut = allNodesArray[depth - 1][i].connectionsOut;
+        var arrayLength;
+        if (justFill)
+        {
+            // all nodes will be placed evenly on a circle
+            angleDiff = 360 / allNodesArray[depth].length;
+        }
+        else
+        {
+            // here we assume that there will be empty slots, the angle is dependent on the layer
+            // if we calculated the angle as above (for justFill = true) the circle would be very loose
+            arrayLength = depth * 10;
+            angleDiff = 360/arrayLength;
+
+            var sourceAngle = allNodesArray[depth - 1][i].angle;
+            while (sourceAngle < 0)
+            {
+                sourceAngle += 360;
+            }
+            sourceAngle = sourceAngle % 360;
+            // making sure the angle is at least 0 and at most 359 so that we get a valid index
+            startIndex = Math.floor(sourceAngle/360 * arrayLength);
+            var free;
+            var errorIndex;
+            var loopCount = 0;
+            // check if the desired array slots are free, if not check what is already taken
+            // this shifts the position counter clockwise until there is empty space
+            // due to the sorting by amount of connections and positions being given counter clockwise looking for space clockwise should be useless
+            // in theory we could land in an infinite loop, but due to sorting it's highly unlikely
+            do {
+                free = true;
+                for (var k = 0; k < connectionsOut.length; k++)
+                {
+                    var shiftedIndex = Math.floor(k + startIndex - connectionsOut.length / 2);
+                    if (shiftedIndex < 0)
+                    {
+                        shiftedIndex += arrayLength;
+                    } else if (shiftedIndex >= arrayLength)
+                    {
+                        shiftedIndex -= arrayLength;
+                    }
+                    if (typeof posArray[depth][shiftedIndex] !== "undefined")
+                    {
+                        free = false;
+                        errorIndex = shiftedIndex;
+                    }
+                }
+                if (!free)
+                {
+                    startIndex = Math.floor(errorIndex + 1 + connectionsOut.length / 2);
+                }
+                loopCount++;
+                // if this would lead to an infinite loop, we jump out with break. this will ruin the positioning tho
+                // may be improved to properly handle this case
+                // hasn't happened for any node yet
+                if (loopCount > arrayLength * 2)
+                {
+                    console.log("WARNING: infinite loop - can't find empty space for nodes");
+                    break;
+                }
+            } while (!free);
+        }
+        var offset;
+        if (i === 0)
+        {
+            // this offset is used in case of justFill === true and calculated once per layer
+            // it will shift the positions in a way that the first pushed nodes in posArray will be in the direction of the connected inner node
+            offset = allNodesArray[depth - 1][0].angle - angleDiff * (connectionsOut.length / 2);
+        }
         for (var j = 0; j < connectionsOut.length; j++)
         {
-            index = getIndexInAll(connectionsOut[j]);
-            angleDiff = Math.min(15, 360 / allNodesArray[depth].length);
-            angleDiff *= Math.ceil(j / 2);
-
-            if (j % 2)
-            {// j == odd
-                angleDiff *= -1;
+            if (justFill)
+            {
+                posArray[depth].push(connectionsOut[j]);
+                index = posArray[depth].indexOf(connectionsOut[j]);
+                direction = getDirectionByAngle(index * angleDiff + offset);
             }
-            direction = getDirectionByAngle(allNodesArray[depth - 1][i].angle + angleDiff);
+            else
+            {
+                offset = 0;
+                var insertIndex = Math.floor(j + startIndex - connectionsOut.length / 2);
+                if (insertIndex < 0)
+                {
+                    insertIndex += arrayLength;
+                }
+                else if (insertIndex >= arrayLength)
+                {
+                    insertIndex -= arrayLength;
+                }
+                posArray[depth][insertIndex] = connectionsOut[j];
 
-            // allNodesArray[index[0]][index[1]].x = distances[depth]  * direction.x;
-            // allNodesArray[index[0]][index[1]].y = distances[depth] * direction.y;
+                index = insertIndex;
+                direction = getDirectionByAngle(index * angleDiff);
+            }
 
-            allNodesArray[index[0]][index[1]].x = deprDistance * depth * direction.x;
-            allNodesArray[index[0]][index[1]].y = deprDistance * depth * direction.y;
-            allNodesArray[index[0]][index[1]].angle = allNodesArray[depth - 1][i].angle + angleDiff;
+            connectionsOut[j].x = distances[depth]  * direction.x;
+            connectionsOut[j].y = distances[depth] * direction.y;
+            connectionsOut[j].angle = index * angleDiff + offset;
         }
+    }
+    if (justFill)
+    {
+        //allNodesArray will be overwritten with the sorted position array
+        allNodesArray[depth] = posArray[depth];
+    }
+    else
+    {
+        var tmp = [];
+        for (var i = arrayLength - 1; i >= 0; i--)
+        {
+            // if justFill === false there might be empty entries in the array
+            if (typeof posArray[depth][i] !== "undefined")
+            {
+                tmp.unshift(posArray[depth][i]);
+            }
+        }
+        //allNodesArray will be overwritten with the sorted position array
+        allNodesArray[depth] = tmp;
     }
 }
 
@@ -713,14 +896,14 @@ function calculateProposedDepthOnePositions(j, maxElements)
 //calculates positions for proposed issues if the selected issue is not layer 0
 function calculateProposedOuterPositions(issueInfo, j)
 {
-    var index = getIndexInAll(issueInfo.nodeid);
-    var angleDiff = Math.min(15, 360 / proposedNodesEdges['nodes'].length);
+    var node = findInAllNodes(issueInfo.nodeid);
+    var angleDiff = Math.min(10, 360 / proposedNodesEdges['nodes'].length);
     angleDiff *= Math.ceil(j / 2);
     if (j % 2)
     {// j == odd
         angleDiff *= -1;
     }
-    var direction = getDirectionByAngle(allNodesArray[index[0]][index[1]].angle + angleDiff);
+    var direction = getDirectionByAngle(node.angle + angleDiff);
 
     var coord_x = (distances[issueInfo.depth] + 120) * direction.x;
     var coord_y = (distances[issueInfo.depth] + 120) * direction.y;
@@ -735,41 +918,62 @@ function getDirectionByAngle(angle)
     return direction;
 }
 
-function getAngleByRelativePosition(fromPoint, point)
-{
-    var dx = point.x - fromPoint.x;
-    var dy = point.y - fromPoint.y;
-    return Math.atan2(dx, dy) * 180 / Math.PI;
-}
-
+//not used at the moment
 function findConnectedNodesOuter(paraElem)
 {
-    var connections = findConnectedNodes(paraElem.id);
+    var connections = findConnectedNodes(paraElem);
     var result = [];
     var elem;
     for (var i = 0; i < connections.length; i++)
     {
-        elem = findInAllNodes(connections[i]);
+        elem = connections[i];
         if ((typeof elem !== "undefined") && (paraElem.level === elem.level - 1))
         {
-            result.push(elem.id)
+            result.push(elem);
         }
     }
     return result;
 }
 
-function findConnectedNodes(id)
+function findConnectedNodesOuterUnique(paraElem)
+{
+    var connections = findConnectedNodes(paraElem);
+    var result = [];
+    var elem;
+    for (var i = 0; i < connections.length; i++)
+    {
+        elem = connections[i];
+        if ((typeof elem !== "undefined") && (paraElem.level === elem.level - 1) && !elem.claimedAsOuter)
+        {
+            result.push(elem);
+            elem.claimedAsOuter = true;
+        }
+    }
+    result.sort(function (a, b) {
+        return b.amountConnectionsOut - a.amountConnectionsOut;
+    });
+    return result;
+}
+
+
+function findConnectedNodes(paraElem)
 {
     var result = [];
+    var resultID = [];
+    var node;
     for (var i = 0; i < allEdges[0].length; i++)
     {
-        if ((id === allEdges[0][i].from) && !result.includes(allEdges[0][i].to))
+        if ((paraElem.id === allEdges[0][i].from) && !resultID.includes(allEdges[0][i].to))
         {
-            result.push(allEdges[0][i].to);
+            resultID.push(allEdges[0][i].to);
+            node = findInAllNodes(allEdges[0][i].to);
+            result.push(node);
         }
-        if ((id === allEdges[0][i].to) && !result.includes(allEdges[0][i].from))
+        else if ((paraElem.id === allEdges[0][i].to) && !resultID.includes(allEdges[0][i].from))
         {
-            result.push(allEdges[0][i].from);
+            resultID.push(allEdges[0][i].from);
+            node = findInAllNodes(allEdges[0][i].from);
+            result.push(node);
         }
     }
     return result;
@@ -978,20 +1182,12 @@ function createDepthLevelNodes(nodeEdgeObject)
         } else
             nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n not specified");
         var nodetitle = "";
-        // if (nodename.toString().length > 20)
-        // {
-        //     nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("...\n");
-        // } else
-        // {
-        //     nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("\n");
-        // }
-        //blub
         var lenOfLine = 20;
         var titleWords = nodename.toString().split(" ");
         var lenCounter = 0;
         for (var j = 0; j < titleWords.length; j++)
         {
-            if (lenCounter > lenOfLine)
+            if (lenCounter >= lenOfLine)
             {
                 nodetitle = nodetitle + "<br>";
                 lenCounter = 0;
@@ -1048,6 +1244,12 @@ function createDepthLevelEdges(nodeEdgeObject)
     return depthLevelEdges;
 }
 
+
+var posArray = [];
+posArray[2] = [];
+posArray[3] = [];
+posArray[4] = [];
+posArray[5] = [];
 var allNodesArray;
 var depth0Edges;
 var depth1Edges;
@@ -1117,7 +1319,7 @@ function proposedLinks()
 
 
             var xhr = new XMLHttpRequest();
-            var url = "../rest/issuesearch/1.0/getTopProposedDependenciesOfRequirement?requirementId=" + currentIssue + "&maxResults=" + "5";
+            var url = "../rest/issuesearch/1.0/getTopProposedDependenciesOfRequirement?requirementId=" + currentIssue + "&maxResults=" + "1000";
 
             xhr.open("GET", url, true);
 
@@ -1179,12 +1381,18 @@ function proposedLinks()
                         } else
                             nodelabel = nodelabel + "<b>".concat(nodekey).concat("</b>").concat("\n not specified");
                         var nodetitle = "";
-                        if (nodename.toString().length > 20)
+                        var lenOfLine = 20;
+                        var titleWords = nodename.toString().split(" ");
+                        var lenCounter = 0;
+                        for (var k = 0; k < titleWords.length; k++)
                         {
-                            nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("...\n");
-                        } else
-                        {
-                            nodetitle = nodetitle.concat(nodename.toString().substring(0, 20)).concat("\n")
+                            if (lenCounter >= lenOfLine)
+                            {
+                                nodetitle = nodetitle + "<br>";
+                                lenCounter = 0;
+                            }
+                            nodetitle = nodetitle + titleWords[k] + " ";
+                            lenCounter = lenCounter + titleWords[k].length;
                         }
 
                         //calculate positions for the proposed issue
@@ -1253,40 +1461,9 @@ function proposedLinks()
                     edges.add(proposedEdgeElements);
 
                     proposedViewActive = true;
-                    if (proposedIssuesList.length === 0)
-                    {
-                        document.getElementById('ddResult').innerHTML = '<h5><font color="#0052CC">No proposed links for issue ' + currentIssue + '.</font></h5>';
-                    } else
-                    {
-                        var stringList = '<h5><font color=\"#0052CC\">Proposed Links of ' + currentIssue + "</font></h5>" +
-                            "<table style='width: 100%'><tr>\n" +
-                            "<th>Issue Key</th>" +
-                            // "<th>Link type</th>" +
-                            // "<th>Accept</th>" +
-                            // "<th>Reject</th>" +
-                            "</tr>";
-                        var selectionList = '<div class="custom-select">';
-                        var acceptBtn = "<button class='button accept button-effect-accept' role='radio' onclick=\"registerClick(this)\" id=";
-                        var rejectBtn = "<button class='button reject button-effect-reject' role='radio' onclick=\"registerClick(this)\" id=";
-                        for (var i = 0; i < proposedIssuesList.length; i++)
-                        {
-                            stringList = stringList + "<tr><td><a href='https://bugreports-test.qt.io/browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id +
-                                // "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
-                                // "<option value='dependency'>dependency</option>" +
-                                // "<option value='duplicate'>duplicate</option>" +
-                                // "<option value='epic'>epic</option>" +
-                                // "<option value='relates'>relates</option>" +
-                                // "<option value='replacement'>replacement</option>" +
-                                // "<option value='subtask'>subtask</option>" +
-                                // "<option value='work breakdown'>work breakdown</option>" +
-                                // "</select></div></td><td>"
-                                // + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
-                                // + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td>" +
-                                "</tr>";
-                        }
-                        // stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
-                        document.getElementById('ddResult').innerHTML = stringList;
-                    }
+                    document.getElementById("ddAmountResults").innerHTML = "<input type='number' name='results' id='proposedResults' min='1' max='" + proposedIssuesList.length + "' placeholder='# of links' style='margin-right: 20px' onchange='newProposedAmount();'>";
+                    fillProposedHTML();
+
                 }
             };
             xhr.send(null);
@@ -1297,7 +1474,57 @@ function proposedLinks()
             alert(err);
         }
     }
-    network.fit();
+    setTimeout(function ()
+    {
+        network.fit();
+        }, 1000);
+}
+
+function fillProposedHTML()
+{
+    if (proposedIssuesList.length === 0)
+    {
+        document.getElementById('ddResult').innerHTML = '<h5><font color="#0052CC">No proposed links for issue <a href=\"../browse/' + currentIssue + '\" target=\"_blank\">' + currentIssue + '</a>.</font></h5>';
+    } else
+    {
+        var stringList = '<h5><font color=\"#0052CC\">Proposed Links of <a href=\"../browse/' + currentIssue + '\" target=\"_blank\">' + currentIssue + '</a></font></h5>' +
+            "<table style='width: 100%'><tr>\n" +
+            "<th>Issue Key</th>" +
+            "<th>Link type</th>" +
+            "<th>Accept</th>" +
+            "<th>Reject</th>" +
+            "</tr>";
+        var selectionList = '<div class="custom-select">';
+        var acceptBtn = "<button class='button accept button-effect-accept' role='radio' onclick=\"registerClick(this)\" id=";
+        var rejectBtn = "<button class='button reject button-effect-reject' role='radio' onclick=\"registerClick(this)\" id=";
+
+        proposedAmount = Math.min(proposedAmount, proposedIssuesList.length);
+        for (var i = 0; i < proposedAmount; i++)
+        {
+            var title = "No title found";
+            var node = findElement(proposedNodeElements, "key", proposedIssuesList[i].id);
+            if (typeof node !== "undefined")
+            {
+                title = node.title;
+            }
+            stringList = stringList + "<tr><td class='hoverable-text'><a href='../browse/" + proposedIssuesList[i].id + "' target='_blank'>" + proposedIssuesList[i].id +
+                "<span class='tooltiptext-left'>" + title + "</span>" +
+                "</a></td><td>" + selectionList + "<select id=" + i + "s>" +
+                "<option value='dependency'>dependency</option>" +
+                "<option value='duplicate' selected='selected'>duplicate</option>" +
+                "<option value='epic'>epic</option>" +
+                "<option value='relates'>relates</option>" +
+                "<option value='replacement'>replacement</option>" +
+                "<option value='subtask'>subtask</option>" +
+                "<option value='work breakdown'>work breakdown</option>" +
+                "</select></div></td><td>"
+                + acceptBtn + i + "a" + proposedIssuesList[i].id + ">&#x2713</button></td><td>"
+                + rejectBtn + i + "r" + proposedIssuesList[i].id + ">&#x2717</button></td>" +
+                "</tr>";
+        }
+        stringList = stringList + "<td><button class='button button-effect' onclick ='sendLinkData()'>Save</button></td><td></td><td></td><td></td></table>";
+        document.getElementById('ddResult').innerHTML = stringList;
+    }
 }
 
 function sortProposed(array)
@@ -1537,8 +1764,6 @@ function filterNodes()
             }
         }
     }
-    // after splicing all filtered nodes out of allNodesArray calculate position will create a circle out of the remaining nodes
-    calculatePositions();
     // nodes is cleared
     nodes.clear();
     // and refilled with the correct nodes
@@ -1546,6 +1771,12 @@ function filterNodes()
     {
         nodes.add(allNodesArray[i]);
     }
+    if (proposedViewActive) {
+        currentIssue = propLinksIssue;
+        proposedViewActive = false;
+        proposedLinks();
+    }
+    network.fit();
 }
 
 function infoTab()
@@ -1570,6 +1801,10 @@ function infoTab()
     {
         infoType = "suggestion"
     }
+    else if (infoType === "user_story")
+    {
+        infoType = "user-story";
+    }
     var infoStatus = issueInfo.status;
     //var infoDescription = issueInfo.issueDescription;
     var infoResolution = issueInfo.resolution;
@@ -1586,7 +1821,12 @@ function infoTab()
             infoType = "not specified"
         }
     }
-    document.getElementById('infoBoxHeading').innerHTML = "".concat(currentIssue);
+    var infoConnectionsAmount = findConnectedNodes(findInAllNodes(issueInfo.nodeid)).length;
+    if (infoConnectionsAmount === 0)
+    {
+        infoConnectionsAmount = "<strong>This Node has no links.</strong>";
+    }
+    document.getElementById('infoBoxHeading').innerHTML = '<a href=\"../browse/' + currentIssue + '\" target=\"_blank\">' + currentIssue + '</a>';
     if (infoResolution === "confidential")
     {
         document.getElementById("infoOther").innerHTML = "This issue is confidential, you might not be logged into Jira or have the permissions to see it.";
@@ -1601,13 +1841,14 @@ function infoTab()
         document.getElementById('infoTable').style.display = "block";
         //put the issues in the corressponding part of the website
         //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLink + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt JIRA</a>';
-        document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';
+        //document.getElementById('infoBoxIssueLink').innerHTML = '<a href=\"' + infoLinkTestJIRA + '\" class=\"button jira button-effect center\" target="_blank">View Issue in Qt Test JIRA</a>';
         document.getElementById('infoBoxIssueStatus').innerHTML = infoStatus;
         document.getElementById('infoBoxIssueType').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/type/' + infoType + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(titleCase(infoType));
         document.getElementById('infoBoxIssuePrio').innerHTML = '<img src="../download/resources/openreq.qt.issuelinkmap-jira-plugin.issuelinkmap-jira-plugin:issuelinkmap-jira-plugin-resources/images/prio/' + issueInfo.priority + '.png" width="20" height="20" align="middle"/>'.concat(" ").concat(infoPriority);
         document.getElementById('infoBoxIssueSummary').innerHTML = infoTitle;
         document.getElementById('infoBoxIssueResolution').innerHTML = infoResolution;
         document.getElementById('infoBoxIssueEnv').innerHTML = infoEnvironment;
+        document.getElementById('infoBoxIssueCon').innerHTML = "" + infoConnectionsAmount;
         document.getElementById('infoBoxIssueComponent').innerHTML = infoComponent;
         document.getElementById('infoBoxIssueLabel').innerHTML = infoLabel;
         document.getElementById('infoBoxIssueVersion').innerHTML = infoVersion;
@@ -1635,7 +1876,7 @@ function initNetwork()
 
     //specify options such as physics
     var options = {
-        //size of the network
+        // size of the network
         // autoResize: true,
         // height: '1000px',
         // width: '80%',
@@ -1643,53 +1884,94 @@ function initNetwork()
         //TODO: There must be an easier way to create these groups
         "groups": {
             "yellow": {
-                color: {background: '#ffd351', border: 'none'},
-                borderWidth: 0,
+                color: {background: '#ffd351', border: '#FFFFFF', highlight: {
+                        border: '#666666',
+                        background: '#FFE69E'
+                    },
+                },
+                borderWidth: 2,
                 font: {color: '#594200', multi: 'html', size: 14}
             },
             "green": {
-                color: {background: '#14882c', border: 'none'},
-                borderWidth: 0,
+                color: {
+                    background: '#14882c', border: '#FFFFFF', highlight: {
+                        border: '#666666',
+                        background: '#1ECB42'
+                    },
+                },
+                borderWidth: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "blue": {
-                color: {background: '#4a6685', border: 'none'},
-                borderWidth: 0,
+                color: {
+                    background: '#4a6685', border: '#FFFFFF', highlight: {
+                        border: '#666666',
+                        background: '#6D8CAE'
+                    },
+                },
+                borderWidth: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "red": {
-                color: {background: '#ce0000', border: 'none'},
-                borderWidth: 0,
+                color: {
+                    background: '#ce0000', border: '#FFFFFF', highlight: {
+                        border: '#666666',
+                        background: '#FF1C1C'
+                    },
+                },
+                borderWidth: 2,
                 font: {color: 'white', multi: 'html', size: 14}
             },
             "unknown": {
-                color: {background: '#cecfd5', border: '#09102b'},
-                borderWidth: 0,
+                color: {
+                    background: '#cecfd5', border: '#09102b',
+                },
+                borderWidth: 2,
                 font: {color: 'black', multi: 'html', size: 14}
             },
             "yellow_center": {
-                color: {background: '#ffd351', border: 'none'},
-                borderWidth: 0,
+                color: {
+                    background: '#ffd351', border: '#FFFFFF', highlight: {
+                        border: '#666666',
+                        background: '#FFE69E'
+                    },
+                },
+                borderWidth: 4,
                 font: {color: '#594200', multi: 'html', size: 20}
             },
             "green_center": {
-                color: {background: '#14882c', border: 'none'},
-                borderWidth: 0,
+                color: {
+                    background: '#14882c', border: '#FFFFFF', highlight: {
+                        border: '#666666',
+                        background: '#1ECB42'
+                    },
+                },
+                borderWidth: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "blue_center": {
-                color: {background: '#4a6685', border: 'none'},
-                borderWidth: 0,
+                color: {
+                    background: '#4a6685', border: '#FFFFFF', highlight: {
+                        border: '#666666',
+                        background: '#6D8CAE'
+                    },
+                },
+                borderWidth: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "red_center": {
-                color: {background: '#ce0000', border: 'none'},
-                borderWidth: 0,
+                color: {
+                    background: '#ce0000', border: '#FFFFFF', highlight: {
+                        border: '#666666',
+                        background: '#FF1C1C'
+                    },
+                },
+                borderWidth: 4,
                 font: {color: 'white', multi: 'html', size: 20}
             },
             "unknown_center": {
                 color: {background: '#cecfd5', border: '#09102b'},
-                borderWidth: 0,
+                borderWidth: 4,
                 font: {color: 'black', multi: 'html', size: 20}
             }
         },
@@ -1738,20 +2020,6 @@ function initNetwork()
                 'enabled': true,
                 "iterations": 1000,
                 "updateInterval": 25
-                // "minVelocity": 50,
-                // // "repulsion": {
-                // //     "nodeDistance": 150
-                // // },
-                // "barnesHut":
-                //     {
-                //         "avoidOverlap": 1
-                //     },
-                // "stabilization": {
-                //     "enabled": true,
-                //     "iterations": 50, // maximum number of iteration to stabilize
-                //     "updateInterval": 1,
-                //     "onlyDynamicEdges": false,
-                //     "fit": true
             }
         }
     };
@@ -1763,17 +2031,14 @@ function initNetwork()
         network.setOptions({physics: false});
     });
 
-    //     network.fit();
-    // });
 
     //interact with network
     //if a node is selected display information in infobox
-    network.on("selectNode", function (params)
-    {
-        params.event = "[original event]";
+    network.on("selectNode", function (params){
+        //params.event = "[original event]";
 
-        var node = nodes.get(params.nodes);
-        var issueID = node[0].id;
+        var node = nodes.get(params.nodes)[0];
+        var issueID = node.id;
         var issueNode = findElement(nodeEdgeObject.nodes, "nodeid", issueID);
         if (typeof issueNode !== 'undefined')
         {
@@ -1802,6 +2067,8 @@ function initNetwork()
         }
     });
 
+
+
     //doubleclicking searches for the clicked issue
     network.on("doubleClick", function (params)
     {
@@ -1815,13 +2082,72 @@ function initNetwork()
             {
                 var issueKey = issueNode.id;
                 $('#issueInput').val(issueKey);
-                $('#depthInput').val(depth);
-                //
+                // $('#depthInput').val(depth);
                 buildURL();
                 document.forms["search-id"].submit();
             }
         }
     });
+
+    //dragging reloads the info tab for the dragged node
+    network.on("dragStart", function (params)
+    {
+        var node = nodes.get(params.nodes)[0];
+        if (typeof node !== "undefined")
+        {
+            var issueNode = findElement(nodeEdgeObject.nodes, "nodeid", node.id);
+            // issueNode is undefined if you click a proposed node
+            if (typeof issueNode !== "undefined")
+            {
+                currentIssue = issueNode.id;
+                if (infoTabActive) {
+                    infoTab();
+                }
+            }
+        }
+    });
+
+    //after dragging a node the new positions will be saved
+    network.on("dragEnd", function (params)
+    {
+        var node = nodes.get(params.nodes)[0];
+        if (typeof node !== "undefined")
+        {
+            var nodeInArray = findInAllNodes(node.id);
+            if (typeof nodeInArray !== "undefined")
+            {
+                var positions = network.getPositions(node.id);
+                nodeInArray.x = positions[node.id].x;
+                nodeInArray.y = positions[node.id].y;
+            }
+        }
+    });
+}
+
+function selectANodeWithID(id)
+{
+    currentIssue = id;
+    if (infoTabActive)
+    {
+        infoTab();
+    }
+    if (proposedViewActive)
+    {
+        //proposedLinks() will only be called if the selected node is not a proposed one
+        var isAlreadyProposed = false;
+        $.each(proposedNodeElements, function (i, v)
+        {
+            //includes returns true if the values are the same and if currentIssue is "[v.id]-mock"
+            if (currentIssue.includes(v.key) || currentIssue === propLinksIssue)
+            {
+                isAlreadyProposed = true;
+            }
+        });
+        if (!isAlreadyProposed)
+        {
+            proposedLinks();
+        }
+    }
 }
 
 function resizeCanvas()
@@ -1829,49 +2155,6 @@ function resizeCanvas()
     $('#issueLinkMap').height($(document).height() * 0.70)
 }
 
-function getInconsistencies()
-{
-    try
-    {
-        var xhr = new XMLHttpRequest();
-
-        var url = "../rest/issuesearch/1.0/getConsistencyCheckForRequirement?requirementId=" + issue + "&analysisOnly=false";
-        xhr.open("GET", url, true);
-        xhr.onreadystatechange = function ()
-        {
-            if (xhr.readyState === 4 && xhr.status === 200)
-            {
-                var jsonPart = xhr.responseText.substring(xhr.responseText.indexOf("{"));
-                var json = JSON.parse(jsonPart);
-
-                var relList = "";
-
-                var relInc = json.response[0].RelationshipsInconsistent;
-                relList = relList + "<br>" +
-                    "<table style='width: 100%'><tr>\n" +
-                    "<th>Issue Keys</th>" +
-                    "<th>Link type</th>" +
-                    "</tr>";
-                for (var i = 0; i < relInc.length; i++)
-                {
-                    relList = relList + "<tr><td>" + relInc[i].To + ", " + relInc[i].From + "</a></td><td>" + relInc[i].Type + "</td></tr>";
-                }
-                relList = relList + "</table>";
-                document.getElementById("ccRelInc").style.display = "inline-block";
-                document.getElementById("ccRelIncButton").style.display = "inline-block";
-                document.getElementById('ccRelInc').innerHTML = relList;
-                document.getElementById('ccRelIncButton').innerHTML = "Inconsistent items";
-                document.getElementById('ccInconsistencisBtn').style.display = "none";
-            }
-        };
-
-        xhr.send(null);
-    } catch (err)
-    {
-        alert(err);
-        document.getElementById('ccResult').innerHTML = "there was an error...";
-    }
-}
 
 function titleCase(str)
 {

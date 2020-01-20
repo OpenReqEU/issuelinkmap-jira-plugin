@@ -33,7 +33,7 @@ $webResourceManager.requireResource(
             this <a target="_blank" href="https://forms.gle/EG6fd6QyCMXt7DEW9"> anonymous feedback form</a>.</strong>
     </div>
 
-    <div class="search-container">Version 1.3.6</div>
+    <div class="search-container">Version 1.3.22.1</div>
 </div>
 
 
@@ -49,12 +49,12 @@ $webResourceManager.requireResource(
 
                     <tr>
                         <th>Issue Key</th>
-                        <th>Depth</th>
+##                        <th>Depth</th>
                         <th></th>
                     </tr>
                     <tr>
                         <td><input type="text" name="issue" id="issue" required="required" width="200px"></td>
-                        <td><input type="number" name="depth" id="layerDepth" min="1" max="5" width="100px"></td>
+##                        <td><input type="number" name="depth" id="layerDepth" min="1" max="5" width="100px"></td>
                         <td><input type="submit"
                                    class="button search button-effect"
                                    value="Search"></td>
@@ -101,13 +101,13 @@ $webResourceManager.requireResource(
                 <p class="card-text">Type in a single issue (e.g. <i>QTWB-30</i>).
                     The service will then look up the corresponding issue in University of Helsinki's services and
                     check if you are authorized to see the information of this issue.</p>
-                <h5 class="card-title">Depth</h5>
-                <p class="card-text">This service can show you direct (depth 1) and indirect links (depth 2-5).
-                    Depth 2 are the links of issues that are directly connected to the searched issue, depth 3 are the
-                    links of issues of depth 2 and so on, up until depth 5.
-                    If you do not specify a depth the default value is 1, while viewing the issue link map you can
-                    switch between the different depths.
-                </p>
+##                <h5 class="card-title">Depth</h5>
+##                <p class="card-text">This service can show you direct (depth 1) and indirect links (depth 2-5).
+##                    Depth 2 are the links of issues that are directly connected to the searched issue, depth 3 are the
+##                    links of issues of depth 2 and so on, up until depth 5.
+##                    If you do not specify a depth the default value is 1, while viewing the issue link map you can
+##                    switch between the different depths.
+##                </p>
                 <h5 class="card-title">Filtering</h5>
                 <p class="card-text">The visualized issues can be filtered depending on their status, type and priority.
                     Currently, the default filter does not show issues which are already done.
