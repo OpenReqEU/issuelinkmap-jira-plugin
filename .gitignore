@@ -32,7 +32,7 @@ target/*
 #target/maven-status
 #target/surefire-reports
 #target/test-classes
-!./target/jacoco.exec
+!./target/site/cobertura/coverage.xml
 
 # CMake
 cmake-build-*/
